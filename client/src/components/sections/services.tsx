@@ -1,122 +1,128 @@
-import { ArrowRight, Monitor, Code, Zap, BarChart3, Smartphone, Package } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { useGSAP } from '@/hooks/use-gsap';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 
-const services = [
+const experiences = [
   {
-    icon: Monitor,
-    title: 'Web Design',
-    description: 'Custom, responsive designs that reflect your brand identity and provide exceptional user experiences across all devices.',
-    gradient: 'from-primary to-primary/80',
+    number: '01',
+    title: 'Digital Strategy',
+    description: 'We craft comprehensive digital strategies that align with your business objectives and user needs.',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
   },
   {
-    icon: Code,
-    title: 'Development',
-    description: 'Modern, performant websites built with cutting-edge technologies and optimized for speed, SEO, and accessibility.',
-    gradient: 'from-accent to-accent/80',
+    number: '02', 
+    title: 'Interface Design',
+    description: 'Creating intuitive, beautiful interfaces that enhance user experience and drive engagement.',
+    image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
   },
   {
-    icon: Zap,
-    title: 'Interactive Experiences',
-    description: 'Engaging animations, 3D elements, and interactive features that captivate users and create memorable experiences.',
-    gradient: 'from-purple-500 to-purple-600',
-  },
-  {
-    icon: BarChart3,
-    title: 'Analytics & Optimization',
-    description: 'Data-driven insights and continuous optimization to ensure your website performs at its best and drives conversions.',
-    gradient: 'from-green-500 to-green-600',
-  },
-  {
-    icon: Smartphone,
-    title: 'Mobile-First Design',
-    description: 'Responsive designs that look and perform beautifully on every device, ensuring optimal user experience everywhere.',
-    gradient: 'from-blue-500 to-blue-600',
-  },
-  {
-    icon: Package,
-    title: 'Brand Integration',
-    description: 'Seamless integration of your brand identity into every aspect of your digital presence for consistent, memorable experiences.',
-    gradient: 'from-yellow-500 to-orange-500',
-  },
+    number: '03',
+    title: 'Development Excellence',  
+    description: 'Building robust, scalable solutions using cutting-edge technologies and best practices.',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
+  }
 ];
 
 export function Services() {
   const containerRef = useGSAP(() => {
-    gsap.from('.services-title', {
-      duration: 1,
+    // Title animation
+    gsap.from('.section-title', {
+      duration: 1.5,
+      y: 60,
+      opacity: 0,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: '.section-title',
+        start: "top 85%"
+      }
+    });
+
+    // Experience cards stagger
+    gsap.from('.experience-item', {
+      duration: 1.2,
       y: 100,
       opacity: 0,
-      ease: "power3.out",
+      stagger: 0.2,
+      ease: "power4.out",
       scrollTrigger: {
-        trigger: '.services-title',
-        start: "top 80%"
+        trigger: '.experiences-container',
+        start: "top 70%"
       }
     });
 
-    gsap.from('.services-subtitle', {
-      duration: 0.8,
-      y: 50,
-      opacity: 0,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: '.services-subtitle',
-        start: "top 80%"
-      }
-    });
-
-    gsap.from('.service-card', {
-      duration: 0.6,
-      y: 80,
-      opacity: 0,
-      ease: "power3.out",
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: '.services-grid',
-        start: "top 80%"
-      }
+    // Parallax images
+    gsap.utils.toArray('.experience-image').forEach((image: any) => {
+      gsap.to(image, {
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: image,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
     });
   });
 
   return (
-    <section id="services" className="py-24 bg-white" ref={containerRef}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="services-title text-4xl lg:text-6xl font-bold text-gradient mb-6">
-            Our Expertise
-          </h2>
-          <p className="services-subtitle text-xl text-gray-600 max-w-3xl mx-auto">
-            From concept to deployment, we create digital experiences that drive results
-          </p>
+    <section id="experience" className="section-padding bg-background" ref={containerRef}>
+      <div className="container-fluid">
+        {/* Section Title */}
+        <div className="section-title text-center mb-32">
+          <div className="space-y-6">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
+            <h2 className="text-5xl md:text-7xl font-extralight tracking-tight">
+              <span className="text-muted-foreground">Our</span>
+              <br />
+              <span className="text-gradient">Experience</span>
+            </h2>
+          </div>
         </div>
 
-        <div className="services-grid grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <Card 
-                key={service.title}
-                className="service-card group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 hover:border-primary/20"
-              >
-                <CardContent className="p-0">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-8 h-8 text-white" />
+        {/* Experiences */}
+        <div className="experiences-container space-y-32">
+          {experiences.map((item, index) => (
+            <div key={item.number} className="experience-item">
+              <div className={`grid lg:grid-cols-2 gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
+                
+                {/* Content */}
+                <div className={`space-y-8 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+                  <div className="space-y-4">
+                    <div className="text-6xl font-extralight text-primary/30">{item.number}</div>
+                    <h3 className="text-4xl md:text-5xl font-light leading-tight">
+                      {item.title}
+                    </h3>
+                    <div className="w-12 h-px bg-accent"></div>
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {service.description}
+                  
+                  <p className="text-xl font-light text-muted-foreground leading-relaxed max-w-lg">
+                    {item.description}
                   </p>
-                  <div className="flex items-center text-primary font-semibold group-hover:text-accent transition-colors duration-300">
-                    Learn More 
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+
+                {/* Image */}
+                <div className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                  <div className="relative overflow-hidden rounded-2xl">
+                    <img 
+                      src={item.image}
+                      alt={item.title}
+                      className="experience-image w-full h-96 lg:h-[500px] object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  
+                  {/* Floating accent */}
+                  <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full opacity-20 floating-element"></div>
+                </div>
+
+              </div>
+              
+              {/* Section divider */}
+              {index < experiences.length - 1 && (
+                <div className="section-divider mt-32"></div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>

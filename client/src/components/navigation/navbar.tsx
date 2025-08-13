@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { gsap } from '@/lib/gsap';
 
 const navItems = [
   { href: '#home', label: 'Home' },
-  { href: '#services', label: 'Services' },
-  { href: '#about', label: 'About' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#approach', label: 'Approach' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -25,9 +24,9 @@ export function Navbar() {
 
   useEffect(() => {
     gsap.to('.navbar', {
-      backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-      backdropFilter: isScrolled ? 'blur(10px)' : 'none',
-      duration: 0.3,
+      backgroundColor: isScrolled ? 'rgba(12, 12, 12, 0.95)' : 'transparent',
+      backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      duration: 0.4,
     });
   }, [isScrolled]);
 
@@ -36,7 +35,7 @@ export function Navbar() {
     const element = document.querySelector(href);
     if (element) {
       gsap.to(window, {
-        duration: 1,
+        duration: 1.5,
         scrollTo: element,
         ease: "power2.inOut"
       });
@@ -44,18 +43,24 @@ export function Navbar() {
   };
 
   return (
-    <nav className={`navbar fixed top-0 w-full z-50 transition-all duration-300`}>
-      <div className="max-w-7xl mx-auto px-6 py-4">
+    <nav className="navbar fixed top-0 w-full z-50 transition-all duration-300">
+      <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold text-gradient">Web Architects</div>
+          {/* Logo */}
+          <button 
+            onClick={() => handleNavClick('#home')}
+            className="text-xl font-light tracking-wider hover:text-accent transition-colors duration-300"
+          >
+            WA
+          </button>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="text-dark hover:text-primary transition-colors duration-300"
+                className="text-sm font-light tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300 uppercase"
               >
                 {item.label}
               </button>
@@ -63,25 +68,23 @@ export function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
+          <button
+            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-4">
+          <div className="md:hidden mt-8 pb-6 glass-effect rounded-lg border">
+            <div className="flex flex-col space-y-6 p-6">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => handleNavClick(item.href)}
-                  className="text-left text-dark hover:text-primary transition-colors duration-300"
+                  className="text-left text-sm font-light tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300 uppercase"
                 >
                   {item.label}
                 </button>

@@ -1,6 +1,6 @@
 # Overview
 
-This is a full-stack web application for a modern design agency called "Web Architects". The application is built as a single-page application (SPA) showcasing the agency's services, technology stack, and includes a contact form for potential clients. The architecture follows a monorepo structure with a React frontend and Express.js backend, designed to present a professional portfolio website with interactive animations and modern UI components.
+This is a full-stack web application for a modern design agency called "Web Architects" inspired by igloo.inc's award-winning aesthetic. The application features large immersive sections, minimal text overlays, smooth scroll interactions, and spacious modern layouts. Built as a single-page application (SPA), it showcases three core services through elegant design and subtle animations. The architecture follows a monorepo structure with a React frontend and Express.js backend, emphasizing visual impact over content density.
 
 # User Preferences
 
@@ -31,16 +31,18 @@ Preferred communication style: Simple, everyday language.
 - **Connection**: Neon Database serverless PostgreSQL for production
 
 ## Component Architecture
-- **Design System**: Consistent component library with variant-based styling using class-variance-authority
-- **Component Structure**: Atomic design principles with reusable UI components
-- **Layout**: Section-based page layout (Hero, Services, Technology, About, Contact, Footer)
-- **Responsive Design**: Mobile-first approach with Tailwind's responsive utilities
+- **Design System**: Minimal dark theme with teal (#418994) and cream (#FADFCA) accent colors
+- **Component Structure**: Large immersive sections with spacious layouts inspired by igloo.inc
+- **Layout**: Four main sections (Hero, Experience, Approach, Contact) with smooth scroll navigation
+- **Typography**: Ultra-light fonts (100-300 weight) with generous spacing and elegant proportions
+- **Visual Hierarchy**: Large hero typography (text-9xl), minimal UI elements, and subtle accent lines
 
 ## Animation System
-- **Primary Library**: GSAP for performant animations and transitions
-- **Scroll Animations**: ScrollTrigger integration for scroll-based reveals and interactions
-- **Custom Hooks**: useGSAP and useScrollTrigger for consistent animation patterns
-- **Animation Types**: Fade-in animations, scroll-triggered reveals, and interactive hover effects
+- **Primary Library**: GSAP with ScrollTrigger and ScrollToPlugin for igloo.inc-style interactions
+- **Scroll Animations**: Parallax image movement, subtle element reveals, and smooth scrolling navigation
+- **Custom Hooks**: useGSAP with enhanced animation helpers (revealUp, staggerReveal, parallaxImage)
+- **Animation Types**: Power4.out easing for smooth organic motion, staggered reveals, and floating elements
+- **Performance**: Minimal DOM manipulation with transforms and opacity for smooth 60fps animations
 
 ## Form Handling & Validation
 - **Contact Form**: React Hook Form with Zod schema validation

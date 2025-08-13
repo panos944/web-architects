@@ -1,103 +1,120 @@
-import { Star } from 'lucide-react';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 
-const techStack = [
-  { name: 'React', description: 'React, Next.js, Vue.js, and more' },
-  { name: 'GSAP', description: 'GSAP, Framer Motion, Three.js' },
-  { name: 'Next.js', description: 'Advanced caching, CDN, and compression' },
-];
-
 export function Technology() {
   const containerRef = useGSAP(() => {
-    gsap.from('.tech-content', {
-      duration: 1,
-      x: -100,
+    // Section title animation  
+    gsap.from('.approach-title', {
+      duration: 1.5,
+      y: 60,
       opacity: 0,
-      ease: "power3.out",
+      ease: "power4.out",
       scrollTrigger: {
-        trigger: '.tech-content',
-        start: "top 80%"
+        trigger: '.approach-title',
+        start: "top 85%"
       }
     });
 
-    gsap.from('.tech-visual', {
-      duration: 1,
-      x: 100,
+    // Content reveal
+    gsap.from('.approach-content', {
+      duration: 1.2,
+      y: 40,
       opacity: 0,
-      ease: "power3.out",
+      ease: "power4.out",
       scrollTrigger: {
-        trigger: '.tech-visual',
-        start: "top 80%"
+        trigger: '.approach-content',
+        start: "top 75%"
+      }
+    });
+
+    // Large image parallax
+    gsap.to('.approach-image', {
+      yPercent: -15,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
       }
     });
   });
 
   return (
-    <section className="py-24 bg-cream/20" ref={containerRef}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div className="tech-content">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gradient mb-8">
-              Cutting-Edge Technology
+    <section id="approach" className="section-padding bg-card" ref={containerRef}>
+      <div className="container-fluid">
+        
+        {/* Title */}
+        <div className="approach-title text-center mb-24">
+          <div className="space-y-6">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-accent to-transparent mx-auto"></div>
+            <h2 className="text-5xl md:text-7xl font-extralight tracking-tight">
+              <span className="text-muted-foreground">Our</span>
+              <br />
+              <span className="text-accent">Approach</span>
             </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              We use the latest technologies and frameworks to build websites that are not just beautiful, 
-              but also fast, secure, and scalable. From React and Next.js to advanced animation libraries, 
-              we're always at the forefront of web development.
-            </p>
-            
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4 group">
-                <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Star className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-dark">Modern Frameworks</h3>
-                  <p className="text-gray-600">React, Next.js, Vue.js, and more</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4 group">
-                <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Star className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-dark">Animation Libraries</h3>
-                  <p className="text-gray-600">GSAP, Framer Motion, Three.js</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4 group">
-                <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Star className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-dark">Performance Optimization</h3>
-                  <p className="text-gray-600">Advanced caching, CDN, and compression</p>
-                </div>
-              </div>
-            </div>
           </div>
+        </div>
+
+        {/* Main content */}
+        <div className="approach-content grid lg:grid-cols-5 gap-16 items-start">
           
-          <div className="tech-visual relative">
-            <img 
-              src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-              alt="Modern technology devices" 
-              className="rounded-2xl shadow-2xl w-full h-auto transform hover:scale-105 transition-transform duration-500" 
-            />
-            
-            {/* Floating tech badges */}
-            <div className="absolute -top-4 left-8 bg-white rounded-xl p-3 shadow-lg animate-pulse-slow">
-              <div className="text-sm font-semibold text-primary">React</div>
+          {/* Text content */}
+          <div className="lg:col-span-2 space-y-12">
+            <div className="space-y-8">
+              <h3 className="text-3xl md:text-4xl font-light leading-tight">
+                Thoughtful design meets 
+                <span className="text-gradient"> technical excellence</span>
+              </h3>
+              
+              <div className="space-y-6 text-lg font-light text-muted-foreground leading-relaxed">
+                <p>
+                  We believe exceptional digital experiences are born from the intersection of 
+                  strategic thinking, creative vision, and technical precision.
+                </p>
+                <p>
+                  Every project begins with deep understanding—of your goals, your users, 
+                  and the challenges you face. From this foundation, we craft solutions 
+                  that are both beautiful and purposeful.
+                </p>
+              </div>
             </div>
-            <div className="absolute top-1/2 -right-4 bg-accent text-white rounded-xl p-3 shadow-lg animate-pulse-slow" style={{ animationDelay: '1s' }}>
-              <div className="text-sm font-semibold">GSAP</div>
-            </div>
-            <div className="absolute -bottom-4 left-1/3 bg-primary text-white rounded-xl p-3 shadow-lg animate-pulse-slow" style={{ animationDelay: '2s' }}>
-              <div className="text-sm font-semibold">Next.js</div>
+
+            {/* Process highlights */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Research & Discovery</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="w-2 h-2 bg-accent rounded-full"></div>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Design & Prototype</span>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Develop & Deploy</span>
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Large image */}
+          <div className="lg:col-span-3 relative">
+            <div className="relative overflow-hidden rounded-3xl">
+              <img 
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900"
+                alt="Modern design workspace" 
+                className="approach-image w-full h-[600px] lg:h-[700px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent"></div>
+            </div>
+            
+            {/* Floating accent elements */}
+            <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full floating-element"></div>
+            <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-accent/30 to-primary/30 rounded-full floating-element" style={{ animationDelay: '2s' }}></div>
+          </div>
+
         </div>
       </div>
     </section>
