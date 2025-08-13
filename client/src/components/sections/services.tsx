@@ -25,15 +25,49 @@ const experiences = [
 
 export function Services() {
   const containerRef = useGSAP(() => {
-    // Title animation
-    gsap.from('.section-title', {
+    // Animate hero image elements
+    gsap.from('.hero-accent-line', {
+      duration: 1.2,
+      scaleX: 0,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: '.hero-image-section',
+        start: "top 75%"
+      }
+    });
+
+    gsap.from('.hero-title', {
       duration: 1.5,
-      y: 60,
+      y: 40,
       opacity: 0,
       ease: "power4.out",
       scrollTrigger: {
-        trigger: '.section-title',
-        start: "top 85%"
+        trigger: '.hero-image-section',
+        start: "top 75%"
+      }
+    });
+
+    gsap.from('.hero-subtitle', {
+      duration: 1.2,
+      y: 20,
+      opacity: 0,
+      ease: "power4.out",
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: '.hero-image-section',
+        start: "top 75%"
+      }
+    });
+
+    // Parallax hero image
+    gsap.to('.hero-experience-image', {
+      yPercent: -15,
+      ease: "none",
+      scrollTrigger: {
+        trigger: '.hero-image-section',
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
       }
     });
 
@@ -80,15 +114,30 @@ export function Services() {
   return (
     <section id="experience" className="section-padding bg-background" ref={containerRef}>
       <div className="container-fluid">
-        {/* Section Title */}
-        <div className="section-title text-center mb-32">
-          <div className="space-y-6">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
-            <h2 className="text-5xl md:text-7xl font-extralight tracking-tight">
-              <span className="text-muted-foreground">Our</span>
-              <br />
-              <span className="text-gradient">Experience</span>
-            </h2>
+        
+        {/* Hero Image Section */}
+        <div className="hero-image-section mb-32">
+          <div className="relative rounded-3xl overflow-hidden">
+            <ImageReveal
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1000"
+              alt="Modern architectural design workspace"
+              className="hero-experience-image w-full h-[500px] lg:h-[600px] object-cover"
+              containerClassName="image-container cursor-magnetic"
+              overlayContent={
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                  <div className="absolute bottom-12 left-12 right-12 text-center">
+                    <div className="w-16 h-px bg-accent mb-6 mx-auto hero-accent-line"></div>
+                    <h2 className="text-5xl lg:text-7xl font-thin tracking-tight text-white mb-6 hero-title">
+                      Our Experience
+                    </h2>
+                    <p className="text-lg lg:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed hero-subtitle">
+                      Crafting digital experiences that inspire, engage, and deliver exceptional results
+                    </p>
+                  </div>
+                </>
+              }
+            />
           </div>
         </div>
 
@@ -122,13 +171,13 @@ export function Services() {
                     containerClassName="image-container cursor-magnetic rounded-2xl"
                     overlayContent={
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-primary/10 group-hover:from-primary/20 transition-all duration-700"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 group-hover:from-black/20 transition-all duration-700"></div>
                         
                         {/* Animated overlay on hover */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                           <div className="absolute bottom-6 left-6 right-6">
                             <div className="w-12 h-px bg-accent mb-4 transform -translate-x-12 group-hover:translate-x-0 transition-transform duration-700 delay-200"></div>
-                            <div className="text-accent text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
+                            <div className="text-white/90 text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
                               View Details
                             </div>
                           </div>
