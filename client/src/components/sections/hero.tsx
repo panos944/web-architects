@@ -18,7 +18,18 @@ export function Hero() {
         ease: "power4.out"
       }, "-=1.5");
 
-    // Parallax scroll effect
+    // Parallax scroll effect for background image
+    gsap.to('.background-image img', {
+      yPercent: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
     gsap.to('.background-elements', {
       yPercent: -50,
       ease: "none",
@@ -40,9 +51,19 @@ export function Hero() {
   };
 
   return (
-    <section id="home" className="h-screen hero-gradient relative overflow-hidden flex items-center justify-center" ref={containerRef}>
+    <section id="home" className="h-screen relative overflow-hidden flex items-center justify-center" ref={containerRef}>
+      {/* Background image with parallax */}
+      <div className="background-image absolute inset-0">
+        <img 
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1333"
+          alt="Modern architectural structure"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+      </div>
+      
       {/* Subtle background elements */}
-      <div className="background-elements absolute inset-0 opacity-30">
+      <div className="background-elements absolute inset-0 opacity-20">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl floating-element"></div>
         <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl floating-element" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-1/4 left-1/2 w-80 h-80 bg-gradient-to-br from-primary/8 to-transparent rounded-full blur-3xl floating-element" style={{ animationDelay: '4s' }}></div>

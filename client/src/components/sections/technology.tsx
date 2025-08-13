@@ -1,5 +1,6 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
+import { ImageReveal } from '@/components/ui/image-reveal';
 
 export function Technology() {
   const containerRef = useGSAP(() => {
@@ -27,7 +28,7 @@ export function Technology() {
       }
     });
 
-    // Large image parallax
+    // Large image parallax with mouse interaction
     gsap.to('.approach-image', {
       yPercent: -15,
       ease: "none",
@@ -38,6 +39,51 @@ export function Technology() {
         scrub: true
       }
     });
+
+    // Mouse follow effect with cleanup
+    const imageContainer = containerRef.current?.querySelector('.image-container') as HTMLElement;
+    let mouseHandlers: { move: (e: MouseEvent) => void; leave: () => void } | null = null;
+    
+    if (imageContainer) {
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = imageContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = -(x - centerX) / 20;
+
+        gsap.to(imageContainer.querySelector('img'), {
+          duration: 0.3,
+          rotationX: rotateX,
+          rotationY: rotateY,
+          transformPerspective: 1000,
+          ease: "power2.out"
+        });
+      };
+
+      const handleMouseLeave = () => {
+        gsap.to(imageContainer.querySelector('img'), {
+          duration: 0.5,
+          rotationX: 0,
+          rotationY: 0,
+          ease: "power2.out"
+        });
+      };
+
+      mouseHandlers = { move: handleMouseMove, leave: handleMouseLeave };
+      imageContainer.addEventListener('mousemove', handleMouseMove);
+      imageContainer.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    // Cleanup function
+    return () => {
+      if (imageContainer && mouseHandlers) {
+        imageContainer.removeEventListener('mousemove', mouseHandlers.move);
+        imageContainer.removeEventListener('mouseleave', mouseHandlers.leave);
+      }
+    };
   });
 
   return (
@@ -101,14 +147,27 @@ export function Technology() {
 
           {/* Large image */}
           <div className="lg:col-span-3 relative">
-            <div className="relative overflow-hidden rounded-3xl">
-              <img 
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900"
-                alt="Modern design workspace" 
-                className="approach-image w-full h-[600px] lg:h-[700px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent"></div>
-            </div>
+            <ImageReveal
+              src="https://images.unsplash.com/photo-1600298881974-6be191ceeda1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900"
+              alt="Modern architectural design workspace" 
+              className="approach-image w-full h-[600px] lg:h-[700px] object-cover transition-all duration-1000 group-hover:scale-105"
+              containerClassName="image-container cursor-magnetic rounded-3xl"
+              overlayContent={
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent group-hover:from-background/20 transition-all duration-700"></div>
+                  
+                  {/* Interactive overlay */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <div className="w-20 h-20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <div className="w-0 h-0 border-l-[8px] border-l-white/80 border-y-[6px] border-y-transparent ml-1"></div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              }
+            />
             
             {/* Floating accent elements */}
             <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full floating-element"></div>

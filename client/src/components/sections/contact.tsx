@@ -73,11 +73,32 @@ export function Contact() {
         start: "top 75%"
       }
     });
+
+    // Parallax effect for background image
+    gsap.to('.contact-bg-image', {
+      yPercent: -20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true
+      }
+    });
   });
 
   return (
-    <section id="contact" className="section-padding bg-background relative" ref={containerRef}>
-      <div className="container-fluid">
+    <section id="contact" className="section-padding relative overflow-hidden" ref={containerRef}>
+      {/* Background image with overlay */}
+      <div className="absolute inset-0 overflow-hidden">
+        <img 
+          src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1333"
+          alt="Modern architectural interior"
+          className="contact-bg-image w-full h-[120%] object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background/95"></div>
+      </div>
+      <div className="container-fluid relative z-10">
         
         {/* Title */}
         <div className="contact-title text-center mb-24">

@@ -1,24 +1,25 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
+import { ImageReveal } from '@/components/ui/image-reveal';
 
 const experiences = [
   {
     number: '01',
     title: 'Digital Strategy',
     description: 'We craft comprehensive digital strategies that align with your business objectives and user needs.',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
   },
   {
     number: '02', 
     title: 'Interface Design',
     description: 'Creating intuitive, beautiful interfaces that enhance user experience and drive engagement.',
-    image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
+    image: 'https://images.unsplash.com/photo-1511818966892-d612672a6671?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
   },
   {
     number: '03',
     title: 'Development Excellence',  
     description: 'Building robust, scalable solutions using cutting-edge technologies and best practices.',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800'
+    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
   }
 ];
 
@@ -49,8 +50,8 @@ export function Services() {
       }
     });
 
-    // Parallax images
-    gsap.utils.toArray('.experience-image').forEach((image: any) => {
+    // Parallax images with hover effects
+    gsap.utils.toArray('.experience-image').forEach((image: any, index) => {
       gsap.to(image, {
         yPercent: -20,
         ease: "none",
@@ -61,6 +62,18 @@ export function Services() {
           scrub: true
         }
       });
+
+      // Hover zoom effect
+      const imageContainer = image.closest('.image-container');
+      if (imageContainer) {
+        imageContainer.addEventListener('mouseenter', () => {
+          gsap.to(image, { scale: 1.05, duration: 0.8, ease: "power2.out" });
+        });
+        
+        imageContainer.addEventListener('mouseleave', () => {
+          gsap.to(image, { scale: 1, duration: 0.8, ease: "power2.out" });
+        });
+      }
     });
   });
 
@@ -102,14 +115,27 @@ export function Services() {
 
                 {/* Image */}
                 <div className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                  <div className="relative overflow-hidden rounded-2xl">
-                    <img 
-                      src={item.image}
-                      alt={item.title}
-                      className="experience-image w-full h-96 lg:h-[500px] object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  </div>
+                  <ImageReveal
+                    src={item.image}
+                    alt={item.title}
+                    className="experience-image w-full h-96 lg:h-[500px] object-cover"
+                    containerClassName="image-container cursor-magnetic rounded-2xl"
+                    overlayContent={
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 group-hover:from-black/20 transition-all duration-700"></div>
+                        
+                        {/* Animated overlay on hover */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                          <div className="absolute bottom-6 left-6 right-6">
+                            <div className="w-12 h-px bg-accent mb-4 transform -translate-x-12 group-hover:translate-x-0 transition-transform duration-700 delay-200"></div>
+                            <div className="text-white/90 text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
+                              View Details
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    }
+                  />
                   
                   {/* Floating accent */}
                   <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full opacity-20 floating-element"></div>
