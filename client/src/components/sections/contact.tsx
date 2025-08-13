@@ -96,7 +96,7 @@ export function Contact() {
           alt="Modern architectural interior"
           className="contact-bg-image w-full h-[120%] object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/90 to-primary/95"></div>
       </div>
       <div className="container-fluid relative z-10">
         

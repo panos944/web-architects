@@ -5,31 +5,31 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(0 0% 7%);
-  --foreground: hsl(0 0% 98%);
-  --card: hsl(0 0% 9%);
-  --card-foreground: hsl(0 0% 98%);
-  --popover: hsl(0 0% 9%);
-  --popover-foreground: hsl(0 0% 98%);
-  --primary: hsl(187 35% 40%);
-  --primary-foreground: hsl(0 0% 98%);
-  --secondary: hsl(25 50% 87%);
-  --secondary-foreground: hsl(0 0% 9%);
-  --muted: hsl(0 0% 15%);
-  --muted-foreground: hsl(0 0% 70%);
-  --accent: hsl(25 50% 87%);
-  --accent-foreground: hsl(0 0% 9%);
+  --background: #418994;
+  --foreground: #FADFCA;
+  --card: #4A959F;
+  --card-foreground: #FADFCA;
+  --popover: #4A959F;
+  --popover-foreground: #FADFCA;
+  --primary: #418994;
+  --primary-foreground: #FADFCA;
+  --secondary: #FADFCA;
+  --secondary-foreground: #418994;
+  --muted: #5AA2AD;
+  --muted-foreground: #F5D4B1;
+  --accent: #FADFCA;
+  --accent-foreground: #418994;
   --destructive: hsl(0 84.2% 60.2%);
-  --destructive-foreground: hsl(0 0% 98%);
-  --border: hsl(0 0% 20%);
-  --input: hsl(0 0% 20%);
-  --ring: hsl(187 35% 40%);
+  --destructive-foreground: #FADFCA;
+  --border: #5AA2AD;
+  --input: #5AA2AD;
+  --ring: #418994;
   --font-sans: 'Inter', sans-serif;
   --radius: 0.75rem;
-  --teal: hsl(187 35% 40%);
-  --cream: hsl(25 50% 87%);
-  --dark: hsl(0 0% 7%);
-  --light: hsl(0 0% 98%);
+  --teal: #418994;
+  --cream: #FADFCA;
+  --dark: #418994;
+  --light: #FADFCA;
 }
 
 /* Remove dark theme - using single dark theme as default */
@@ -60,14 +60,14 @@
 
 @layer utilities {
   .text-gradient {
-    background: linear-gradient(135deg, hsl(187 35% 40%) 0%, hsl(25 50% 87%) 100%);
+    background: linear-gradient(135deg, #418994 0%, #FADFCA 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .hero-gradient {
-    background: radial-gradient(ellipse at center, hsl(0 0% 12%) 0%, hsl(0 0% 7%) 100%);
+    background: radial-gradient(ellipse at center, #4A959F 0%, #418994 100%);
   }
 
   .glass-effect {

@@ -122,13 +122,13 @@ export function Services() {
                     containerClassName="image-container cursor-magnetic rounded-2xl"
                     overlayContent={
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 group-hover:from-black/20 transition-all duration-700"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-primary/10 group-hover:from-primary/20 transition-all duration-700"></div>
                         
                         {/* Animated overlay on hover */}
                         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                           <div className="absolute bottom-6 left-6 right-6">
                             <div className="w-12 h-px bg-accent mb-4 transform -translate-x-12 group-hover:translate-x-0 transition-transform duration-700 delay-200"></div>
-                            <div className="text-white/90 text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
+                            <div className="text-accent text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
                               View Details
                             </div>
                           </div>

@@ -154,14 +154,14 @@ export function Technology() {
               containerClassName="image-container cursor-magnetic rounded-3xl"
               overlayContent={
                 <>
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent group-hover:from-background/20 transition-all duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent group-hover:from-primary/20 transition-all duration-700"></div>
                   
                   {/* Interactive overlay */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <div className="w-20 h-20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <div className="w-0 h-0 border-l-[8px] border-l-white/80 border-y-[6px] border-y-transparent ml-1"></div>
+                      <div className="w-20 h-20 border border-accent/60 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <div className="w-0 h-0 border-l-[8px] border-l-accent border-y-[6px] border-y-transparent ml-1"></div>
                       </div>
                     </div>
                   </div>
