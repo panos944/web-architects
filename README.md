@@ -1,6 +1,6 @@
 # Web Architects
 
-A modern, elegant design agency website showcasing exceptional digital craftsmanship through immersive animations, smooth video backgrounds, and sophisticated user interactions.
+A modern, elegant design agency website with immersive animations, smooth video backgrounds, and sophisticated user interactions.
 
 ## Features
 
