@@ -1,25 +1,25 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
-import { ImageReveal } from '@/components/ui/image-reveal';
+import { ConnectedDots } from '@/components/ui/connected-dots';
 
 const experiences = [
   {
-    number: '01',
-    title: 'Digital Strategy',
-    description: 'We craft comprehensive digital strategies that align with your business objectives and user needs.',
-    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
+    number: '1',
+    title: 'Digital\nStrategy',
+    description: 'We develop tailored strategies that act as a clear blueprint for success, ensuring every decision moves you closer to your goals. \n\nFrom in-depth market research to precise performance benchmarks, every phase is designed to maximise clarity, accelerate growth, and adapt to evolving opportunities. \n\nOur approach blends analytical insight with creative foresight, giving you a path that is both strategic and adaptable.',
+    image: '/strategy.mp4'
   },
   {
-    number: '02', 
-    title: 'Interface Design',
-    description: 'Creating intuitive, beautiful interfaces that enhance user experience and drive engagement.',
-    image: 'https://images.unsplash.com/photo-1511818966892-d612672a6671?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
+    number: '2', 
+    title: 'Interface\nDesign',
+    description: 'We design interfaces that go beyond aesthetics. Every element is purposeful, every transition smooth, and every detail aligned with your brand’s personality.\n\nFrom the first click to the final interaction, our goal is to create intuitive pathways that guide users naturally. \n\nEvery decision is made to reinforce your identity, streamline navigation, and deliver a sense of ease that keeps people engaged and connected.',
+    image: '/pear.mp4'
   },
   {
-    number: '03',
-    title: 'Development Excellence',  
-    description: 'Building robust, scalable solutions using cutting-edge technologies and best practices.',
-    image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900'
+    number: '3',
+    title: 'Development\nExcellence',  
+    description: 'We engineer platforms with the future in mind, solutions that are not only fast and reliable today but also flexible enough to evolve with your business.\n\nBy combining modern frameworks with time-tested development practices, we create architectures that can handle growth without compromising performance.\n\nEvery build is fortified with robust security measures, optimized for efficiency, and designed to adapt to new technologies, ensuring your product remains relevant and resilient for years to come.',
+    image: '/fields.mp4'
   }
 ];
 
@@ -59,17 +59,7 @@ export function Services() {
       }
     });
 
-    // Parallax hero image
-    gsap.to('.hero-experience-image', {
-      yPercent: -15,
-      ease: "none",
-      scrollTrigger: {
-        trigger: '.hero-image-section',
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
+    // Removed parallax hero image to prevent movement out of container
 
     // Experience cards stagger
     gsap.from('.experience-item', {
@@ -84,21 +74,10 @@ export function Services() {
       }
     });
 
-    // Parallax images with hover effects
-    gsap.utils.toArray('.experience-image').forEach((image: any, index) => {
-      gsap.to(image, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: image,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
-
+    // Hover effects only (removed parallax to prevent images moving out of containers)
+    gsap.utils.toArray('.experience-image').forEach((image: any) => {
       // Hover zoom effect
-      const imageContainer = image.closest('.image-container');
+      const imageContainer = image.closest('.image-container') || image.parentElement;
       if (imageContainer) {
         imageContainer.addEventListener('mouseenter', () => {
           gsap.to(image, { scale: 1.05, duration: 0.8, ease: "power2.out" });
@@ -112,94 +91,113 @@ export function Services() {
   });
 
   return (
-    <section id="experience" className="section-padding bg-background" ref={containerRef}>
+    <section id="experience" className="py-24 relative z-10" ref={containerRef} style={{backgroundColor: '#FFA366'}}>
+      {/* Connected dots background */}
+      <ConnectedDots className="opacity-40" dotCount={25} connectionDistance={160} />
       <div className="container-fluid">
         
-        {/* Hero Image Section */}
-        <div className="hero-image-section mb-32">
-          <div className="relative rounded-3xl overflow-hidden">
-            <ImageReveal
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1000"
-              alt="Modern architectural design workspace"
-              className="hero-experience-image w-full h-[500px] lg:h-[600px] object-cover"
-              containerClassName="image-container cursor-magnetic"
-              overlayContent={
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                  <div className="absolute bottom-12 left-12 right-12 text-center">
-                    <div className="w-16 h-px bg-accent mb-6 mx-auto hero-accent-line"></div>
-                    <h2 className="text-5xl lg:text-7xl font-thin tracking-tight text-white mb-6 hero-title">
-                      Our Experience
-                    </h2>
-                    <p className="text-lg lg:text-xl font-light text-white/90 max-w-2xl mx-auto leading-relaxed hero-subtitle">
-                      Crafting digital experiences that inspire, engage, and deliver exceptional results
-                    </p>
+        {/* Section Header with experimental layout */}
+        <div className="hero-image-section mb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="space-y-6">
+                <div className="text-xs uppercase tracking-[0.2em]" style={{color: '#263226'}}>03</div>
+                <div className="space-y-2">
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight" style={{color: '#263226'}}>
+                    OUR
                   </div>
-                </>
-              }
-            />
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight ml-8" style={{color: '#263226'}}>
+                    WORK
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-8">
+              <div className="max-w-2xl space-y-6">
+                <p className="text-lg font-light leading-relaxed" style={{color: '#263226'}}>
+                  We believe in creating digital products that are both functionally excellent and emotionally resonant. 
+                  Our process combines strategic thinking with creative exploration.
+                </p>
+                <div className="w-24 h-px" style={{backgroundColor: '#263226'}}></div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Experiences */}
-        <div className="experiences-container space-y-32">
+        {/* Section divider between header and service items */}
+        <div className="w-full h-px accent-line-orange mb-16"></div>
+
+        {/* Service Items */}
+        <div className="experiences-container space-y-16">
           {experiences.map((item, index) => (
-            <div key={item.number} className="experience-item">
-              <div className={`grid lg:grid-cols-2 gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
+            <div key={item.number} className="experience-item relative">
+              {/* Add extra ConnectedDots for Interface Design and Development Excellence */}
+              {(item.title === 'Interface Design' || item.title === 'Development Excellence') && (
+                <ConnectedDots className="opacity-30" dotCount={15} connectionDistance={120} />
+              )}
+              <div className={`grid lg:grid-cols-2 items-start ${index % 2 === 1 ? 'gap-32 lg:grid-flow-col-dense' : 'gap-16'}`}>
                 
                 {/* Content */}
                 <div className={`space-y-8 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                  <div className="space-y-4">
-                    <div className="text-6xl font-extralight text-primary/30">{item.number}</div>
-                    <h3 className="text-4xl md:text-5xl font-light leading-tight">
-                      {item.title}
+                  <div className="space-y-6">
+                    <div className="text-xs uppercase tracking-[0.3em] font-medium" style={{color: '#263226'}}>{item.number}</div>
+                    <h3 className="text-4xl md:text-5xl font-light leading-[0.9]" style={{color: '#263226'}}>
+                      {item.title.split('\n').map((line, index) => (
+                        <div key={index}>{line}</div>
+                      ))}
                     </h3>
-                    <div className="w-12 h-px bg-accent"></div>
+                    <div className="w-16 h-px" style={{backgroundColor: '#263226'}}></div>
                   </div>
                   
-                  <p className="text-xl font-light text-muted-foreground leading-relaxed max-w-lg">
-                    {item.description}
-                  </p>
+                  <div className="text-base font-light leading-relaxed max-w-lg space-y-4" style={{color: '#263226'}}>
+                    {item.description.split('\n\n').map((paragraph, index) => (
+                      <p key={index} className="whitespace-pre-line">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Image */}
+                {/* Large Image/Video */}
                 <div className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                  <ImageReveal
-                    src={item.image}
-                    alt={item.title}
-                    className="experience-image w-full h-96 lg:h-[500px] object-cover"
-                    containerClassName="image-container cursor-magnetic rounded-2xl"
-                    overlayContent={
-                      <>
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 group-hover:from-black/20 transition-all duration-700"></div>
-                        
-                        {/* Animated overlay on hover */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                          <div className="absolute bottom-6 left-6 right-6">
-                            <div className="w-12 h-px bg-accent mb-4 transform -translate-x-12 group-hover:translate-x-0 transition-transform duration-700 delay-200"></div>
-                            <div className="text-white/90 text-sm font-light tracking-wide uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
-                              View Details
-                            </div>
-                          </div>
-                        </div>
-                      </>
-                    }
-                  />
+                  <div className="aspect-[4/5] lg:aspect-[4/5] bg-card rounded-2xl overflow-hidden group cursor-pointer shadow-lg">
+                    {item.image.endsWith('.mp4') ? (
+                      <video
+                        src={item.image}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                      />
+                    ) : (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark-forest/30 via-transparent to-vibrant-orange/10 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
+                  </div>
                   
-                  {/* Floating accent */}
-                  <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full opacity-20 floating-element"></div>
+                  {/* Floating accent element */}
+                  <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-vibrant-orange/20 to-dark-forest/20 rounded-full blur-xl"></div>
                 </div>
 
               </div>
               
               {/* Section divider */}
               {index < experiences.length - 1 && (
-                <div className="section-divider mt-32"></div>
+                <div className="w-full h-px accent-line-orange mt-16"></div>
               )}
             </div>
           ))}
         </div>
       </div>
+      
+      {/* Subtle section separator */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/20 to-transparent"></div>
     </section>
   );
 }

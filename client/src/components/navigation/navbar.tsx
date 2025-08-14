@@ -9,13 +9,18 @@ const navItems = [
   { href: '#contact', label: 'Contact' },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  show?: boolean;
+}
+
+export function Navbar({ show = true }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // Trigger glass effect when scrolled past hero section (roughly viewport height)
+      setIsScrolled(window.scrollY > window.innerHeight * 0.8);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -24,8 +29,9 @@ export function Navbar() {
 
   useEffect(() => {
     gsap.to('.navbar', {
-      backgroundColor: isScrolled ? 'rgba(12, 12, 12, 0.95)' : 'transparent',
-      backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+      backgroundColor: isScrolled ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+      backdropFilter: isScrolled ? 'blur(16px)' : 'none',
+      borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
       duration: 0.4,
     });
   }, [isScrolled]);
@@ -42,14 +48,16 @@ export function Navbar() {
     }
   };
 
+  if (!show) return null;
+
   return (
-    <nav className="navbar fixed top-0 w-full z-50 transition-all duration-300">
+    <nav className="navbar fixed top-0 w-full z-[100] transition-all duration-300">
       <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <button 
             onClick={() => handleNavClick('#home')}
-            className="text-xl font-light tracking-wider hover:text-accent transition-colors duration-300"
+            className="text-xl font-medium tracking-wider text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
           >
             WA
           </button>
@@ -60,7 +68,7 @@ export function Navbar() {
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className="text-sm font-light tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300 uppercase"
+                className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
                 {item.label}
               </button>
@@ -69,7 +77,7 @@ export function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
+            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -78,13 +86,13 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-8 pb-6 glass-effect rounded-lg border">
+          <div className="md:hidden mt-8 pb-6 bg-black/20 backdrop-blur-md rounded-lg border border-white/10">
             <div className="flex flex-col space-y-6 p-6">
               {navItems.map((item) => (
                 <button
                   key={item.href}
                   onClick={() => handleNavClick(item.href)}
-                  className="text-left text-sm font-light tracking-wide text-muted-foreground hover:text-foreground transition-colors duration-300 uppercase"
+                  className="text-left text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
                 >
                   {item.label}
                 </button>

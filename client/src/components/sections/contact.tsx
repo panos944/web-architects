@@ -11,6 +11,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { insertContactSchema, type InsertContact } from '@shared/schema';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
+import { ConnectedDots } from '@/components/ui/connected-dots';
 
 export function Contact() {
   const { toast } = useToast();
@@ -88,37 +89,46 @@ export function Contact() {
   });
 
   return (
-    <section id="contact" className="section-padding relative overflow-hidden" ref={containerRef}>
-      {/* Background image with overlay */}
-      <div className="absolute inset-0 overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1333"
-          alt="Modern architectural interior"
-          className="contact-bg-image w-full h-[120%] object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background/95"></div>
+    <section id="contact" className="py-24 bg-card relative overflow-hidden z-10" ref={containerRef}>
+      {/* Connected dots background */}
+      <ConnectedDots className="opacity-40" dotCount={25} connectionDistance={160} />
+      {/* Minimal background elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-1/4 right-0 w-1/2 h-1/2 bg-gradient-to-l from-primary/10 to-transparent"></div>
       </div>
       <div className="container-fluid relative z-10">
         
-        {/* Title */}
-        <div className="contact-title text-center mb-24">
-          <div className="space-y-6">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"></div>
-            <h2 className="text-5xl md:text-7xl font-extralight tracking-tight mb-8">
-              <span className="text-muted-foreground">Let's</span>
-              <br />
-              <span className="text-gradient">Connect</span>
-            </h2>
-            <p className="text-xl font-light text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Ready to bring your digital vision to life? 
-              We'd love to hear about your project.
-            </p>
+        {/* Title with experimental layout */}
+        <div className="contact-title mb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-6">
+              <div className="space-y-6">
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">03</div>
+                <div className="space-y-2">
+                  <div className="text-[clamp(2.5rem,5vw,6rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
+                    LET'S
+                  </div>
+                  <div className="text-[clamp(2.5rem,5vw,6rem)] font-light leading-[0.9] tracking-tight text-gradient ml-12 -mt-4">
+                    CONNECT
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-6">
+              <div className="max-w-lg space-y-6">
+                <p className="text-base font-light text-foreground/70 leading-relaxed">
+                  Ready to explore new possibilities? We'd love to hear about your project and discuss how we can bring your vision to life.
+                </p>
+                <div className="w-24 h-px bg-primary/40"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Contact form */}
-        <div className="contact-form max-w-2xl mx-auto">
-          <div className="glass-effect rounded-3xl p-8 md:p-12">
+        <div className="contact-form max-w-3xl">
+          <div className="bg-white/95 backdrop-blur-sm border border-border/20 shadow-lg rounded-2xl p-8 md:p-12">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 
@@ -128,7 +138,7 @@ export function Contact() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-muted-foreground uppercase">Name</FormLabel>
+                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Name</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
@@ -146,7 +156,7 @@ export function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-muted-foreground uppercase">Email</FormLabel>
+                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Email</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
@@ -166,7 +176,7 @@ export function Contact() {
                   name="projectType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-muted-foreground uppercase">Project Type</FormLabel>
+                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Project Type</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light focus:ring-0 focus:border-primary">
@@ -190,7 +200,7 @@ export function Contact() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-muted-foreground uppercase">Message</FormLabel>
+                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Message</FormLabel>
                       <FormControl>
                         <Textarea 
                           {...field} 
@@ -208,7 +218,7 @@ export function Contact() {
                   <Button 
                     type="submit" 
                     disabled={contactMutation.isPending}
-                    className="glass-effect hover:bg-foreground/10 text-foreground border-0 px-12 py-6 text-lg font-light tracking-wide transition-all duration-500 hover:scale-105"
+                    className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 px-12 py-6 text-lg font-medium tracking-wide transition-all duration-300 hover:scale-105 shadow-lg"
                   >
                     {contactMutation.isPending ? 'Sending...' : 'Send Message'}
                   </Button>

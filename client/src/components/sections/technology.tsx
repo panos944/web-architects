@@ -1,6 +1,7 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ImageReveal } from '@/components/ui/image-reveal';
+import { ConnectedDots } from '@/components/ui/connected-dots';
 
 export function Technology() {
   const containerRef = useGSAP(() => {
@@ -41,7 +42,7 @@ export function Technology() {
     });
 
     // Mouse follow effect with cleanup
-    const imageContainer = containerRef.current?.querySelector('.image-container') as HTMLElement;
+    const imageContainer = containerRef.current?.querySelector('.approach-video') as HTMLElement;
     let mouseHandlers: { move: (e: MouseEvent) => void; leave: () => void } | null = null;
     
     if (imageContainer) {
@@ -54,22 +55,28 @@ export function Technology() {
         const rotateX = (y - centerY) / 20;
         const rotateY = -(x - centerX) / 20;
 
-        gsap.to(imageContainer.querySelector('img'), {
-          duration: 0.3,
-          rotationX: rotateX,
-          rotationY: rotateY,
-          transformPerspective: 1000,
-          ease: "power2.out"
-        });
+        const mediaElement = imageContainer.querySelector('video') || imageContainer.querySelector('img');
+        if (mediaElement) {
+          gsap.to(mediaElement, {
+            duration: 0.3,
+            rotationX: rotateX,
+            rotationY: rotateY,
+            transformPerspective: 1000,
+            ease: "power2.out"
+          });
+        }
       };
 
       const handleMouseLeave = () => {
-        gsap.to(imageContainer.querySelector('img'), {
-          duration: 0.5,
-          rotationX: 0,
-          rotationY: 0,
-          ease: "power2.out"
-        });
+        const mediaElement = imageContainer.querySelector('video') || imageContainer.querySelector('img');
+        if (mediaElement) {
+          gsap.to(mediaElement, {
+            duration: 0.5,
+            rotationX: 0,
+            rotationY: 0,
+            ease: "power2.out"
+          });
+        }
       };
 
       mouseHandlers = { move: handleMouseMove, leave: handleMouseLeave };
@@ -87,18 +94,42 @@ export function Technology() {
   });
 
   return (
-    <section id="approach" className="section-padding bg-card" ref={containerRef}>
+    <section id="approach" className="py-24 bg-background relative z-10" ref={containerRef}>
+      {/* Connected dots background */}
+      <ConnectedDots className="opacity-50" dotCount={30} connectionDistance={170} />
       <div className="container-fluid">
         
-        {/* Title */}
-        <div className="approach-title text-center mb-24">
-          <div className="space-y-6">
-            <div className="w-16 h-px bg-gradient-to-r from-transparent via-accent to-transparent mx-auto"></div>
-            <h2 className="text-5xl md:text-7xl font-extralight tracking-tight">
-              <span className="text-muted-foreground">Our</span>
-              <br />
-              <span className="text-accent">Approach</span>
-            </h2>
+        {/* Section Header */}
+        <div className="approach-title mb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="space-y-6">
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">04</div>
+                <div className="space-y-2">
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
+                    OUR
+                  </div>
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight text-gradient ml-8">
+                    APPROACH
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-8">
+              <div className="max-w-2xl space-y-6">
+                <div className="space-y-4">
+                  <p className="text-lg font-light text-foreground/70 leading-relaxed">
+                    Exceptional results are born from the intersection of 
+                    strategic thinking, creative vision, and technical precision.
+                  </p>
+                  <div className="w-24 h-px bg-brand-orange"></div>
+                  <p className="text-lg font-light text-foreground/70 leading-relaxed">
+                    <strong>Every pixel counts.</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -115,13 +146,12 @@ export function Technology() {
               
               <div className="space-y-6 text-lg font-light text-muted-foreground leading-relaxed">
                 <p>
-                  We believe exceptional digital experiences are born from the intersection of 
-                  strategic thinking, creative vision, and technical precision.
+                 Every project begins with understanding—your goals, your users, and your challenges. 
+                 From this foundation, we create work that is purposeful, refined, and built to last.
                 </p>
                 <p>
-                  Every project begins with deep understanding—of your goals, your users, 
-                  and the challenges you face. From this foundation, we craft solutions 
-                  that are both beautiful and purposeful.
+                  As in everything we do, our approach reflects the same precision, clarity, and commitment that define who we are. 
+                  We stay involved beyond launch, ensuring your platform continues to evolve, adapt, and perform in a changing digital landscape.
                 </p>
               </div>
             </div>
@@ -145,29 +175,25 @@ export function Technology() {
             </div>
           </div>
 
-          {/* Large image */}
+          {/* Large video */}
           <div className="lg:col-span-3 relative">
-            <ImageReveal
-              src="https://images.unsplash.com/photo-1600298881974-6be191ceeda1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&h=900"
-              alt="Modern architectural design workspace" 
-              className="approach-image w-full h-[600px] lg:h-[700px] object-cover transition-all duration-1000 group-hover:scale-105"
-              containerClassName="image-container cursor-magnetic rounded-3xl"
-              overlayContent={
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent group-hover:from-background/20 transition-all duration-700"></div>
-                  
-                  {/* Interactive overlay */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <div className="w-20 h-20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <div className="w-0 h-0 border-l-[8px] border-l-white/80 border-y-[6px] border-y-transparent ml-1"></div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              }
-            />
+            <div className="approach-video w-full h-[500px] lg:h-[600px] rounded-3xl overflow-hidden group cursor-magnetic relative">
+              <video
+                src="/corals.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent group-hover:from-background/20 transition-all duration-700"></div>
+              
+              {/* Interactive overlay */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10"></div>
+              </div>
+            </div>
             
             {/* Floating accent elements */}
             <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full floating-element"></div>
@@ -176,6 +202,9 @@ export function Technology() {
 
         </div>
       </div>
+      
+      {/* Subtle section separator */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
   );
 }

@@ -1,10 +1,52 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ChevronDown } from 'lucide-react';
+import { CodeToScenery } from '@/components/ui/code-to-scenery';
+import { DustParticles } from '@/components/ui/dust-particles';
 
-export function Hero() {
+interface HeroProps {
+  onAnimationComplete?: () => void;
+}
+
+export function Hero({ onAnimationComplete }: HeroProps) {
+  const [hasImageBackground, setHasImageBackground] = useState(false);
+  const [showContent, setShowContent] = useState(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
+
+  // Smooth content reveal animation
+  useEffect(() => {
+    if (showContent) {
+      const tl = gsap.timeline();
+      
+      // First animate the main title
+      tl.fromTo('.hero-title', 
+        { y: 80, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" }
+      )
+      // Then the subtitle with slight delay
+      .fromTo('.hero-subtitle', 
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "-=1.0"
+      )
+      // Animate the services panel
+      .fromTo('.hero-services', 
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8"
+      )
+      // Finally the bottom navigation
+      .fromTo('.hero-nav', 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.5"
+      )
+      // Mobile 01 and DIGITAL elements
+      .fromTo('.hero-mobile-digital', 
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.3"
+      );
+    }
+  }, [showContent]);
   const containerRef = useGSAP(() => {
     const tl = gsap.timeline();
     
@@ -51,69 +93,121 @@ export function Hero() {
   };
 
   return (
-    <section id="home" className="h-screen relative overflow-hidden flex items-center justify-center" ref={containerRef}>
-      {/* Background image with parallax */}
-      <div className="background-image absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&h=1333"
-          alt="Modern architectural structure"
-          className="w-full h-full object-cover"
+    <section id="home" className="min-h-screen relative overflow-hidden z-50" ref={containerRef}>
+      {/* Code to scenery background - NO DOTS */}
+      <CodeToScenery 
+        className="opacity-90" 
+        onImageStateChange={(hasImages) => {
+          setHasImageBackground(hasImages);
+          if (hasImages) {
+            // Show content with a smooth delay after background changes
+            setTimeout(() => setShowContent(true), 1200);
+          }
+        }}
+        onAnimationComplete={() => {
+          console.log('CodeToScenery animation complete callback received');
+          setAnimationComplete(true);
+          onAnimationComplete?.();
+        }}
+      />
+      
+      {/* Dust particles animation */}
+      {hasImageBackground && (
+        <DustParticles 
+          className="opacity-95" 
+          particleCount={350}
+          intensity="heavy"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
-      </div>
+      )}
       
-      {/* Subtle background elements */}
-      <div className="background-elements absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl floating-element"></div>
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-3xl floating-element" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-1/4 left-1/2 w-80 h-80 bg-gradient-to-br from-primary/8 to-transparent rounded-full blur-3xl floating-element" style={{ animationDelay: '4s' }}></div>
-      </div>
       
-      {/* Main content */}
-      <div className="container-fluid relative z-10">
-        <div className="flex flex-col items-center text-center max-w-6xl mx-auto">
-          <div className="hero-content space-y-8">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-extralight leading-[0.9] tracking-tight">
-              <span className="block">Web</span>
-              <span className="block text-gradient font-light">Architects</span>
-            </h1>
-            
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-foreground/30 to-transparent mx-auto"></div>
-            
-            <p className="text-xl md:text-2xl font-light text-muted-foreground max-w-2xl leading-relaxed">
-              Creating digital experiences that transcend the ordinary
-            </p>
-            
-            <div className="pt-8">
-              <Button 
-                className="glass-effect hover:bg-white/10 text-foreground border-0 px-12 py-6 text-lg font-light tracking-wide transition-all duration-500 hover:scale-105"
-                onClick={scrollToNext}
-              >
-                Explore Our Work
-              </Button>
+      {/* Main content with asymmetric layout */}
+      {showContent && (
+        <div className="container-fluid relative z-20 pt-24 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end min-h-[80vh]">
+          
+          {/* Left side - Experimental typography */}
+          <div className="col-span-1 lg:col-span-9 hero-content">
+            <div className="space-y-6">
+              {/* Fragmented title */}
+              <div className="relative hero-title">
+                <div className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
+                  <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>WEB</div>
+                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>WEB</div>
+                </div>
+                <div className="text-[clamp(2rem,5vw,6rem)] font-medium leading-[0.9] ml-8 -mt-2 tracking-wider">
+                  <span className="text-gradient drop-shadow-lg font-semibold">ARCHITECTS</span>
+                </div>
+              </div>
+              
+              {/* Experimental text arrangement */}
+              <div className="hidden lg:grid grid-cols-3 gap-8 mt-16 hero-subtitle">
+                <div className="col-span-1 space-y-4">
+                  <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>01</div>
+                  <div className={`text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>DIGITAL</div>
+                </div>
+                <div className="col-span-2 space-y-2">
+                  <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
+                    Creating digital experiences that push boundaries
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile tagline */}
+              <div className="lg:hidden mt-8 hero-subtitle">
+                <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
+                  Creating digital experiences that push boundaries
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right side - Minimal info panel */}
+          <div className="col-span-1 lg:col-span-3 lg:col-start-11 space-y-8 hero-services">
+            <div className="space-y-6">
+              <div className="w-16 h-px bg-primary/40"></div>
+              <div className="space-y-4">
+                <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>SERVICES</div>
+                <div className={`space-y-1 text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>
+                  <div>Web & Mobile Applications</div>
+                  <div>Digital Design</div>
+                  <div>Creative Development</div>
+                </div>
+              </div>
+              
+              <div className="pt-8">
+                <Button 
+                  className={`${hasImageBackground ? 'bg-white text-black hover:bg-white/90' : 'bg-foreground text-background hover:bg-foreground/90'} px-8 py-3 text-sm font-medium tracking-wide transition-all duration-300 shadow-lg`}
+                  onClick={scrollToNext}
+                >
+                  View Work
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Mobile 01 and DIGITAL elements positioned bottom right */}
+        <div className="lg:hidden absolute bottom-20 right-8 space-y-2 hero-mobile-digital">
+          <div className={`text-xs uppercase tracking-[0.2em] text-right ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>01</div>
+          <div className={`text-sm font-medium text-right ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>DIGITAL</div>
+        </div>
         
-        {/* Scroll indicator */}
-        <div className="scroll-indicator absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        {/* Bottom navigation hint */}
+        <div className="absolute bottom-8 left-8 hero-nav">
           <button 
             onClick={scrollToNext}
-            className="flex flex-col items-center space-y-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
+            className={`flex items-center space-x-2 ${hasImageBackground ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} transition-colors duration-300 group drop-shadow`}
           >
-            <span className="text-sm font-light tracking-widest uppercase">Scroll</span>
-            <ChevronDown className="w-5 h-5 animate-bounce" />
+            <span className="text-xs font-medium tracking-wide uppercase">Explore</span>
+            <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
           </button>
         </div>
-      </div>
-
-      {/* Floating minimal elements */}
-      <div className="floating-elements absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-20 w-2 h-2 bg-primary/60 rounded-full floating-element"></div>
-        <div className="absolute top-1/3 right-32 w-1 h-16 bg-accent/40 floating-element" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-32 left-1/4 w-3 h-3 bg-gradient-to-r from-primary to-accent rounded-full floating-element" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-1/4 right-1/4 w-1 h-20 bg-foreground/20 floating-element" style={{ animationDelay: '2s' }}></div>
-      </div>
+        </div>
+      )}
+      
+      {/* Subtle section separator */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
   );
 }

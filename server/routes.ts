@@ -10,6 +10,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const validatedData = validateData(insertContactSchema, req.body);
       const contact = await storage.createContact(validatedData);
+      
+      // Log the contact message for email forwarding
+      console.log("🚀 NEW CONTACT MESSAGE FOR panos.hatzinikolaou@gmail.com");
+      console.log("==========================================");
+      console.log(`Name: ${validatedData.name}`);
+      console.log(`Email: ${validatedData.email}`);
+      console.log(`Project Type: ${validatedData.projectType}`);
+      console.log(`Message: ${validatedData.message}`);
+      console.log(`Date: ${new Date().toISOString()}`);
+      console.log("==========================================");
+      
       res.json({ success: true, contact });
     } catch (error: any) {
       res.status(400).json({ 

@@ -1,26 +1,23 @@
-import { CheckCircle, Zap, Users } from 'lucide-react';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
+import { ConnectedDots } from '@/components/ui/connected-dots';
 
 const values = [
   {
-    icon: CheckCircle,
-    title: 'Quality First',
-    description: 'We never compromise on quality. Every pixel, every line of code, every interaction is crafted with precision and care.',
-    gradient: 'from-primary to-primary/80',
+    number: '01',
+    title: 'Strategy & Vision',
+    description: 'We start with a deep understanding of your business objectives, translating them into digital strategies that accelerate growth and strengthen brand presence.',
   },
   {
-    icon: Zap,
-    title: 'Innovation',
-    description: 'We stay ahead of the curve, constantly exploring new technologies and design trends to bring fresh ideas to every project.',
-    gradient: 'from-accent to-accent/80',
+    number: '02',
+    title: 'Design Excellence',
+    description: 'We design intuitive, visually striking interfaces that connect with your audience and redefine the standards of modern web design.',
   },
   {
-    icon: Users,
-    title: 'Collaboration',
-    description: 'Great results come from great partnerships. We work closely with our clients to understand their vision and bring it to life.',
-    gradient: 'from-purple-500 to-purple-600',
+    number: '03',
+    title: 'Technical Mastery',
+    description: 'From responsive frontends to scalable backends, we apply the latest technologies to deliver secure, high-performance digital platforms tailored to your needs.',
   },
 ];
 
@@ -97,69 +94,120 @@ export function About() {
   }, []);
 
   return (
-    <section id="about" className="py-24 bg-white" ref={containerRef}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="about-title text-4xl lg:text-6xl font-bold text-gradient mb-6">
-            Who We Are
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're a team of passionate designers and developers who believe great design has the power to transform businesses
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
-          <div className="about-content">
-            <h3 className="text-3xl font-bold mb-6 text-dark">Building the Future of Web</h3>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Web Architects was founded with a simple mission: to create digital experiences that don't just look beautiful, 
-              but also drive real business results. We combine creative design with technical excellence to deliver websites 
-              that stand out in today's competitive digital landscape.
-            </p>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              Our approach is collaborative, data-driven, and always focused on the end user. We believe that great design 
-              should be accessible, performant, and purposeful.
-            </p>
-            
-            <div className="grid grid-cols-2 gap-8">
-              <div className="text-center">
-                <div ref={projectsRef} className="text-4xl font-bold text-primary mb-2">0</div>
-                <div className="text-gray-600">Projects Completed</div>
+    <section id="about" className="py-24 bg-card relative z-10" ref={containerRef}>
+      {/* Connected dots background */}
+      <ConnectedDots className="opacity-40" dotCount={25} connectionDistance={160} />
+      <div className="container-fluid">
+        
+        {/* Section Header */}
+        <div className="about-header mb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="space-y-6">
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">02</div>
+                <div className="space-y-2">
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
+                    WHO
+                  </div>
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight text-gradient ml-8">
+                    WE ARE
+                  </div>
+                </div>
               </div>
-              <div className="text-center">
-                <div ref={satisfactionRef} className="text-4xl font-bold text-primary mb-2">0</div>
-                <div className="text-gray-600">Client Satisfaction</div>
+            </div>
+            
+            <div className="lg:col-span-8">
+              <div className="max-w-2xl space-y-6">
+                <div className="space-y-4">
+                  <p className="text-lg font-light text-foreground/70 leading-relaxed">
+                    At <strong>Web Architects</strong>, we craft digital products where design precision meets technical excellence.
+                  </p>
+                  <div className="w-24 h-px bg-brand-orange"></div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="grid lg:grid-cols-2 gap-16 items-start mb-32">
+          <div className="about-content space-y-8">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-light text-foreground leading-tight">
+                Building With Purpose
+              </h3>
+              <p className="text-base font-light text-foreground/60 leading-relaxed">
+                Rooted in the principle that form and function are inseparable, 
+                we treat each project as a unique opportunity to solve complex challenges with clarity and innovation.
+              </p>
+              <p className="text-base font-light text-foreground/60 leading-relaxed">
+                  By merging strategic insight with advanced engineering, we ensure every application we create is visually distinctive, 
+                  technically robust, and optimized to perform flawlessly across devices and platforms.
+              </p>
+            </div>
+            
+            {/* <div className="grid grid-cols-2 gap-8 pt-8">
+              <div className="space-y-2">
+                <div ref={projectsRef} className="text-3xl font-light text-foreground">0</div>
+                <div className="text-sm font-light text-muted-foreground uppercase tracking-wide">Projects Completed</div>
+              </div>
+              <div className="space-y-2">
+                <div ref={satisfactionRef} className="text-3xl font-light text-foreground">0</div>
+                <div className="text-sm font-light text-muted-foreground uppercase tracking-wide">Client Satisfaction</div>
+              </div>
+            </div> */}
+          </div>
           
-          <div className="about-visual relative">
-            <img 
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-              alt="Elegant office space" 
-              className="rounded-2xl shadow-2xl w-full h-auto" 
-            />
+          <div className="about-visual">
+            <div className="aspect-[4/3] bg-background rounded-2xl overflow-hidden group cursor-pointer">
+              <img 
+                src="/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.png" 
+                alt="Modern workspace showcasing design process" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-forest/20 via-transparent to-vibrant-orange/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            </div>
           </div>
         </div>
 
+        {/* Section divider */}
+        <div className="w-full h-px accent-line-orange mb-16"></div>
+
         {/* Values Section */}
-        <div className="values-grid grid md:grid-cols-3 gap-8">
-          {values.map((value, index) => {
-            const Icon = value.icon;
-            return (
-              <div key={value.title} className="value-card text-center group">
-                <div className={`w-20 h-20 bg-gradient-to-r ${value.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="w-10 h-10 text-white" />
+        <div className="values-grid space-y-16">
+          {values.map((value, index) => (
+            <div key={value.number} className="value-card">
+              <div className="grid lg:grid-cols-12 gap-8 items-start">
+                
+                {/* Number & Title */}
+                <div className="lg:col-span-3 space-y-4">
+                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{value.number}</div>
+                  <h3 className="text-2xl font-light leading-tight text-foreground">
+                    {value.title}
+                  </h3>
+                  <div className="w-16 h-px bg-brand-orange"></div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-dark">{value.title}</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {value.description}
-                </p>
+
+                {/* Description */}
+                <div className="lg:col-span-5 lg:col-start-5">
+                  <p className="text-base font-light text-foreground/60 leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
+
               </div>
-            );
-          })}
+              
+              {/* Divider between values */}
+              {index < values.length - 1 && (
+                <div className="w-full h-px bg-border/30 mt-16"></div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
+      
+      {/* Subtle section separator */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
   );
 }
