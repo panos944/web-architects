@@ -94,6 +94,17 @@
     50% { transform: translateY(-10px) scale(1.02); }
   }
 
+  @keyframes slideUp {
+    from {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   .reveal-up {
     transform: translateY(60px);
     opacity: 0;

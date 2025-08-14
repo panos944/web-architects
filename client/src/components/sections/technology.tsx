@@ -179,13 +179,27 @@ export function Technology() {
           <div className="lg:col-span-3 relative">
             <div className="approach-video w-full h-[500px] lg:h-[600px] rounded-3xl overflow-hidden group cursor-magnetic relative">
               <video
+                key="/corals.mp4"
                 src="/corals.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                preload="metadata"
+                webkit-playsinline="true"
+                preload="auto"
                 className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                onLoadedData={(e) => {
+                  const video = e.target as HTMLVideoElement;
+                  video.play().catch(() => {
+                    const playOnInteraction = () => {
+                      video.play();
+                      document.removeEventListener('touchstart', playOnInteraction);
+                      document.removeEventListener('click', playOnInteraction);
+                    };
+                    document.addEventListener('touchstart', playOnInteraction, { once: true });
+                    document.addEventListener('click', playOnInteraction, { once: true });
+                  });
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent group-hover:from-background/20 transition-all duration-700"></div>
               

@@ -164,12 +164,27 @@ export function Services() {
                   <div className="aspect-[4/5] lg:aspect-[4/5] bg-card rounded-2xl overflow-hidden group cursor-pointer shadow-lg">
                     {item.image.endsWith('.mp4') ? (
                       <video
+                        key={item.image}
                         src={item.image}
                         autoPlay
                         loop
                         muted
                         playsInline
+                        webkit-playsinline="true"
+                        preload="auto"
                         className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                        onLoadedData={(e) => {
+                          const video = e.target as HTMLVideoElement;
+                          video.play().catch(() => {
+                            const playOnInteraction = () => {
+                              video.play();
+                              document.removeEventListener('touchstart', playOnInteraction);
+                              document.removeEventListener('click', playOnInteraction);
+                            };
+                            document.addEventListener('touchstart', playOnInteraction, { once: true });
+                            document.addEventListener('click', playOnInteraction, { once: true });
+                          });
+                        }}
                       />
                     ) : (
                       <img

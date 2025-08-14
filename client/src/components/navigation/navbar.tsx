@@ -86,17 +86,44 @@ export function Navbar({ show = true }: NavbarProps) {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden mt-8 pb-6 bg-black/20 backdrop-blur-md rounded-lg border border-white/10">
-            <div className="flex flex-col space-y-6 p-6">
-              {navItems.map((item) => (
-                <button
-                  key={item.href}
-                  onClick={() => handleNavClick(item.href)}
-                  className="text-left text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
-                >
-                  {item.label}
-                </button>
-              ))}
+          <div className="md:hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-xl">
+            <div className="flex flex-col h-full justify-center items-center space-y-12 p-8">
+              {/* Close button */}
+              <button
+                className="absolute top-8 right-8 p-2 text-white/90 hover:text-white transition-colors duration-300"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="h-6 w-6" />
+              </button>
+
+              {/* Menu items */}
+              <div className="space-y-8 text-center">
+                {navItems.map((item, index) => (
+                  <div key={item.href} className="overflow-hidden">
+                    <button
+                      onClick={() => handleNavClick(item.href)}
+                      className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animation: 'slideUp 0.6s ease-out forwards'
+                      }}
+                    >
+                      <span className="block group-hover:transform group-hover:scale-105 transition-transform duration-300">
+                        {item.label}
+                      </span>
+                      <div className="w-0 h-px bg-brand-orange mt-2 mx-auto group-hover:w-full transition-all duration-500"></div>
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom accent */}
+              <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+                <div className="text-xs font-light text-white/50 tracking-[0.2em] uppercase">
+                  Web Architects
+                </div>
+                <div className="w-8 h-px bg-white/30 mx-auto mt-2"></div>
+              </div>
             </div>
           </div>
         )}

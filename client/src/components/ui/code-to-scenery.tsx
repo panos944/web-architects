@@ -268,15 +268,31 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         >
           {isVideo ? (
             <video
+              key={finalVideoUrl}
               src={finalVideoUrl}
               autoPlay
               loop
               muted
               playsInline
+              webkit-playsinline="true"
+              preload="auto"
               className="absolute inset-0 w-full h-full object-cover"
               style={{
                 objectPosition: isMobile ? '75% 25%' : 'center center',
                 transform: 'scale(1)'
+              }}
+              onLoadedData={(e) => {
+                const video = e.target as HTMLVideoElement;
+                video.play().catch(() => {
+                  // Auto-play prevented, will play on first user interaction
+                  const playOnInteraction = () => {
+                    video.play();
+                    document.removeEventListener('touchstart', playOnInteraction);
+                    document.removeEventListener('click', playOnInteraction);
+                  };
+                  document.addEventListener('touchstart', playOnInteraction, { once: true });
+                  document.addEventListener('click', playOnInteraction, { once: true });
+                });
               }}
             />
           ) : (
