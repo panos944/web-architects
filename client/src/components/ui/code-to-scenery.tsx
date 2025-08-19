@@ -67,10 +67,7 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
 
 
     const lines = [
-      "$ npx create-app web-architects",
-      "✓ Installing packages...",
-      "✓ Project created successfully",
-      "$ npm start..."
+      "Welcome to Web Architects"
     ];
 
 
@@ -80,11 +77,11 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
     let terminalFadeStart = 0;
     const terminalFadeDuration = 1200; // Duration of terminal fade-out in ms
     const totalChars = lines.join('').length + lines.length; // Total characters + line breaks
-    const cps = totalChars / 2.0; // Characters per second to finish typing in 3.0s
+    const cps = totalChars / 1.5; // Characters per second to finish typing in 1.5s (faster)
     const linePause = 300; // Slightly longer pause between lines
-    const cursorBlink = 500;
-    // Blink 3 times: 3 on + 3 off = 6 intervals
-    const preTypingDuration = cursorBlink * 6; // 3000ms for 3 blinks
+    const cursorBlink = 400;
+    // Blink 2 times: 2 on + 2 off = 4 intervals (shorter intro)
+    const preTypingDuration = cursorBlink * 4; // 1600ms for 2 blinks
     let preTypingStart = performance.now();
 
     const draw = (now: number) => {
