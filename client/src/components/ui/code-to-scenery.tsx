@@ -175,23 +175,18 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         ctx.globalAlpha = terminalOpacity;
         ctx.font = '18px Monaco, Consolas, monospace';
         ctx.textBaseline = 'middle';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'left'; // Left align for proper cursor positioning
 
         const lineHeight = 24;
-        // Center text on screen
-        const textX = w / 2; // Center horizontally
-        const textY = h / 2; // Center vertically
+        // Position on right side of screen
+        const textX = w * 0.6; // Right side positioning
+        const textY = h / 2; // Vertically centered
 
-        // Pre-typing cursor blink - positioned where text will start
+        // Pre-typing cursor blink - positioned exactly where text will start
         if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
           if (Math.floor(now / cursorBlink) % 2 === 0) {
-            // Calculate where the centered text will start
-            const fullText = lines[0];
-            const textWidth = ctx.measureText(fullText).width;
-            const textStartX = textX - textWidth / 2;
-            
-            // Draw cursor at the start of where text will appear
-            ctx.fillRect(textStartX, textY - 10, 10, 20);
+            // Draw cursor exactly at textX position (where text will start)
+            ctx.fillRect(textX, textY - 10, 10, 20);
           }
           animationFrame = requestAnimationFrame(draw);
           return;
@@ -223,13 +218,10 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
 
           // Draw cursor - positioned after the typed text
           if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
-            const fullText = lines[lineIndex];
-            const fullTextWidth = ctx.measureText(fullText).width;
-            const textStartX = textX - fullTextWidth / 2;
             const currentTextWidth = ctx.measureText(currentText).width;
             
             ctx.fillRect(
-              textStartX + currentTextWidth,
+              textX + currentTextWidth,
               textY + lineIndex * lineHeight - 10,
               10,
               20
