@@ -173,17 +173,20 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       if (terminalOpacity > 0) {
         ctx.fillStyle = '#263226';
         ctx.globalAlpha = terminalOpacity;
-        ctx.font = '16px Monaco, Consolas, monospace';
-        ctx.textBaseline = 'top';
+        ctx.font = '18px Monaco, Consolas, monospace';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
 
         const lineHeight = 24;
-        const padX = Math.max(20, w * 0.05);
-        const padY = h * 0.4;
+        // Center text on screen
+        const textX = w / 2; // Center horizontally
+        const textY = h / 2; // Center vertically
 
-        // Pre-typing cursor blink
+        // Pre-typing cursor blink - centered
         if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
           if (Math.floor(now / cursorBlink) % 2 === 0) {
-            ctx.fillRect(padX, padY + 2, 10, 20);
+            // Draw cursor at center
+            ctx.fillRect(textX - 5, textY - 10, 10, 20);
           }
           animationFrame = requestAnimationFrame(draw);
           return;
@@ -203,22 +206,22 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           }
         }
 
-        // Draw completed lines
+        // Draw completed lines - centered
         for (let i = 0; i < lineIndex; i++) {
-          ctx.fillText(lines[i], padX, padY + i * lineHeight);
+          ctx.fillText(lines[i], textX, textY + i * lineHeight);
         }
 
-        // Draw current line being typed
+        // Draw current line being typed - centered
         if (lineIndex < lines.length) {
           const currentText = lines[lineIndex].slice(0, charIndex);
-          ctx.fillText(currentText, padX, padY + lineIndex * lineHeight);
+          ctx.fillText(currentText, textX, textY + lineIndex * lineHeight);
 
-          // Draw cursor
+          // Draw cursor - centered relative to text
           if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
             const metrics = ctx.measureText(currentText);
             ctx.fillRect(
-              padX + metrics.width,
-              padY + lineIndex * lineHeight + 2,
+              textX + metrics.width/2 + 5,
+              textY + lineIndex * lineHeight - 10,
               10,
               20
             );
