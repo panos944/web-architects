@@ -169,31 +169,29 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         }
       }
 
+      // Set font and calculate positioning ONCE for entire draw cycle
+      const isMobileScreen = w < 768;
+      const fontSize = isMobileScreen ? 16 : 18;
+      ctx.font = `${fontSize}px Monaco, Consolas, monospace`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      
+      // Calculate positions with font already set
+      const fullText = lines[0] || "Welcome to Web Architects";
+      const fullTextWidth = ctx.measureText(fullText).width;
+      const centeredStartX = (w - fullTextWidth) / 2;
+      const textY = h * 0.5;
+      const lineHeight = 24;
+      const cursorHeight = fontSize + 4;
+
       // Draw terminal text with fade-out effect
       if (terminalOpacity > 0) {
         ctx.fillStyle = '#263226';
         ctx.globalAlpha = terminalOpacity;
-        
-        // Set font FIRST - this is crucial for consistent measurements
-        const isMobileScreen = w < 768;
-        const fontSize = isMobileScreen ? 16 : 18; // Increased mobile font size
-        ctx.font = `${fontSize}px Monaco, Consolas, monospace`;
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'left';
 
-        const lineHeight = 24;
-        
-        // NOW calculate text measurements with the font already set
-        const fullText = lines[0] || "Welcome to Web Architects";
-        const fullTextWidth = ctx.measureText(fullText).width;
-        const centeredStartX = (w - fullTextWidth) / 2;
-        const textY = h * 0.5;
-
-        // Pre-typing cursor blink - positioned exactly where text will start
+        // Pre-typing cursor blink - using pre-calculated position
         if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
           if (Math.floor(now / cursorBlink) % 2 === 0) {
-            // Draw cursor exactly where centered text will start - using font-relative height
-            const cursorHeight = fontSize + 4;
             ctx.fillRect(centeredStartX, textY - cursorHeight/2, 2, cursorHeight);
           }
           animationFrame = requestAnimationFrame(draw);
@@ -227,7 +225,6 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           // Draw cursor - positioned after the typed text
           if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
             const currentTextWidth = ctx.measureText(currentText).width;
-            const cursorHeight = fontSize + 4;
             
             ctx.fillRect(
               centeredStartX + currentTextWidth,
