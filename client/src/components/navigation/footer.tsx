@@ -22,10 +22,17 @@ export function Footer() {
           {/* Brand section */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-6">
-              <div className="text-4xl font-extralight tracking-[0.15em] text-white">
-                WEB
-                <div className="text-3xl font-light text-brand-orange ml-8 -mt-2">
-                  ARCHITECTS
+              <div className="flex items-center gap-6">
+                <img 
+                  src="/wa-mark-rounded.svg" 
+                  alt="Web Architects Logo" 
+                  className="w-16 h-16 flex-shrink-0"
+                />
+                <div className="text-4xl font-extralight tracking-[0.15em] text-white">
+                  WEB
+                  <div className="text-3xl font-light text-brand-orange ml-8 -mt-2">
+                    ARCHITECTS
+                  </div>
                 </div>
               </div>
               <div className="w-16 h-px bg-brand-orange"></div>

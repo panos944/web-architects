@@ -54,7 +54,7 @@ export function Navbar({ show = true }: NavbarProps) {
     <nav className="navbar fixed top-0 w-full z-[100] transition-all duration-300">
       <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Left side - WA text */}
           <button 
             onClick={() => handleNavClick('#home')}
             className="text-xl font-medium tracking-wider text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
@@ -62,7 +62,7 @@ export function Navbar({ show = true }: NavbarProps) {
             WA
           </button>
           
-          {/* Desktop Navigation */}
+          {/* Center - Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">
             {navItems.map((item) => (
               <button
@@ -75,7 +75,7 @@ export function Navbar({ show = true }: NavbarProps) {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Right side - Mobile Menu */}
           <button
             className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative z-[110]"
             onClick={() => setIsOpen(!isOpen)}

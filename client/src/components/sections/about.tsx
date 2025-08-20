@@ -118,11 +118,19 @@ export function About() {
             
             <div className="lg:col-span-8">
               <div className="max-w-2xl space-y-6">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <p className="text-lg font-light text-foreground/70 leading-relaxed">
                     At <strong>Web Architects</strong>, we craft digital products where design precision meets technical excellence.
                   </p>
-                  <div className="w-24 h-px bg-brand-orange"></div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-px bg-brand-orange"></div>
+                    <img 
+                      src="/wa-mark-rounded.svg" 
+                      alt="Web Architects Logo" 
+                      className="w-10 h-10 opacity-80"
+                    />
+                    <div className="w-16 h-px bg-brand-orange"></div>
+                  </div>
                 </div>
               </div>
             </div>
