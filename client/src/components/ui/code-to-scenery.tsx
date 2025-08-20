@@ -69,6 +69,8 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
     const lines = [
       "Welcome to Web Architects"
     ];
+    
+    console.log("Animation debug: centeredStartX calculation");
 
 
     let lineIndex = 0;
@@ -183,6 +185,11 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       const textY = h * 0.5;
       const lineHeight = 24;
       const cursorHeight = fontSize + 4;
+      
+      // Debug logging (remove after verification)
+      if (lineIndex === 0 && charIndex === 0) {
+        console.log(`centeredStartX: ${centeredStartX}, textWidth: ${fullTextWidth}, canvasWidth: ${w}`);
+      }
 
       // Draw terminal text with fade-out effect
       if (terminalOpacity > 0) {

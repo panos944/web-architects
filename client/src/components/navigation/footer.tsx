@@ -45,7 +45,7 @@ export function Footer() {
               
               <div className="space-y-6">
                 <a 
-                  href="mailto:webarchitects@gmail.com" 
+                  href="mailto:wwwebarchitects@gmail.com" 
                   className="group flex items-center gap-4 text-white/90 hover:text-white transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand-orange/20 transition-colors duration-300">
@@ -53,7 +53,7 @@ export function Footer() {
                   </div>
                   <div>
                     <div className="text-sm font-light text-white/60">Email</div>
-                    <div className="font-light">webarchitects@gmail.com</div>
+                    <div className="font-light">wwwebarchitects@gmail.com</div>
                   </div>
                 </a>
                 
