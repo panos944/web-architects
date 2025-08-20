@@ -128,9 +128,10 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       }
 
       // Check if terminal typing is complete
-      if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex].length) {
+      if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex]?.length) {
         if (terminalFadeStart === 0) {
           terminalFadeStart = now;
+          console.log('Terminal typing complete - triggering image state change');
           onImageStateChange?.(true);
         }
 
@@ -222,9 +223,12 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           }
         }
 
+        // This condition should not be needed anymore since we handle it above
         // Check if typing is complete but haven't started fade yet
-        if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex].length && terminalFadeStart === 0) {
+        if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex]?.length && terminalFadeStart === 0) {
+          console.log('Secondary typing complete check triggered');
           terminalFadeStart = now + 800; // Wait 800ms after typing completes
+          onImageStateChange?.(true);
         }
         
         ctx.globalAlpha = 1;
