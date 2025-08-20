@@ -122,14 +122,14 @@ export function About() {
                   <p className="text-lg font-light text-foreground/70 leading-relaxed">
                     At <strong>Web Architects</strong>, we craft digital products where design precision meets technical excellence.
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-px bg-brand-orange"></div>
+                  <div className="flex items-center justify-center gap-2 sm:gap-4 w-full">
+                    <div className="flex-1 max-w-[60px] h-px bg-brand-orange"></div>
                     <img 
                       src="/wa-mark-rounded.svg" 
                       alt="Web Architects Logo" 
-                      className="w-10 h-10 opacity-80"
+                      className="w-8 h-8 sm:w-10 sm:h-10 opacity-80 flex-shrink-0"
                     />
-                    <div className="w-16 h-px bg-brand-orange"></div>
+                    <div className="flex-1 max-w-[60px] h-px bg-brand-orange"></div>
                   </div>
                 </div>
               </div>
