@@ -173,20 +173,27 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       if (terminalOpacity > 0) {
         ctx.fillStyle = '#263226';
         ctx.globalAlpha = terminalOpacity;
-        ctx.font = '18px Monaco, Consolas, monospace';
+        
+        // Responsive font size
+        const isMobileScreen = w < 768;
+        const fontSize = isMobileScreen ? 14 : 18;
+        ctx.font = `${fontSize}px Monaco, Consolas, monospace`;
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left'; // Left align for proper cursor positioning
 
         const lineHeight = 24;
-        // Position on right side of screen
-        const textX = w * 0.6; // Right side positioning
-        const textY = h / 2; // Vertically centered
+        
+        // Calculate centered position for the full text
+        const fullText = lines[0] || "";
+        const fullTextWidth = ctx.measureText(fullText).width;
+        const centeredStartX = (w - fullTextWidth) / 2; // Start position for centered text
+        const textY = h * 0.5; // Center vertically
 
         // Pre-typing cursor blink - positioned exactly where text will start
         if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
           if (Math.floor(now / cursorBlink) % 2 === 0) {
-            // Draw cursor exactly at textX position (where text will start)
-            ctx.fillRect(textX, textY - 10, 10, 20);
+            // Draw cursor exactly where centered text will start
+            ctx.fillRect(centeredStartX, textY - 10, 10, 20);
           }
           animationFrame = requestAnimationFrame(draw);
           return;
@@ -206,22 +213,22 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           }
         }
 
-        // Draw completed lines - centered
+        // Draw completed lines - using centered start position
         for (let i = 0; i < lineIndex; i++) {
-          ctx.fillText(lines[i], textX, textY + i * lineHeight);
+          ctx.fillText(lines[i], centeredStartX, textY + i * lineHeight);
         }
 
-        // Draw current line being typed - centered
+        // Draw current line being typed - using centered start position
         if (lineIndex < lines.length) {
           const currentText = lines[lineIndex].slice(0, charIndex);
-          ctx.fillText(currentText, textX, textY + lineIndex * lineHeight);
+          ctx.fillText(currentText, centeredStartX, textY + lineIndex * lineHeight);
 
           // Draw cursor - positioned after the typed text
           if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
             const currentTextWidth = ctx.measureText(currentText).width;
             
             ctx.fillRect(
-              textX + currentTextWidth,
+              centeredStartX + currentTextWidth,
               textY + lineIndex * lineHeight - 10,
               10,
               20
