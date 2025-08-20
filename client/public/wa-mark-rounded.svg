@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title">
+  <title>WA circular mark</title>
+  <defs>
+    <clipPath id="c">
+      <circle cx="128" cy="128" r="112"/>
+    </clipPath>
+  </defs>
+  <circle cx="128" cy="128" r="120" fill="#263226"/>
+  <g clip-path="url(#c)" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M36 70 L64 186 L92 70 L120 186 L148 70"/>
+    <path d="M172 186 L200 70 L228 186"/>
+  </g>
+  <path d="M176 138 L220 138" fill="none" stroke="#F68238" stroke-width="20" stroke-linecap="round"/>
+</svg>

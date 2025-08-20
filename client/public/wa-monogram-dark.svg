@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 256" width="512" height="256" role="img" aria-labelledby="title">
+  <title>WA monogram – dark (for light backgrounds)</title>
+  <g fill="none" stroke="#263226" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 48 L112 208 L160 48 L208 208 L256 48"/>
+    <path d="M312 208 L360 48 L408 208"/>
+  </g>
+  <path d="M332 148 L388 148" fill="none" stroke="#F68238" stroke-width="28" stroke-linecap="round"/>
+</svg>

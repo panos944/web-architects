@@ -49,7 +49,7 @@ export function Footer() {
               <div className="w-16 h-px bg-brand-orange"></div>
               <p className="text-lg font-light text-white/70 max-w-lg leading-relaxed">
                 Crafting exceptional digital experiences where precision meets creativity. 
-                Every pixel, every interaction, every moment—designed with purpose.
+                Every pixel, every interaction, every moment - designed with purpose.
               </p>
             </div>
           </div>
