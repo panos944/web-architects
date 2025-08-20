@@ -102,12 +102,26 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       const padX = (w - termWidth) / 2; // Center horizontally
       const padY = (h - termHeight) / 2; // Center vertically
 
-      // Pre-typing cursor blink (blink 3 times before typing starts)
+      // Set font early for proper measurements
+      const isMobileScreen = w < 768;
+      const fontSize = isMobileScreen ? 18 : 20;
+      ctx.font = `${fontSize}px Monaco, Consolas, monospace`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      
+      // Calculate centered start position for the full text
+      const fullText = lines[0] || "Welcome to Web Architects";
+      const fullTextWidth = ctx.measureText(fullText).width;
+      const centeredStartX = (w - fullTextWidth) / 2;
+      const textY = h / 2;
+      const cursorHeight = fontSize + 4;
+
+      // Pre-typing cursor blink (blink at correct position where text will appear)
       if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
-        // Only draw the blinking cursor on beige background
+        // Only draw the blinking cursor on beige background at correct position
         if (Math.floor((now - preTypingStart) / cursorBlink) % 2 === 0) {
           ctx.fillStyle = '#263226';
-          ctx.fillRect(padX, padY + 2, 10, 20);
+          ctx.fillRect(centeredStartX, textY - cursorHeight/2, 2, cursorHeight);
         }
         animationFrame = requestAnimationFrame(draw);
         return;
@@ -169,27 +183,48 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         }
       }
 
-      // Set font to match site typography - larger and more elegant
-      const isMobileScreen = w < 768;
-      const fontSize = isMobileScreen ? 24 : 32; // Much larger font
-      ctx.font = `${fontSize}px system-ui, -apple-system, sans-serif`; // Match site font
-      ctx.textBaseline = 'middle';
-      ctx.textAlign = 'center'; // Center align for elegance
-      
-      // Calculate center positions
-      const textX = w / 2; // Center horizontally
-      const textY = h / 2; // Center vertically
-      const lineHeight = 32;
+      const lineHeight = 24;
 
-      // Draw simple centered text with fade-out effect
+      // Draw terminal text with fade-out effect
       if (terminalOpacity > 0) {
         ctx.fillStyle = '#263226';
         ctx.globalAlpha = terminalOpacity;
 
-        // Skip pre-typing delay and go straight to showing text
-        if (now - preTypingStart > preTypingDuration) {
-          // Show complete text immediately (no typing animation)
-          ctx.fillText(lines[0], textX, textY);
+
+        // Advance typing
+        if (terminalFadeStart === 0 && now >= nextTick && lineIndex < lines.length) {
+          if (charIndex < lines[lineIndex].length) {
+            charIndex++;
+            nextTick = now + 1000 / cps;
+          } else {
+            if (lineIndex < lines.length - 1) {
+              lineIndex++;
+              charIndex = 0;
+              nextTick = now + linePause;
+            }
+          }
+        }
+
+        // Draw current line being typed
+        if (lineIndex < lines.length) {
+          const currentText = lines[lineIndex].slice(0, charIndex);
+          ctx.fillText(currentText, centeredStartX, textY + lineIndex * lineHeight);
+
+          // Draw cursor after current text
+          if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
+            const currentTextWidth = ctx.measureText(currentText).width;
+            ctx.fillRect(
+              centeredStartX + currentTextWidth,
+              textY + lineIndex * lineHeight - cursorHeight/2,
+              2,
+              cursorHeight
+            );
+          }
+        }
+
+        // Check if typing is complete but haven't started fade yet
+        if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex].length && terminalFadeStart === 0) {
+          terminalFadeStart = now + 800; // Wait 800ms after typing completes
         }
         
         ctx.globalAlpha = 1;
