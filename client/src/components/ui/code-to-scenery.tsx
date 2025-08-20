@@ -96,11 +96,11 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       let terminalOpacity = 1;
       let imageOpacity = 0;
 
-      // Terminal window dimensions
+      // Terminal window dimensions - centered on screen
       const termWidth = Math.max(340, w * 0.7);
       const termHeight = 140;
-      const padX = Math.max(20, w * 0.05);
-      const padY = h * 0.4;
+      const padX = (w - termWidth) / 2; // Center horizontally
+      const padY = (h - termHeight) / 2; // Center vertically
 
       // Pre-typing cursor blink (blink 3 times before typing starts)
       if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
