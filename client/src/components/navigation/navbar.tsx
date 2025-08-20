@@ -77,7 +77,7 @@ export function Navbar({ show = true }: NavbarProps) {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md"
+            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative z-[110]"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -86,7 +86,7 @@ export function Navbar({ show = true }: NavbarProps) {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-xl">
+          <div className="md:hidden fixed inset-0 z-[150] bg-black/90 backdrop-blur-xl">
             <div className="flex flex-col h-full justify-center items-center space-y-12 p-8">
               {/* Close button */}
               <button
