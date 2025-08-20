@@ -182,11 +182,16 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         const textX = w / 2; // Center horizontally
         const textY = h / 2; // Center vertically
 
-        // Pre-typing cursor blink - centered
+        // Pre-typing cursor blink - positioned where text will start
         if (lineIndex === 0 && charIndex === 0 && now - preTypingStart < preTypingDuration) {
           if (Math.floor(now / cursorBlink) % 2 === 0) {
-            // Draw cursor at center
-            ctx.fillRect(textX - 5, textY - 10, 10, 20);
+            // Calculate where the centered text will start
+            const fullText = lines[0];
+            const textWidth = ctx.measureText(fullText).width;
+            const textStartX = textX - textWidth / 2;
+            
+            // Draw cursor at the start of where text will appear
+            ctx.fillRect(textStartX, textY - 10, 10, 20);
           }
           animationFrame = requestAnimationFrame(draw);
           return;
@@ -216,11 +221,15 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           const currentText = lines[lineIndex].slice(0, charIndex);
           ctx.fillText(currentText, textX, textY + lineIndex * lineHeight);
 
-          // Draw cursor - centered relative to text
+          // Draw cursor - positioned after the typed text
           if (terminalFadeStart === 0 && Math.floor(now / cursorBlink) % 2 === 0) {
-            const metrics = ctx.measureText(currentText);
+            const fullText = lines[lineIndex];
+            const fullTextWidth = ctx.measureText(fullText).width;
+            const textStartX = textX - fullTextWidth / 2;
+            const currentTextWidth = ctx.measureText(currentText).width;
+            
             ctx.fillRect(
-              textX + metrics.width/2 + 5,
+              textStartX + currentTextWidth,
               textY + lineIndex * lineHeight - 10,
               10,
               20
