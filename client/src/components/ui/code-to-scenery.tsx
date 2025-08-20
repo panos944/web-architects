@@ -202,6 +202,10 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
               lineIndex++;
               charIndex = 0;
               nextTick = now + linePause;
+            } else {
+              // Typing is complete, trigger callbacks
+              console.log('Typing complete - calling onImageStateChange');
+              onImageStateChange?.(true);
             }
           }
         }
