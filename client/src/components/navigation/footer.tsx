@@ -23,11 +23,22 @@ export function Footer() {
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-6">
               <div className="flex items-center gap-4 sm:gap-6">
-                <img 
-                  src="/wa-mark-rounded.svg" 
-                  alt="Web Architects Logo" 
-                  className="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0"
-                />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 256 256" 
+                    className="w-full h-full"
+                    role="img" 
+                    aria-label="Web Architects Logo"
+                  >
+                    <circle cx="128" cy="128" r="120" fill="#263226"/>
+                    <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M36 70 L64 186 L92 70 L120 186 L148 70"/>
+                      <path d="M172 186 L200 70 L228 186"/>
+                    </g>
+                    <path d="M176 138 L220 138" fill="none" stroke="#F68238" strokeWidth="20" strokeLinecap="round"/>
+                  </svg>
+                </div>
                 <div className="text-4xl font-extralight tracking-[0.15em] text-white">
                   WEB
                   <div className="text-3xl font-light text-brand-orange ml-8 -mt-2">

@@ -124,11 +124,22 @@ export function About() {
                   </p>
                   <div className="flex items-center justify-center gap-2 sm:gap-4 w-full">
                     <div className="flex-1 max-w-[60px] h-px bg-brand-orange"></div>
-                    <img 
-                      src="/wa-mark-rounded.svg" 
-                      alt="Web Architects Logo" 
-                      className="w-8 h-8 sm:w-10 sm:h-10 opacity-80 flex-shrink-0"
-                    />
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 opacity-80">
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 256 256" 
+                        className="w-full h-full"
+                        role="img" 
+                        aria-label="Web Architects Logo"
+                      >
+                        <circle cx="128" cy="128" r="120" fill="#263226"/>
+                        <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M36 70 L64 186 L92 70 L120 186 L148 70"/>
+                          <path d="M172 186 L200 70 L228 186"/>
+                        </g>
+                        <path d="M176 138 L220 138" fill="none" stroke="#F68238" strokeWidth="20" strokeLinecap="round"/>
+                      </svg>
+                    </div>
                     <div className="flex-1 max-w-[60px] h-px bg-brand-orange"></div>
                   </div>
                 </div>
