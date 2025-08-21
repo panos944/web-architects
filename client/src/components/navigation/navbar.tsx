@@ -51,7 +51,7 @@ export function Navbar({ show = true }: NavbarProps) {
   if (!show) return null;
 
   return (
-    <nav className="navbar fixed top-0 w-full z-[100] transition-all duration-300">
+    <nav className="navbar fixed top-0 w-full z-[999] transition-all duration-300">
       <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
           {/* Left side - WA text */}
@@ -77,7 +77,7 @@ export function Navbar({ show = true }: NavbarProps) {
 
           {/* Right side - Mobile Menu */}
           <button
-            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative z-[110]"
+            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative z-[1000]"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -86,7 +86,7 @@ export function Navbar({ show = true }: NavbarProps) {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 z-[150] bg-black/90 backdrop-blur-xl">
+          <div className="md:hidden fixed inset-0 z-[1001] bg-black/90 backdrop-blur-xl">
             <div className="flex flex-col h-full justify-center items-center space-y-12 p-8">
               {/* Close button */}
               <button
