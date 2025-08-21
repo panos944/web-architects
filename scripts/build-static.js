@@ -3,7 +3,7 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-console.log('🏗️  Building static version for traditional hosting...');
+console.log('Building static version for traditional hosting...');
 
 // Build the project
 execSync('npm run build', { stdio: 'inherit' });
@@ -29,6 +29,6 @@ const contactFormReplacement = `
 </div>
 `;
 
-console.log('✅ Static build complete!');
-console.log('📁 Files ready in: ' + deployDir);
-console.log('📤 Upload the contents of this folder to your hosting provider');
+console.log('Static build complete!');
+console.log('Files ready in: ' + deployDir);
+console.log('Upload the contents of this folder to your hosting provider');
