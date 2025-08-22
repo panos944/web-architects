@@ -193,7 +193,7 @@ export function About() {
         <div className="w-full h-px accent-line-orange mb-16"></div>
 
         {/* Values Section */}
-        <div className="values-grid space-y-16">
+        <div className="values-grid space-y-8">
           {values.map((value, index) => (
             <div key={value.number} className="value-card">
               <div className="grid lg:grid-cols-12 gap-8 items-start">

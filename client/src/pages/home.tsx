@@ -4,6 +4,7 @@ import { Hero } from '@/components/sections/hero';
 import { Services } from '@/components/sections/services';
 import { About } from '@/components/sections/about';
 import { Technology } from '@/components/sections/technology';
+import { Partners } from '@/components/sections/partners';
 import { Contact } from '@/components/sections/contact';
 import { Footer } from '@/components/navigation/footer';
 import { MagneticCursor } from '@/components/effects/magnetic-cursor';
@@ -24,6 +25,7 @@ export default function Home() {
       <About />
       <Services />
       <Technology />
+      <Partners />
       <Contact />
       <Footer />
     </div>

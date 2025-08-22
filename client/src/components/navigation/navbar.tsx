@@ -4,8 +4,10 @@ import { gsap } from '@/lib/gsap';
 
 const navItems = [
   { href: '#home', label: 'Home' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#approach', label: 'Approach' },
+  { href: '#about', label: 'Who We Are' },
+  { href: '#services', label: 'Our Work' },
+  { href: '#technology', label: 'Technology' },
+  { href: '#partners', label: 'Partners' },
   { href: '#contact', label: 'Contact' },
 ];
 
@@ -51,7 +53,7 @@ export function Navbar({ show = true }: NavbarProps) {
   if (!show) return null;
 
   return (
-    <nav className="navbar fixed top-0 w-full z-[999] transition-all duration-300">
+    <nav className="navbar fixed top-0 w-full transition-all duration-300" style={{ zIndex: 99998 }}>
       <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
           {/* Left side - WA text */}
@@ -77,7 +79,8 @@ export function Navbar({ show = true }: NavbarProps) {
 
           {/* Right side - Mobile Menu */}
           <button
-            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative z-[1000]"
+            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative"
+            style={{ zIndex: 100000 }}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -86,18 +89,35 @@ export function Navbar({ show = true }: NavbarProps) {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden fixed inset-0 z-[1001] bg-black/90 backdrop-blur-xl">
-            <div className="flex flex-col h-full justify-center items-center space-y-12 p-8">
+          <div 
+            className="md:hidden fixed inset-0 bg-black/90 backdrop-blur-xl"
+            style={{ 
+              zIndex: 99999,
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex flex-col justify-center items-center space-y-12 p-8 w-full h-full">
               {/* Close button */}
               <button
-                className="absolute top-8 right-8 p-2 text-white/90 hover:text-white transition-colors duration-300"
+                className="absolute top-8 right-8 p-2 text-white/90 hover:text-white transition-colors duration-300 z-10"
                 onClick={() => setIsOpen(false)}
+                style={{ zIndex: 100001 }}
               >
                 <X className="h-6 w-6" />
               </button>
 
-              {/* Menu items */}
-              <div className="space-y-8 text-center">
+              {/* Menu items - centered content */}
+              <div className="flex-1 flex flex-col justify-center items-center">
+                <div className="space-y-8 text-center">
                 {navItems.map((item, index) => (
                   <div key={item.href} className="overflow-hidden">
                     <button
@@ -115,6 +135,7 @@ export function Navbar({ show = true }: NavbarProps) {
                     </button>
                   </div>
                 ))}
+                </div>
               </div>
 
               {/* Bottom accent */}

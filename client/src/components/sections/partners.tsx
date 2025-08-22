@@ -1,0 +1,255 @@
+import { useGSAP } from '@/hooks/use-gsap';
+import { gsap } from '@/lib/gsap';
+import { ConnectedDots } from '@/components/ui/connected-dots';
+
+const partners = [
+  {
+    name: "Real.gr",
+    url: "https://www.real.gr",
+    imageUrl: "https://www.real.gr/wp-content/themes/realnews/images/realgr-logo.svg",
+    description: 'Prominent Greek news and media platform providing comprehensive coverage and digital solutions.'
+  },
+  {
+    name: "Instyle",
+    url: "https://www.instyle.gr",
+    imageUrl: "https://www.instyle.gr/wp-content/uploads/2022/05/Logo_InStyle-1.png",
+    description: 'Premium lifestyle and fashion brand delivering trendsetting content and experiences.'
+  },
+  {
+    name: "The Cars",
+    url: "https://www.thecars.gr",
+    imageUrl: "/thecars logo.png",
+    description: 'Automotive excellence and innovation driving the future of transportation.'
+  },
+  {
+    name: 'Real Player',
+    url: 'https://player.real.gr',
+    imageUrl: 'https://player.real.gr/wp-content/uploads/2024/06/Logo-e1718700920635.png',
+    description: 'Advanced media player and streaming solutions for digital content delivery.'
+  },
+  {
+    name: "Oloygeia.gr",
+    url: "https://oloygeia.gr",
+    imageUrl: "/oloygeia.logo.png",
+    description: 'Innovative healthcare solutions and digital wellness platform for modern living.'
+  },
+  {
+    name: "Enikos.gr",
+    url: "https://www.enikos.gr/",
+    imageUrl: "/enikos logo.png",
+    description: "Leading Greek news website offering coverage on a variety of topics"
+  }
+];
+
+export function Partners() {
+  const containerRef = useGSAP(() => {
+    // Animate section header
+    gsap.from('.partners-header', {
+      duration: 1.5,
+      y: 40,
+      opacity: 0,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: '.partners-section',
+        start: "top 75%"
+      }
+    });
+
+    gsap.from('.partners-subtitle', {
+      duration: 1.2,
+      y: 20,
+      opacity: 0,
+      ease: "power4.out",
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: '.partners-section',
+        start: "top 75%"
+      }
+    });
+
+    // Partner cards stagger animation
+    gsap.fromTo('.partner-card', 
+      {
+        y: 60,
+        opacity: 0
+      },
+      {
+        duration: 1.2,
+        y: 0,
+        opacity: 1,
+        stagger: 0.15,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: '.partners-grid',
+          start: "top 80%",
+          end: "bottom center",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+
+    // Hover effects for partner cards
+    gsap.utils.toArray('.partner-card').forEach((card: any) => {
+      const logo = card.querySelector('.partner-logo');
+      
+      card.addEventListener('mouseenter', () => {
+        gsap.to(card, { y: -8, scale: 1.02, duration: 0.4, ease: "power2.out" });
+        gsap.to(logo, { scale: 1.1, duration: 0.4, ease: "power2.out" });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
+        gsap.to(logo, { scale: 1, duration: 0.4, ease: "power2.out" });
+      });
+    });
+  });
+
+  return (
+    <>
+      {/* Minimal section separator */}
+      <div className="relative py-8">
+        <div className="h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent"></div>
+      </div>
+      
+      <section id="partners" className="partners-section py-24 relative z-10" ref={containerRef} style={{backgroundColor: 'hsl(0 0% 98%)'}}>
+        {/* Connected dots background */}
+        <ConnectedDots className="opacity-30" dotCount={20} connectionDistance={140} />
+      
+      <div className="container-fluid">
+        {/* Section Header */}
+        <div className="partners-header mb-20">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <div className="text-xs uppercase tracking-[0.2em] font-medium" style={{color: '#F68238'}}>
+              05
+            </div>
+            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[0.9] tracking-tight" style={{color: '#263226'}}>
+              Trusted
+              <br />
+              <span className="ml-8">Partners</span>
+            </h2>
+            <div className="w-24 h-px mx-auto" style={{backgroundColor: '#F68238'}}></div>
+            <p className="partners-subtitle text-lg font-light leading-relaxed max-w-2xl mx-auto" style={{color: '#263226'}}>
+              We collaborate with industry leaders and innovative companies to deliver exceptional results. 
+              Our partnerships drive mutual growth and technological excellence.
+            </p>
+          </div>
+        </div>
+
+        {/* Section divider */}
+        <div className="w-full h-px accent-line-orange mb-16"></div>
+
+        {/* Partners Grid */}
+        <div className="partners-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {partners.map((partner) => (
+            <a
+              key={partner.name}
+              href={partner.url}
+              target={partner.url.startsWith('http') ? "_blank" : "_self"}
+              rel={partner.url.startsWith('http') ? "noopener noreferrer" : undefined}
+              className="partner-card group relative p-8 transition-all duration-500 cursor-pointer block bg-white/40 backdrop-blur-sm rounded-xl border border-orange-500/20 hover:border-orange-500/40 hover:bg-white/60 hover:shadow-lg hover:shadow-orange-500/5"
+            >
+              {/* Partner Logo */}
+              <div className="flex items-center justify-center h-20 mb-6">
+                <div className="partner-logo w-full h-full flex items-center justify-center">
+                  <div className={`flex items-center justify-center ${
+                    partner.name === 'Real Player' ? 'bg-blue-900 rounded-lg p-3' : ''
+                  }`}>
+                    <img 
+                      src={partner.imageUrl} 
+                      alt={`${partner.name} logo`}
+                      className={`max-w-full max-h-full object-contain transition-all duration-300 opacity-100 ${
+                        partner.name === 'Oloygeia.gr' ? 'mix-blend-multiply' : ''
+                      }`}
+                      style={{ 
+                        maxWidth: partner.name === 'Real Player' ? '120px' : '140px',
+                        maxHeight: partner.name === 'Real Player' ? '45px' : '60px',
+                        opacity: 1,
+                        ...(partner.name === 'Real.gr' && { 
+                          minWidth: '100px',
+                          minHeight: '40px'
+                        })
+                      }}
+                      loading="eager"
+                      onLoad={() => {
+                        console.log(`${partner.name} logo loaded successfully from:`, partner.imageUrl);
+                      }}
+                      onError={(e) => {
+                        console.error(`${partner.name} logo failed to load from:`, partner.imageUrl);
+                        const img = e.target as HTMLImageElement;
+                        img.style.display = 'none';
+                        // Create fallback
+                        const fallback = document.createElement('div');
+                        fallback.className = 'w-full h-12 bg-orange-100 rounded flex items-center justify-center text-sm font-medium';
+                        fallback.style.color = '#263226';
+                        fallback.textContent = partner.name;
+                        if (img.parentNode) {
+                          img.parentNode.appendChild(fallback);
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Partner Name */}
+              <h3 className="text-xl font-medium text-center mb-4" style={{color: '#263226'}}>
+                {partner.name}
+              </h3>
+              
+              {/* Partner Description */}
+              <p className="text-sm font-light leading-relaxed text-center opacity-80" style={{color: '#263226'}}>
+                {partner.description}
+              </p>
+              
+              {/* Orange accent line */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-500/60 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-xl"></div>
+            </a>
+          ))}
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center mt-16">
+          <p className="text-base font-light mb-6" style={{color: '#263226'}}>
+            Interested in partnering with us?
+          </p>
+          <button 
+            className="inline-flex items-center px-8 py-3 rounded-full border font-medium text-sm transition-all duration-300 hover:scale-105"
+            style={{
+              borderColor: '#F68238',
+              color: '#263226',
+              backgroundColor: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#F68238';
+              e.currentTarget.style.color = '#263226';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#263226';
+            }}
+          >
+            Get In Touch
+            <svg 
+              className="ml-2 w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+        {/* Subtle section separator */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
+      </section>
+      
+      {/* Enhanced bottom separator */}
+      <div className="relative">
+        <div className="h-16 bg-gradient-to-b from-transparent to-orange-500/5"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent"></div>
+      </div>
+    </>
+  );
+}

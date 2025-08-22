@@ -103,7 +103,7 @@ export function Contact() {
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-6">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">03</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">06</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2.5rem,5vw,6rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
                     LET'S
