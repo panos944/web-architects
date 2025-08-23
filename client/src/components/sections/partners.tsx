@@ -7,31 +7,31 @@ const partners = [
     name: "Real.gr",
     url: "https://www.real.gr",
     imageUrl: "https://www.real.gr/wp-content/themes/realnews/images/realgr-logo.svg",
-    description: 'Prominent Greek news and media platform providing comprehensive coverage and digital solutions.'
+    description: 'Prominent Greek news and media platform providing comprehensive coverage.'
   },
   {
     name: "Instyle",
     url: "https://www.instyle.gr",
     imageUrl: "https://www.instyle.gr/wp-content/uploads/2022/05/Logo_InStyle-1.png",
-    description: 'Premium lifestyle and fashion brand delivering trendsetting content and experiences.'
+    description: 'Premium lifestyle and fashion news coverage website.'
   },
   {
     name: "The Cars",
     url: "https://www.thecars.gr",
     imageUrl: "/thecars logo.png",
-    description: 'Automotive excellence and innovation driving the future of transportation.'
+    description: 'Automotive coverage on all issues and areas.'
   },
   {
     name: 'Real Player',
     url: 'https://player.real.gr',
     imageUrl: 'https://player.real.gr/wp-content/uploads/2024/06/Logo-e1718700920635.png',
-    description: 'Advanced media player and streaming solutions for digital content delivery.'
+    description: 'Advanced media player for Real FM 97.8.'
   },
   {
     name: "Oloygeia.gr",
     url: "https://oloygeia.gr",
     imageUrl: "/oloygeia.logo.png",
-    description: 'Innovative healthcare solutions and digital wellness platform for modern living.'
+    description: 'Digital wellness platform and news for modern living.'
   },
   {
     name: "Enikos.gr",
