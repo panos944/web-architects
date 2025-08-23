@@ -222,7 +222,11 @@ export function Partners() {
             onClick={() => {
               const contactElement = document.querySelector('#contact');
               if (contactElement) {
-                contactElement.scrollIntoView({ behavior: 'smooth' });
+                gsap.to(window, {
+                  duration: 1.5,
+                  scrollTo: contactElement,
+                  ease: "power2.inOut"
+                });
               }
             }}
             onMouseEnter={(e) => {
