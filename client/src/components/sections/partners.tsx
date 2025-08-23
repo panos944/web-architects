@@ -42,6 +42,17 @@ const partners = [
 ];
 
 export function Partners() {
+  const handleNavClick = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      gsap.to(window, {
+        duration: 1.5,
+        scrollTo: element,
+        ease: "power2.inOut"
+      });
+    }
+  };
+
   const containerRef = useGSAP(() => {
     // Animate section header
     gsap.from('.partners-header', {
@@ -219,16 +230,7 @@ export function Partners() {
               color: '#263226',
               backgroundColor: 'transparent'
             }}
-            onClick={() => {
-              const contactElement = document.querySelector('#contact');
-              if (contactElement) {
-                gsap.to(window, {
-                  duration: 1.5,
-                  scrollTo: contactElement,
-                  ease: "power2.inOut"
-                });
-              }
-            }}
+            onClick={() => handleNavClick('#contact')}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#F68238';
               e.currentTarget.style.color = '#263226';
