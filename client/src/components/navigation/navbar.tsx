@@ -83,7 +83,7 @@ export function Navbar({ show = true }: NavbarProps) {
             style={{ zIndex: 100000 }}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <Menu className="h-5 w-5" />
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
@@ -106,15 +106,6 @@ export function Navbar({ show = true }: NavbarProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col justify-center items-center space-y-12 p-8 w-full h-full">
-              {/* Close button */}
-              <button
-                className="absolute top-8 right-8 p-2 text-white/90 hover:text-white transition-colors duration-300 z-10"
-                onClick={() => setIsOpen(false)}
-                style={{ zIndex: 100001 }}
-              >
-                <X className="h-6 w-6" />
-              </button>
-
               {/* Menu items - centered content */}
               <div className="flex-1 flex flex-col justify-center items-center">
                 <div className="space-y-8 text-center">
