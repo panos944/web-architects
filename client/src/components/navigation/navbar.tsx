@@ -40,12 +40,17 @@ export function Navbar({ show = true }: NavbarProps) {
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
-    const element = document.querySelector(href);
+    const targetId = href.slice(1); // Remove the # to get the ID
+    const element = document.getElementById(targetId);
+    
     if (element) {
-      gsap.to(window, {
-        duration: 1.5,
-        scrollTo: element,
-        ease: "power2.inOut"
+      // Calculate position with offset for navbar
+      const elementTop = element.offsetTop - 80;
+      
+      // Smooth scroll to the element
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
       });
     }
   };

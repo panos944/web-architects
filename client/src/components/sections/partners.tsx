@@ -42,16 +42,6 @@ const partners = [
 ];
 
 export function Partners() {
-  const handleNavClick = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      gsap.to(window, {
-        duration: 1.5,
-        scrollTo: element,
-        ease: "power2.inOut"
-      });
-    }
-  };
 
   const containerRef = useGSAP(() => {
     // Animate section header
@@ -117,9 +107,48 @@ export function Partners() {
 
   return (
     <>
-      {/* Minimal section separator */}
-      <div className="relative py-8">
-        <div className="h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent"></div>
+      {/* Prominent section separator between 03 and 04 */}
+      <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
+        {/* Gradient overlay for smooth transition */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--background))] via-[hsl(210_10%_12%)] to-[hsl(0_0%_98%)]"></div>
+        
+        {/* Central divider element */}
+        <div className="relative z-10 container-fluid">
+          <div className="text-center space-y-8">
+            {/* Section transition indicator */}
+            <div className="flex items-center justify-center space-x-6">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
+              <div className="flex space-x-3">
+                <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
+              </div>
+              <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
+            </div>
+            
+            {/* Section number transition */}
+            <div className="space-y-4">
+              <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
+                03 → 04
+              </div>
+              <div className="text-sm text-white/60 font-light tracking-wide">
+                Technology → Partners
+              </div>
+            </div>
+            
+            {/* Decorative elements */}
+            <div className="flex justify-center">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Animated particles effect */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
       </div>
       
       <section id="partners" className="partners-section py-24 relative z-10" ref={containerRef} style={{backgroundColor: 'hsl(0 0% 98%)'}}>
@@ -131,7 +160,7 @@ export function Partners() {
         <div className="partners-header mb-20">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="text-xs uppercase tracking-[0.2em] font-medium" style={{color: '#F68238'}}>
-              05
+              04
             </div>
             <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[0.9] tracking-tight" style={{color: '#263226'}}>
               Trusted
@@ -218,49 +247,51 @@ export function Partners() {
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <p className="text-base font-light mb-6" style={{color: '#263226'}}>
-            Interested in partnering with us?
-          </p>
-          <button 
-            className="inline-flex items-center px-8 py-3 rounded-full border font-medium text-sm transition-all duration-300 hover:scale-105"
-            style={{
-              borderColor: '#F68238',
-              color: '#263226',
-              backgroundColor: 'transparent'
-            }}
-            onClick={() => handleNavClick('#contact')}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#F68238';
-              e.currentTarget.style.color = '#263226';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = '#263226';
-            }}
-          >
-            Get In Touch
-            <svg 
-              className="ml-2 w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </button>
-        </div>
       </div>
-      
-        {/* Subtle section separator */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/10 to-transparent"></div>
       </section>
       
-      {/* Enhanced bottom separator */}
-      <div className="relative">
-        <div className="h-16 bg-gradient-to-b from-transparent to-orange-500/5"></div>
-        <div className="h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent"></div>
+      {/* Prominent section separator between 04 and 05 */}
+      <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
+        {/* Gradient overlay for smooth transition */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_98%)] via-[hsl(210_10%_12%)] to-[hsl(var(--card))]"></div>
+        
+        {/* Central divider element */}
+        <div className="relative z-10 container-fluid">
+          <div className="text-center space-y-8">
+            {/* Section transition indicator */}
+            <div className="flex items-center justify-center space-x-6">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
+              <div className="flex space-x-3">
+                <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
+              </div>
+              <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
+            </div>
+            
+            {/* Section number transition */}
+            <div className="space-y-4">
+              <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
+                04 → 05
+              </div>
+              <div className="text-sm text-white/60 font-light tracking-wide">
+                Partners → Contact
+              </div>
+            </div>
+            
+            {/* Decorative elements */}
+            <div className="flex justify-center">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Animated particles effect */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
       </div>
     </>
   );

@@ -94,6 +94,7 @@ export function About() {
   }, []);
 
   return (
+    <>
     <section id="about" className="py-24 bg-card relative z-10" ref={containerRef}>
       {/* Connected dots background */}
       <ConnectedDots className="opacity-40" dotCount={25} connectionDistance={160} />
@@ -104,7 +105,7 @@ export function About() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">02</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">01</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
                     WHO
@@ -225,8 +226,51 @@ export function About() {
         </div>
       </div>
       
-      {/* Subtle section separator */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
+    
+    {/* Prominent section separator between 01 and 02 */}
+    <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
+      {/* Gradient overlay for smooth transition */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--card))] via-[hsl(210_10%_12%)] to-[hsl(var(--card))]"></div>
+      
+      {/* Central divider element */}
+      <div className="relative z-10 container-fluid">
+        <div className="text-center space-y-8">
+          {/* Section transition indicator */}
+          <div className="flex items-center justify-center space-x-6">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
+            <div className="flex space-x-3">
+              <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
+              <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
+              <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
+            </div>
+            <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
+          </div>
+          
+          {/* Section number transition */}
+          <div className="space-y-4">
+            <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
+              01 → 02
+            </div>
+            <div className="text-sm text-white/60 font-light tracking-wide">
+              About → Services
+            </div>
+          </div>
+          
+          {/* Decorative elements */}
+          <div className="flex justify-center">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Animated particles effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+      </div>
+    </div>
+    </>
   );
 }

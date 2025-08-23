@@ -143,8 +143,8 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               {/* Experimental text arrangement */}
               <div className="hidden lg:grid grid-cols-3 gap-8 mt-16 hero-subtitle">
                 <div className="col-span-1 space-y-4">
-                  <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>01</div>
-                  <div className={`text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>DIGITAL</div>
+                  <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}></div>
+                  <div className={`text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}></div>
                 </div>
                 <div className="col-span-2 space-y-2">
                   <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
@@ -189,8 +189,8 @@ export function Hero({ onAnimationComplete }: HeroProps) {
 
         {/* Mobile 01 and DIGITAL elements positioned bottom right */}
         <div className="lg:hidden absolute bottom-20 right-8 space-y-2 hero-mobile-digital">
-          <div className={`text-xs uppercase tracking-[0.2em] text-right ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>01</div>
-          <div className={`text-sm font-medium text-right ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>DIGITAL</div>
+          <div className={`text-xs uppercase tracking-[0.2em] text-right ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}></div>
+          <div className={`text-sm font-medium text-right ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}></div>
         </div>
         
         {/* Bottom navigation hint */}

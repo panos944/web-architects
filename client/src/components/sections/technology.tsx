@@ -94,6 +94,7 @@ export function Technology() {
   });
 
   return (
+    <>
     <section id="approach" className="py-24 bg-background relative z-10" ref={containerRef}>
       {/* Connected dots background */}
       <ConnectedDots className="opacity-50" dotCount={30} connectionDistance={170} />
@@ -104,7 +105,7 @@ export function Technology() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">04</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">03</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
                     OUR
@@ -217,8 +218,7 @@ export function Technology() {
         </div>
       </div>
       
-      {/* Subtle section separator */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
     </section>
+    </>
   );
 }
