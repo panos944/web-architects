@@ -7,7 +7,7 @@ const experiences = [
     number: '1',
     title: 'Digital\nStrategy',
     description: 'We develop tailored strategies that act as a clear blueprint for success, ensuring every decision moves you closer to your goals. \n\nFrom in-depth market research to precise performance benchmarks, every phase is designed to maximise clarity, accelerate growth, and adapt to evolving opportunities. \n\nOur approach blends analytical insight with creative foresight, giving you a path that is both strategic and adaptable.',
-    image: '/strategy.mp4'
+    image: '/Neon_Strategy_Sign_Flashes_On_Off.mp4'
   },
   {
     number: '2', 
