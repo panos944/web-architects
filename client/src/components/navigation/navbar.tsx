@@ -83,7 +83,7 @@ export function Navbar({ show = true }: NavbarProps) {
             style={{ zIndex: 100000 }}
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Menu className="h-5 w-5" />
           </button>
         </div>
 

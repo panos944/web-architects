@@ -219,6 +219,12 @@ export function Partners() {
               color: '#263226',
               backgroundColor: 'transparent'
             }}
+            onClick={() => {
+              const contactElement = document.querySelector('#contact');
+              if (contactElement) {
+                contactElement.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#F68238';
               e.currentTarget.style.color = '#263226';
