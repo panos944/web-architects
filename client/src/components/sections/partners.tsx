@@ -132,7 +132,7 @@ export function Partners() {
                 03 → 04
               </div>
               <div className="text-sm text-white/60 font-light tracking-wide">
-                Technology → Partners
+                Technology → Projects
               </div>
             </div>
             
@@ -163,9 +163,9 @@ export function Partners() {
               04
             </div>
             <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[0.9] tracking-tight" style={{color: '#263226'}}>
-              Trusted
-              <br />
-              <span className="ml-8">Partners</span>
+              Our
+              <br/>
+              <span className="ml-8">Projects</span>
             </h2>
             <div className="w-24 h-px mx-auto" style={{backgroundColor: '#F68238'}}></div>
             <p className="partners-subtitle text-lg font-light leading-relaxed max-w-2xl mx-auto" style={{color: '#263226'}}>
