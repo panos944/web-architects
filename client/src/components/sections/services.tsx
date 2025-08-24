@@ -92,7 +92,7 @@ export function Services() {
 
   return (
     <>
-    <section id="experience" className="py-24 relative z-10" ref={containerRef} style={{backgroundColor: '#FFA366'}}>
+    <section id="services" className="py-24 relative z-10" ref={containerRef} style={{backgroundColor: '#FFA366'}}>
       {/* Connected dots background */}
       <ConnectedDots className="opacity-40" dotCount={25} connectionDistance={160} />
       <div className="container-fluid">

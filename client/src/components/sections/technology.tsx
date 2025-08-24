@@ -95,7 +95,7 @@ export function Technology() {
 
   return (
     <>
-    <section id="approach" className="py-24 bg-background relative z-10" ref={containerRef}>
+    <section id="technology" className="py-24 bg-background relative z-10" ref={containerRef}>
       {/* Connected dots background */}
       <ConnectedDots className="opacity-50" dotCount={30} connectionDistance={170} />
       <div className="container-fluid">
