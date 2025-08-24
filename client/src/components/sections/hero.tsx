@@ -5,6 +5,7 @@ import { gsap } from '@/lib/gsap';
 import { ChevronDown } from 'lucide-react';
 import { CodeToScenery } from '@/components/ui/code-to-scenery';
 import { DustParticles } from '@/components/ui/dust-particles';
+import { useLanguage } from '@/lib/i18n';
 
 interface HeroProps {
   onAnimationComplete?: () => void;
@@ -14,6 +15,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
   const [hasImageBackground, setHasImageBackground] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const { t } = useLanguage();
 
   // Smooth content reveal animation
   useEffect(() => {
@@ -132,11 +134,11 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               {/* Fragmented title */}
               <div className="relative hero-title">
                 <div className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
-                  <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>WEB</div>
-                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>WEB</div>
+                  <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>{t('hero.web')}</div>
+                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>{t('hero.web')}</div>
                 </div>
                 <div className="text-[clamp(2rem,5vw,6rem)] font-medium leading-[0.9] ml-8 -mt-2 tracking-wider">
-                  <span className="text-gradient drop-shadow-lg font-semibold">ARCHITECTS</span>
+                  <span className="text-gradient drop-shadow-lg font-semibold">{t('hero.architects')}</span>
                 </div>
               </div>
               
@@ -148,7 +150,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
                 </div>
                 <div className="col-span-2 space-y-2">
                   <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
-                    Creating digital experiences that push boundaries
+                    {t('hero.tagline')}
                   </div>
                 </div>
               </div>
@@ -156,7 +158,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               {/* Mobile tagline */}
               <div className="lg:hidden mt-8 hero-subtitle">
                 <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
-                  Creating digital experiences that push boundaries
+                  {t('hero.tagline')}
                 </div>
               </div>
             </div>
@@ -167,11 +169,11 @@ export function Hero({ onAnimationComplete }: HeroProps) {
             <div className="space-y-6">
               <div className="w-16 h-px bg-primary/40"></div>
               <div className="space-y-4">
-                <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>SERVICES</div>
+                <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>{t('hero.services')}</div>
                 <div className={`space-y-1 text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>
-                  <div>Web & Mobile Applications</div>
-                  <div>Digital Design</div>
-                  <div>Creative Development</div>
+                  <div>{t('hero.web-mobile')}</div>
+                  <div>{t('hero.digital-design')}</div>
+                  <div>{t('hero.creative-dev')}</div>
                 </div>
               </div>
               
@@ -180,7 +182,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
                   className={`${hasImageBackground ? 'bg-white text-black hover:bg-white/90' : 'bg-foreground text-background hover:bg-foreground/90'} px-8 py-3 text-sm font-medium tracking-wide transition-all duration-300 shadow-lg`}
                   onClick={scrollToNext}
                 >
-                  View Work
+                  {t('hero.view-work')}
                 </Button>
               </div>
             </div>
@@ -199,7 +201,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
             onClick={scrollToNext}
             className={`flex items-center space-x-2 ${hasImageBackground ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} transition-colors duration-300 group drop-shadow`}
           >
-            <span className="text-xs font-medium tracking-wide uppercase">Explore</span>
+            <span className="text-xs font-medium tracking-wide uppercase">{t('hero.explore')}</span>
             <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
           </button>
         </div>

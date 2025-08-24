@@ -12,10 +12,12 @@ import { insertContactSchema, type InsertContact } from '@shared/schema';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ConnectedDots } from '@/components/ui/connected-dots';
+import { useLanguage } from '@/lib/i18n';
 
 export function Contact() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
 
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
@@ -33,15 +35,15 @@ export function Contact() {
     },
     onSuccess: () => {
       toast({
-        title: 'Message sent successfully!',
-        description: 'We\'ll get back to you within 24 hours.',
+        title: t('contact.success-title'),
+        description: t('contact.success-description'),
       });
       form.reset();
       queryClient.invalidateQueries({ queryKey: ['/api/contact'] });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Error sending message',
+        title: t('contact.error'),
         description: error.message,
         variant: 'destructive',
       });
@@ -103,13 +105,13 @@ export function Contact() {
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <div className="lg:col-span-6">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">06</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t('contact.number')}</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2.5rem,5vw,6rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
-                    LET'S
+                    {t('contact.lets')}
                   </div>
                   <div className="text-[clamp(2.5rem,5vw,6rem)] font-light leading-[0.9] tracking-tight text-gradient ml-12 -mt-4">
-                    CONNECT
+                    {t('contact.connect')}
                   </div>
                 </div>
               </div>
@@ -118,7 +120,7 @@ export function Contact() {
             <div className="lg:col-span-6">
               <div className="max-w-lg space-y-6">
                 <p className="text-base font-light text-foreground/70 leading-relaxed">
-                  Ready to explore new possibilities? We'd love to hear about your project and discuss how we can bring your vision to life.
+                  {t('contact.description')}
                 </p>
                 <div className="w-24 h-px bg-primary/40"></div>
               </div>
@@ -138,11 +140,11 @@ export function Contact() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Name</FormLabel>
+                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.name')}</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
-                            placeholder="Your name"
+                            placeholder={t('contact.name-placeholder')}
                             className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:border-primary"
                           />
                         </FormControl>
@@ -156,12 +158,12 @@ export function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Email</FormLabel>
+                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.email')}</FormLabel>
                         <FormControl>
                           <Input 
                             {...field} 
                             type="email"
-                            placeholder="your@email.com"
+                            placeholder={t('contact.email-placeholder')}
                             className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:border-primary"
                           />
                         </FormControl>
@@ -176,18 +178,18 @@ export function Contact() {
                   name="projectType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Project Type</FormLabel>
+                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.project-type')}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light focus:ring-0 focus:border-primary">
-                            <SelectValue placeholder="Select a service" />
+                            <SelectValue placeholder={t('contact.select-service')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="bg-card border-border">
-                          <SelectItem value="strategy">Digital Strategy</SelectItem>
-                          <SelectItem value="design">Interface Design</SelectItem>
-                          <SelectItem value="development">Development</SelectItem>
-                          <SelectItem value="complete">Complete Project</SelectItem>
+                          <SelectItem value="strategy">{t('contact.service-strategy')}</SelectItem>
+                          <SelectItem value="design">{t('contact.service-design')}</SelectItem>
+                          <SelectItem value="development">{t('contact.service-development')}</SelectItem>
+                          <SelectItem value="complete">{t('contact.service-complete')}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -200,11 +202,11 @@ export function Contact() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">Message</FormLabel>
+                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.message')}</FormLabel>
                       <FormControl>
                         <Textarea 
                           {...field} 
-                          placeholder="Tell us about your project and vision..."
+                          placeholder={t('contact.message-placeholder')}
                           rows={4}
                           className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 resize-none focus-visible:ring-0 focus-visible:border-primary"
                         />
@@ -220,7 +222,7 @@ export function Contact() {
                     disabled={contactMutation.isPending}
                     className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 px-12 py-6 text-lg font-medium tracking-wide transition-all duration-300 hover:scale-105 shadow-lg"
                   >
-                    {contactMutation.isPending ? 'Sending...' : 'Send Message'}
+                    {contactMutation.isPending ? t('contact.sending') : t('contact.send')}
                   </Button>
                 </div>
 

@@ -2,28 +2,32 @@ import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
 import { ConnectedDots } from '@/components/ui/connected-dots';
+import { useLanguage } from '@/lib/i18n';
 
-const values = [
+const getValues = (t: (key: string) => string) => [
   {
     number: '01',
-    title: 'Strategy & Vision',
-    description: 'We start with a deep understanding of your business objectives, translating them into digital strategies that accelerate growth and strengthen brand presence.',
+    title: t('about.value1.title'),
+    description: t('about.value1.description'),
   },
   {
     number: '02',
-    title: 'Design Excellence',
-    description: 'We design intuitive, visually striking interfaces that connect with your audience and redefine the standards of modern web design.',
+    title: t('about.value2.title'),
+    description: t('about.value2.description'),
   },
   {
     number: '03',
-    title: 'Technical Mastery',
-    description: 'From responsive frontends to scalable backends, we apply the latest technologies to deliver secure, high-performance digital platforms tailored to your needs.',
+    title: t('about.value3.title'),
+    description: t('about.value3.description'),
   },
 ];
 
 export function About() {
   const projectsRef = useRef<HTMLDivElement>(null);
   const satisfactionRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+  
+  const values = getValues(t);
 
   const containerRef = useGSAP(() => {
     gsap.from('.about-title', {
@@ -105,13 +109,13 @@ export function About() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">01</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t('about.number')}</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
-                    WHO
+                    {t('about.who')}
                   </div>
                   <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight text-gradient ml-8">
-                    WE ARE
+                    {t('about.we-are')}
                   </div>
                 </div>
               </div>
@@ -121,7 +125,7 @@ export function About() {
               <div className="max-w-2xl space-y-6">
                 <div className="space-y-6">
                   <p className="text-lg font-light text-foreground/70 leading-relaxed">
-                    At <strong>Web Architects</strong>, we craft digital products where design precision meets technical excellence.
+                    <span dangerouslySetInnerHTML={{ __html: t('about.intro') }} />
                   </p>
                   <div className="flex items-center justify-center gap-2 sm:gap-4 w-full">
                     <div className="flex-1 max-w-[60px] h-px bg-brand-orange"></div>
@@ -131,7 +135,7 @@ export function About() {
                         viewBox="0 0 256 256" 
                         className="w-full h-full"
                         role="img" 
-                        aria-label="Web Architects Logo"
+                        aria-label={t('footer.logo-alt')}
                       >
                         <circle cx="128" cy="128" r="120" fill="#263226"/>
                         <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
@@ -154,15 +158,13 @@ export function About() {
           <div className="about-content space-y-8">
             <div className="space-y-6">
               <h3 className="text-2xl font-light text-foreground leading-tight">
-                Building With Purpose
+                {t('about.building-purpose')}
               </h3>
               <p className="text-base font-light text-foreground/60 leading-relaxed">
-                Rooted in the principle that form and function are inseparable, 
-                we treat each project as a unique opportunity to solve complex challenges with clarity and innovation.
+                {t('about.description1')}
               </p>
               <p className="text-base font-light text-foreground/60 leading-relaxed">
-                  By merging strategic insight with advanced engineering, we ensure every application we create is visually distinctive, 
-                  technically robust, and optimized to perform flawlessly across devices and platforms.
+                  {t('about.description2')}
               </p>
             </div>
             
@@ -250,10 +252,10 @@ export function About() {
           {/* Section number transition */}
           <div className="space-y-4">
             <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-              01 → 02
+              {t('about.nav-next')}
             </div>
             <div className="text-sm text-white/60 font-light tracking-wide">
-              About → Services
+              {t('about.nav-text')}
             </div>
           </div>
           

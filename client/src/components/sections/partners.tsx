@@ -1,47 +1,50 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ConnectedDots } from '@/components/ui/connected-dots';
+import { useLanguage } from '@/lib/i18n';
 
-const partners = [
+const getPartners = (t: (key: string) => string) => [
   {
     name: "Real.gr",
     url: "https://www.real.gr",
     imageUrl: "https://www.real.gr/wp-content/themes/realnews/images/realgr-logo.svg",
-    description: 'Prominent Greek news and media platform providing comprehensive coverage.'
+    description: t('partners.enikos.description')
   },
   {
     name: "Instyle",
     url: "https://www.instyle.gr",
     imageUrl: "https://www.instyle.gr/wp-content/uploads/2022/05/Logo_InStyle-1.png",
-    description: 'Premium lifestyle and fashion news coverage website.'
+    description: t('partners.oloygeia.description')
   },
   {
     name: "The Cars",
     url: "https://www.thecars.gr",
     imageUrl: "/thecars logo.png",
-    description: 'Automotive coverage on all issues and areas.'
+    description: t('partners.thecars.description')
   },
   {
     name: 'Real Player',
     url: 'https://player.real.gr',
     imageUrl: 'https://player.real.gr/wp-content/uploads/2024/06/Logo-e1718700920635.png',
-    description: 'Advanced media player for Real FM 97.8.'
+    description: t('partners.realfm.description')
   },
   {
     name: "Oloygeia.gr",
     url: "https://oloygeia.gr",
     imageUrl: "/oloygeia.logo.png",
-    description: 'Digital wellness platform and news for modern living.'
+    description: t('partners.wellness.description')
   },
   {
     name: "Enikos.gr",
     url: "https://www.enikos.gr/",
     imageUrl: "/enikos logo.png",
-    description: "Leading Greek news website offering coverage on a variety of topics"
+    description: t('partners.news.description')
   }
 ];
 
 export function Partners() {
+  const { t } = useLanguage();
+  const partners = getPartners(t);
 
   const containerRef = useGSAP(() => {
     // Animate section header
@@ -129,10 +132,10 @@ export function Partners() {
             {/* Section number transition */}
             <div className="space-y-4">
               <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-                03 → 04
+                {t('partners.nav-prev')}
               </div>
               <div className="text-sm text-white/60 font-light tracking-wide">
-                Technology → Projects
+                {t('partners.nav-text-prev')}
               </div>
             </div>
             
@@ -160,17 +163,16 @@ export function Partners() {
         <div className="partners-header mb-20">
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="text-xs uppercase tracking-[0.2em] font-medium" style={{color: '#F68238'}}>
-              04
+              {t('partners.number')}
             </div>
             <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[0.9] tracking-tight" style={{color: '#263226'}}>
-              Our
+              {t('partners.our')}
               <br/>
-              <span className="ml-8">Projects</span>
+              <span className="ml-8">{t('partners.projects')}</span>
             </h2>
             <div className="w-24 h-px mx-auto" style={{backgroundColor: '#F68238'}}></div>
             <p className="partners-subtitle text-lg font-light leading-relaxed max-w-2xl mx-auto" style={{color: '#263226'}}>
-              We collaborate with industry leaders and innovative companies to deliver exceptional results. 
-              Our partnerships drive mutual growth and technological excellence.
+              {t('partners.description')}
             </p>
           </div>
         </div>
@@ -272,10 +274,10 @@ export function Partners() {
             {/* Section number transition */}
             <div className="space-y-4">
               <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-                04 → 05
+                {t('partners.nav-next')}
               </div>
               <div className="text-sm text-white/60 font-light tracking-wide">
-                Partners → Contact
+                {t('partners.nav-text')}
               </div>
             </div>
             

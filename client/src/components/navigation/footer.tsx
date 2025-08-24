@@ -1,7 +1,10 @@
 import { ConnectedDots } from '@/components/ui/connected-dots';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n';
 
 export function Footer() {
+  const { t } = useLanguage();
+  
   return (
     <footer className="relative bg-gradient-to-br from-[#263226] via-[#1a251a] to-[#263226] overflow-hidden">
       {/* Elegant background pattern */}
@@ -29,7 +32,7 @@ export function Footer() {
                     viewBox="0 0 256 256" 
                     className="w-full h-full"
                     role="img" 
-                    aria-label="Web Architects Logo"
+                    aria-label={t('footer.logo-alt')}
                   >
                     <circle cx="128" cy="128" r="120" fill="#263226"/>
                     <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
@@ -40,16 +43,15 @@ export function Footer() {
                   </svg>
                 </div>
                 <div className="text-4xl font-extralight tracking-[0.15em] text-white">
-                  WEB
+                  {t('footer.web')}
                   <div className="text-3xl font-light text-brand-orange ml-8 -mt-2">
-                    ARCHITECTS
+                    {t('footer.architects')}
                   </div>
                 </div>
               </div>
               <div className="w-16 h-px bg-brand-orange"></div>
               <p className="text-lg font-light text-white/70 max-w-lg leading-relaxed">
-                Crafting exceptional digital experiences where precision meets creativity. 
-                Every pixel, every interaction, every moment - designed with purpose.
+                {t('footer.description')}
               </p>
             </div>
           </div>
@@ -58,7 +60,7 @@ export function Footer() {
           <div className="lg:col-span-4 lg:col-start-8 space-y-8">
             <div className="space-y-6">
               <h3 className="text-sm font-medium text-white/60 tracking-[0.2em] uppercase">
-                Let's Create Together
+                {t('footer.lets-create')}
               </h3>
               
               <div className="space-y-6">
@@ -70,7 +72,7 @@ export function Footer() {
                     <Mail className="h-4 w-4" />
                   </div>
                   <div>
-                    <div className="text-sm font-light text-white/60">Email</div>
+                    <div className="text-sm font-light text-white/60">{t('footer.email')}</div>
                     <div className="font-light">wwwebarchitects@gmail.com</div>
                   </div>
                 </a>
@@ -80,7 +82,7 @@ export function Footer() {
                     <Phone className="h-4 w-4" />
                   </div>
                   <div>
-                    <div className="text-sm font-light text-white/60">Phone</div>
+                    <div className="text-sm font-light text-white/60">{t('footer.phone')}</div>
                     <div className="font-light">+30 6986615255</div>
                   </div>
                 </div>
@@ -90,8 +92,8 @@ export function Footer() {
                     <MapPin className="h-4 w-4" />
                   </div>
                   <div>
-                    <div className="text-sm font-light text-white/60">Location</div>
-                    <div className="font-light">Athens, Greece</div>
+                    <div className="text-sm font-light text-white/60">{t('footer.location')}</div>
+                    <div className="font-light">{t('footer.location-city')}</div>
                   </div>
                 </div>
               </div>
@@ -103,11 +105,11 @@ export function Footer() {
         <div className="mt-20 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm font-light text-white/50">
-              © 2025 Web Architects. All rights reserved.
+              {t('footer.copyright')}
             </div>
             <div className="flex items-center space-x-8">
               <div className="text-xs font-light text-white/40 tracking-wider uppercase">
-                Designed & Developed in Athens
+                {t('footer.designed')}
               </div>
             </div>
           </div>

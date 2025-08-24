@@ -2,8 +2,10 @@ import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ImageReveal } from '@/components/ui/image-reveal';
 import { ConnectedDots } from '@/components/ui/connected-dots';
+import { useLanguage } from '@/lib/i18n';
 
 export function Technology() {
+  const { t } = useLanguage();
   const containerRef = useGSAP(() => {
     // Section title animation  
     gsap.from('.approach-title', {
@@ -105,13 +107,13 @@ export function Technology() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">03</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t('technology.number')}</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
-                    OUR
+                    {t('technology.our')}
                   </div>
                   <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight text-gradient ml-8">
-                    APPROACH
+                    {t('technology.approach')}
                   </div>
                 </div>
               </div>
@@ -121,12 +123,11 @@ export function Technology() {
               <div className="max-w-2xl space-y-6">
                 <div className="space-y-4">
                   <p className="text-lg font-light text-foreground/70 leading-relaxed">
-                    Exceptional results are born from the intersection of 
-                    strategic thinking, creative vision, and technical precision.
+                    {t('technology.description')}
                   </p>
                   <div className="w-24 h-px bg-brand-orange"></div>
                   <p className="text-lg font-light text-foreground/70 leading-relaxed">
-                    <strong>Every pixel counts.</strong>
+                    <span dangerouslySetInnerHTML={{ __html: t('technology.every-pixel') }} />
                   </p>
                 </div>
               </div>
@@ -141,18 +142,15 @@ export function Technology() {
           <div className="lg:col-span-2 space-y-12">
             <div className="space-y-8">
               <h3 className="text-3xl md:text-4xl font-light leading-tight">
-                Thoughtful design meets 
-                <span className="text-gradient"> technical excellence</span>
+                <span dangerouslySetInnerHTML={{ __html: t('technology.excellence') }} />
               </h3>
               
               <div className="space-y-6 text-lg font-light text-muted-foreground leading-relaxed">
                 <p>
-                 Every project begins with understanding—your goals, your users, and your challenges. 
-                 From this foundation, we create work that is purposeful, refined, and built to last.
+                 {t('technology.process1')}
                 </p>
                 <p>
-                  As in everything we do, our approach reflects the same precision, clarity, and commitment that define who we are. 
-                  We stay involved beyond launch, ensuring your platform continues to evolve, adapt, and perform in a changing digital landscape.
+                  {t('technology.process2')}
                 </p>
               </div>
             </div>
@@ -162,15 +160,15 @@ export function Technology() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
-                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Research & Discovery</span>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">{t('technology.research')}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-accent rounded-full"></div>
-                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Design & Prototype</span>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">{t('technology.design')}</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
-                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">Develop & Deploy</span>
+                  <span className="text-sm font-light tracking-wide text-muted-foreground uppercase">{t('technology.develop')}</span>
                 </div>
               </div>
             </div>

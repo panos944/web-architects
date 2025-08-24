@@ -1,29 +1,32 @@
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ConnectedDots } from '@/components/ui/connected-dots';
+import { useLanguage } from '@/lib/i18n';
 
-const experiences = [
+const getExperiences = (t: (key: string) => string) => [
   {
     number: '1',
-    title: 'Digital\nStrategy',
-    description: 'We develop tailored strategies that act as a clear blueprint for success, ensuring every decision moves you closer to your goals. \n\nFrom in-depth market research to precise performance benchmarks, every phase is designed to maximise clarity, accelerate growth, and adapt to evolving opportunities. \n\nOur approach blends analytical insight with creative foresight, giving you a path that is both strategic and adaptable.',
+    title: t('services.strategy.title'),
+    description: t('services.strategy.description'),
     image: '/Neon_Strategy_Sign_Flashes_On_Off.mp4'
   },
   {
     number: '2', 
-    title: 'Interface\nDesign',
-    description: 'We design interfaces that go beyond aesthetics. Every element is purposeful, every transition smooth, and every detail aligned with your brand’s personality.\n\nFrom the first click to the final interaction, our goal is to create intuitive pathways that guide users naturally. \n\nEvery decision is made to reinforce your identity, streamline navigation, and deliver a sense of ease that keeps people engaged and connected.',
+    title: t('services.design.title'),
+    description: t('services.design.description'),
     image: '/pear.mp4'
   },
   {
     number: '3',
-    title: 'Development\nExcellence',  
-    description: 'We engineer platforms with the future in mind, solutions that are not only fast and reliable today but also flexible enough to evolve with your business.\n\nBy combining modern frameworks with time-tested development practices, we create architectures that can handle growth without compromising performance.\n\nEvery build is fortified with robust security measures, optimized for efficiency, and designed to adapt to new technologies, ensuring your product remains relevant and resilient for years to come.',
+    title: t('services.development.title'),
+    description: t('services.development.description'),
     image: '/fields.mp4'
   }
 ];
 
 export function Services() {
+  const { t } = useLanguage();
+  const experiences = getExperiences(t);
   const containerRef = useGSAP(() => {
     // Animate hero image elements
     gsap.from('.hero-accent-line', {
@@ -102,13 +105,13 @@ export function Services() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-4">
               <div className="space-y-6">
-                <div className="text-xs uppercase tracking-[0.2em]" style={{color: '#263226'}}>02</div>
+                <div className="text-xs uppercase tracking-[0.2em]" style={{color: '#263226'}}>{t('services.number')}</div>
                 <div className="space-y-2">
                   <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight" style={{color: '#263226'}}>
-                    OUR
+                    {t('services.our')}
                   </div>
                   <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight ml-8" style={{color: '#263226'}}>
-                    WORK
+                    {t('services.work')}
                   </div>
                 </div>
               </div>
@@ -117,8 +120,7 @@ export function Services() {
             <div className="lg:col-span-8">
               <div className="max-w-2xl space-y-6">
                 <p className="text-lg font-light leading-relaxed" style={{color: '#263226'}}>
-                  We believe in creating digital products that are both functionally excellent and emotionally resonant. 
-                  Our process combines strategic thinking with creative exploration.
+                  {t('services.description')}
                 </p>
                 <div className="w-24 h-px" style={{backgroundColor: '#263226'}}></div>
               </div>
@@ -236,10 +238,10 @@ export function Services() {
           {/* Section number transition */}
           <div className="space-y-4">
             <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-              02 → 03
+              {t('services.nav-next')}
             </div>
             <div className="text-sm text-white/60 font-light tracking-wide">
-              Services → Technology
+              {t('services.nav-text')}
             </div>
           </div>
           

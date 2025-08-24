@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
+import { useLanguage } from '@/lib/i18n';
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
-const navItems = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'Who We Are' },
-  { href: '#services', label: 'Our Work' },
-  { href: '#technology', label: 'Technology' },
-  { href: '#partners', label: 'Partners' },
-  { href: '#contact', label: 'Contact' },
+const getNavItems = (t: (key: string) => string) => [
+  { href: '#home', label: t('nav.home') },
+  { href: '#about', label: t('nav.who-we-are') },
+  { href: '#services', label: t('nav.our-work') },
+  { href: '#technology', label: t('nav.technology') },
+  { href: '#partners', label: t('nav.partners') },
+  { href: '#contact', label: t('nav.contact') },
 ];
 
 interface NavbarProps {
@@ -18,6 +20,9 @@ interface NavbarProps {
 export function Navbar({ show = true }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { t } = useLanguage();
+  
+  const navItems = getNavItems(t);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,7 +75,7 @@ export function Navbar({ show = true }: NavbarProps) {
           </button>
           
           {/* Center - Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-12">
+          <div className="hidden md:flex items-center space-x-12 ml-auto mr-16">
             {navItems.map((item) => (
               <button
                 key={item.href}
@@ -82,14 +87,19 @@ export function Navbar({ show = true }: NavbarProps) {
             ))}
           </div>
 
-          {/* Right side - Mobile Menu */}
-          <button
-            className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative"
-            style={{ zIndex: 100000 }}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          {/* Right side - Language Switcher & Mobile Menu */}
+          <div className="flex items-center space-x-4">
+            <LanguageSwitcher variant="ghost" />
+            
+            {/* Mobile Menu */}
+            <button
+              className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative"
+              style={{ zIndex: 100000 }}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -137,7 +147,7 @@ export function Navbar({ show = true }: NavbarProps) {
               {/* Bottom accent */}
               <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
                 <div className="text-xs font-light text-white/50 tracking-[0.2em] uppercase">
-                  Web Architects
+                  {t('nav.web-architects')}
                 </div>
                 <div className="w-8 h-px bg-white/30 mx-auto mt-2"></div>
               </div>
