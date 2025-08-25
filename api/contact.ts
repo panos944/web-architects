@@ -1,16 +1,13 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import express from 'express';
 import { storage } from '../server/storage';
 import { insertContactSchema } from '../shared/schema';
 
-const app = express();
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
-// Add middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// Contact form endpoint
-app.post('/api/contact', async (req, res) => {
   try {
     const result = insertContactSchema.safeParse(req.body);
     if (!result.success) {
@@ -34,39 +31,10 @@ app.post('/api/contact', async (req, res) => {
     
     res.json({ success: true, contact });
   } catch (error: any) {
+    console.error('Contact form error:', error);
     res.status(500).json({ 
       success: false, 
       message: error.message || "Failed to submit contact form" 
     });
   }
-});
-
-// Get all contacts (for admin purposes) - requires authentication
-app.get('/api/contacts', async (req, res) => {
-  try {
-    // Check for API key in Authorization header
-    const authHeader = req.headers.authorization;
-    const apiKey = process.env.ADMIN_API_KEY;
-    
-    if (!apiKey) {
-      return res.status(503).json({ 
-        message: "Admin access not configured" 
-      });
-    }
-    
-    if (!authHeader || authHeader !== `Bearer ${apiKey}`) {
-      return res.status(401).json({ 
-        message: "Unauthorized - Invalid API key" 
-      });
-    }
-    
-    const contacts = await storage.getContacts();
-    res.json(contacts);
-  } catch (error: any) {
-    res.status(500).json({ 
-      message: error.message || "Failed to fetch contacts" 
-    });
-  }
-});
-
-export default app;
+}

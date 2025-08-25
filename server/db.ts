@@ -7,5 +7,10 @@ if (!connectionString) {
   throw new Error("DATABASE_URL environment variable is not set");
 }
 
-const client = postgres(connectionString);
+// Configure postgres client for serverless with connection limits
+const client = postgres(connectionString, {
+  prepare: false, // Disable prepared statements for serverless
+  max: 1, // Limit connections for serverless
+});
+
 export const db = drizzle(client);
