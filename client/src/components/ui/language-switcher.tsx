@@ -28,7 +28,7 @@ export function LanguageSwitcher({ className, variant = 'ghost' }: LanguageSwitc
       )}
       title={language === 'en' ? 'Switch to Greek' : 'Switch to English'}
     >
-      {language === 'en' ? 'GR' : 'UK'}
+      {language === 'en' ? 'GR' : 'EN'}
     </Button>
   );
 }

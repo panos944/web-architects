@@ -129,7 +129,7 @@ export const translations = {
     'contact.send': 'Send Message',
     'contact.sending': 'Sending...',
     'contact.success-title': 'Message sent successfully!',
-    'contact.success-description': 'We\'ll get back to you within 24 hours.',
+    'contact.success-description': 'We\'ll get back to you within as soon as possible.',
     'contact.error': 'Error sending message',
     
     // Footer
@@ -171,7 +171,7 @@ export const translations = {
     'hero.web-mobile': 'Web & Mobile Εφαρμογές',
     'hero.digital-design': 'Ψηφιακός Σχεδιασμός',
     'hero.creative-dev': 'Δημιουργική Ανάπτυξη',
-    'hero.view-work': 'Δείτε τα Έργα Μας',
+    'hero.view-work': 'Ποιοί είμαστε',
     'hero.explore': 'Εξερεύνησε',
     
     // About Section
@@ -262,7 +262,7 @@ export const translations = {
     'contact.send': 'Στείλε Μήνυμα',
     'contact.sending': 'Αποστολή...',
     'contact.success-title': 'Το μήνυμα στάλθηκε με επιτυχία!',
-    'contact.success-description': 'Θα επικοινωνήσουμε μαζί σας εντός 24 ωρών.',
+    'contact.success-description': 'Θα επικοινωνήσουμε μαζί σας το συντομότερο δυνατόν.',
     'contact.error': 'Σφάλμα αποστολής μηνύματος',
     
     // Footer

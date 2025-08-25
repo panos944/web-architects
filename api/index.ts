@@ -41,9 +41,25 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Get all contacts (for admin purposes)
+// Get all contacts (for admin purposes) - requires authentication
 app.get('/api/contacts', async (req, res) => {
   try {
+    // Check for API key in Authorization header
+    const authHeader = req.headers.authorization;
+    const apiKey = process.env.ADMIN_API_KEY;
+    
+    if (!apiKey) {
+      return res.status(503).json({ 
+        message: "Admin access not configured" 
+      });
+    }
+    
+    if (!authHeader || authHeader !== `Bearer ${apiKey}`) {
+      return res.status(401).json({ 
+        message: "Unauthorized - Invalid API key" 
+      });
+    }
+    
     const contacts = await storage.getContacts();
     res.json(contacts);
   } catch (error: any) {

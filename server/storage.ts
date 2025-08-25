@@ -1,5 +1,6 @@
-import { type User, type InsertUser, type Contact, type InsertContact } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { type User, type InsertUser, type Contact, type InsertContact, users, contacts } from "@shared/schema";
+import { eq, desc } from "drizzle-orm";
+import { db } from "./db";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -9,6 +10,33 @@ export interface IStorage {
   getContacts(): Promise<Contact[]>;
 }
 
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(insertUser).returning();
+    return result[0];
+  }
+
+  async createContact(insertContact: InsertContact): Promise<Contact> {
+    const result = await db.insert(contacts).values(insertContact).returning();
+    return result[0];
+  }
+
+  async getContacts(): Promise<Contact[]> {
+    return await db.select().from(contacts).orderBy(desc(contacts.createdAt));
+  }
+}
+
+// Fallback to memory storage if no DATABASE_URL is provided (development)
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private contacts: Map<string, Contact>;
@@ -29,20 +57,18 @@ export class MemStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const user: User = { ...insertUser, id: crypto.randomUUID() };
+    this.users.set(user.id, user);
     return user;
   }
 
   async createContact(insertContact: InsertContact): Promise<Contact> {
-    const id = randomUUID();
     const contact: Contact = { 
       ...insertContact, 
-      id,
+      id: crypto.randomUUID(),
       createdAt: new Date()
     };
-    this.contacts.set(id, contact);
+    this.contacts.set(contact.id, contact);
     return contact;
   }
 
@@ -53,4 +79,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
