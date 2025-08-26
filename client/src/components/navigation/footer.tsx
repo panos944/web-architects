@@ -73,7 +73,7 @@ export function Footer() {
                   </div>
                   <div>
                     <div className="text-sm font-light text-white/60">{t('footer.email')}</div>
-                    <div className="font-light">wwwebarchitects@gmail.com</div>
+                    <div className="font-light">panos.hatzinikolaou@gmail.com</div>
                   </div>
                 </a>
                 
