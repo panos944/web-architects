@@ -12,7 +12,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const contact = await storage.createContact(validatedData);
       
       // Log the contact message for email forwarding
-      console.log("🚀 NEW CONTACT MESSAGE FOR wwwebarchitects@gmail.com");
+      console.log("NEW CONTACT MESSAGE FOR wwwebarchitects@gmail.com");
       console.log("==========================================");
       console.log(`Name: ${validatedData.name}`);
       console.log(`Email: ${validatedData.email}`);

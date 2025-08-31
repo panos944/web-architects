@@ -2,22 +2,29 @@
 
 /**
  * Script to fetch contact messages from the deployed website
- * Usage: node scripts/get-contacts.js <api-key> [url]
+ * Usage: node scripts/get-contacts.js <api-key> <url> [bypass-token]
  */
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 const apiKey = process.argv[2];
-const baseUrl = process.argv[3] || 'https://your-vercel-domain.com';
+const baseUrl = process.argv[3];
+const bypassToken = process.argv[4];
 
-if (!apiKey) {
-  console.error('Usage: node scripts/get-contacts.js <api-key> [url]');
+if (!apiKey || !baseUrl) {
+  console.error('Usage: node scripts/get-contacts.js <api-key> <url> [bypass-token]');
   console.error('Example: node scripts/get-contacts.js your-secret-key https://webarchitectshq.vercel.app');
+  console.error('With bypass: node scripts/get-contacts.js your-secret-key https://webarchitectshq.vercel.app your-bypass-token');
   process.exit(1);
 }
 
 const url = new URL('/api/contacts', baseUrl);
+
+// Add bypass token if provided
+if (bypassToken) {
+  url.searchParams.set('x-vercel-protection-bypass', bypassToken);
+}
 const isHttps = url.protocol === 'https:';
 const client = isHttps ? https : http;
 

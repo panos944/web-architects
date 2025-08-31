@@ -1,16 +1,24 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-const connectionString = process.env.DATABASE_URL;
+let db: ReturnType<typeof drizzle> | null = null;
 
-if (!connectionString) {
-  throw new Error("DATABASE_URL environment variable is not set");
-}
+export const getDb = () => {
+  if (!db) {
+    const connectionString = process.env.DATABASE_URL;
 
-// Configure postgres client for serverless with connection limits
-const client = postgres(connectionString, {
-  prepare: false, // Disable prepared statements for serverless
-  max: 1, // Limit connections for serverless
-});
+    if (!connectionString) {
+      throw new Error("DATABASE_URL environment variable is not set");
+    }
 
-export const db = drizzle(client);
+    // Configure postgres client for serverless with connection limits
+    const client = postgres(connectionString, {
+      prepare: false, // Disable prepared statements for serverless
+      max: 1, // Limit connections for serverless
+    });
+
+    db = drizzle(client);
+  }
+
+  return db;
+};

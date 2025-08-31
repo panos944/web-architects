@@ -1,90 +1,83 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ChevronDown } from 'lucide-react';
-import { CodeToScenery } from '@/components/ui/code-to-scenery';
 import { DustParticles } from '@/components/ui/dust-particles';
 import { useLanguage } from '@/lib/i18n';
+import { Canvas } from '@react-three/fiber';
+import { DesertScene3D } from '@/components/three/DesertScene3D';
 
 interface HeroProps {
   onAnimationComplete?: () => void;
 }
 
 export function Hero({ onAnimationComplete }: HeroProps) {
-  const [hasImageBackground, setHasImageBackground] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const [hasImageBackground, setHasImageBackground] = useState(true); // Always true since we have static background
+  const [showContent, setShowContent] = useState(true); // Show content immediately
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { t } = useLanguage();
 
-  // Smooth content reveal animation
+  // Detect mobile for optimized 3D rendering
   useEffect(() => {
-    if (showContent) {
-      const tl = gsap.timeline();
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Simplified content reveal animation - starts immediately
+  useEffect(() => {
+    // Trigger animation complete callback immediately since we're using the loading screen
+    if (onAnimationComplete) {
+      const timer = setTimeout(() => {
+        onAnimationComplete();
+      }, 500); // Small delay to ensure DOM is ready
       
-      // First animate the main title
-      tl.fromTo('.hero-title', 
-        { y: 80, opacity: 0, scale: 0.9 },
-        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power3.out" }
-      )
-      // Then the subtitle with slight delay
-      .fromTo('.hero-subtitle', 
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "-=1.0"
-      )
-      // Animate the services panel
-      .fromTo('.hero-services', 
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.8"
-      )
-      // Finally the bottom navigation
-      .fromTo('.hero-nav', 
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.5"
-      )
-      // Mobile 01 and DIGITAL elements
-      .fromTo('.hero-mobile-digital', 
-        { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.3"
-      );
+      return () => clearTimeout(timer);
     }
-  }, [showContent]);
+  }, [onAnimationComplete]);
   const containerRef = useGSAP(() => {
     const tl = gsap.timeline();
     
-    tl.from('.hero-content', { duration: 2, y: 60, opacity: 0, ease: "power4.out", delay: 0.5 })
-      .from('.scroll-indicator', { duration: 1.5, y: 20, opacity: 0, ease: "power3.out" }, "-=0.8")
+    // Immediate, subtle animations since loading screen handles the main entrance
+    tl.from('.hero-content', { duration: 0.8, y: 20, opacity: 0, ease: "power2.out" })
+      .from('.scroll-indicator', { duration: 0.6, y: 10, opacity: 0, ease: "power2.out" }, "-=0.4")
       .from('.floating-elements > *', { 
-        duration: 3, 
-        y: 80, 
+        duration: 1, 
+        y: 30, 
         opacity: 0, 
-        stagger: 0.3,
-        ease: "power4.out"
-      }, "-=1.5");
+        stagger: 0.2,
+        ease: "power2.out"
+      }, "-=0.6");
 
-    // Parallax scroll effect for background image
-    gsap.to('.background-image img', {
-      yPercent: -30,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
+    // Parallax scroll effect for background image - disabled on mobile for performance
+    const checkMobileForParallax = () => window.innerWidth < 768;
+    if (!checkMobileForParallax()) {
+      gsap.to('.background-image img', {
+        yPercent: -30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
 
-    gsap.to('.background-elements', {
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-  });
+      gsap.to('.background-elements', {
+        yPercent: -50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true
+        }
+      });
+    }
+  }, []);
 
   const scrollToNext = () => {
     gsap.to(window, {
@@ -96,36 +89,41 @@ export function Hero({ onAnimationComplete }: HeroProps) {
 
   return (
     <section id="home" className="min-h-screen relative overflow-hidden z-50" ref={containerRef}>
-      {/* Code to scenery background - NO DOTS */}
-      <CodeToScenery 
-        className="opacity-90" 
-        onImageStateChange={(hasImages) => {
-          setHasImageBackground(hasImages);
-          if (hasImages) {
-            // Show content with a smooth delay after background changes
-            setTimeout(() => setShowContent(true), 1200);
-          }
-        }}
-        onAnimationComplete={() => {
-          console.log('CodeToScenery animation complete callback received');
-          setAnimationComplete(true);
-          onAnimationComplete?.();
-        }}
-      />
-      
-      {/* Dust particles animation */}
-      {hasImageBackground && (
-        <DustParticles 
-          className="opacity-95" 
-          particleCount={350}
-          intensity="heavy"
+      {/* Desert Background Image */}
+      <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/desert.png)' }}
         />
-      )}
+        {/* Subtle overlay to enhance the desert mood */}
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-200/10 via-transparent to-orange-900/20" />
+      </div>
+
+      {/* 3D Desert Elements Layer - Optimized for mobile */}
+      <div className="absolute inset-0 z-10 opacity-70">
+        <Suspense fallback={null}>
+          <Canvas
+            camera={{ position: [0, 0, 8], fov: 50 }}
+            dpr={[1, isMobile ? 1 : 2]}
+            performance={{ min: 0.5 }}
+            gl={{ antialias: !isMobile, alpha: true }}
+          >
+            <DesertScene3D />
+          </Canvas>
+        </Suspense>
+      </div>
+      
+      {/* Enhanced dust particles animation - now enabled for mobile too */}
+      <DustParticles 
+        className="opacity-80" 
+        particleCount={isMobile ? 100 : 200}
+        intensity="light"
+      />
       
       
       {/* Main content with asymmetric layout */}
       {showContent && (
-        <div className="container-fluid relative z-20 pt-24 pb-16">
+        <div className="container-fluid relative z-30 pt-24 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end min-h-[80vh]">
           
           {/* Left side - Experimental typography */}
