@@ -80,11 +80,17 @@ export function Hero({ onAnimationComplete }: HeroProps) {
   }, []);
 
   const scrollToNext = () => {
-    gsap.to(window, {
-      duration: 1.5,
-      scrollTo: { y: window.innerHeight, autoKill: false },
-      ease: "power2.inOut"
-    });
+    const el = document.getElementById('about');
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const scrollToPartners = () => {
+    const el = document.getElementById('partners');
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   return (
@@ -108,7 +114,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
             performance={{ min: 0.5 }}
             gl={{ antialias: !isMobile, alpha: true }}
           >
-            <DesertScene3D />
+            <DesertScene3D/>
           </Canvas>
         </Suspense>
       </div>
@@ -178,7 +184,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               <div className="pt-8">
                 <Button 
                   className={`${hasImageBackground ? 'bg-white text-black hover:bg-white/90' : 'bg-foreground text-background hover:bg-foreground/90'} px-8 py-3 text-sm font-medium tracking-wide transition-all duration-300 shadow-lg`}
-                  onClick={scrollToNext}
+                  onClick={scrollToPartners}
                 >
                   {t('hero.view-work')}
                 </Button>
