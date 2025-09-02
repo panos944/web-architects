@@ -9,24 +9,28 @@ import { Contact } from '@/components/sections/contact';
 import { Footer } from '@/components/navigation/footer';
 import { MagneticCursor } from '@/components/effects/magnetic-cursor';
 import { useScrollTrigger } from '@/hooks/use-gsap';
+import { useSectionTitle } from '@/hooks/use-section-title';
 
 export default function Home() {
   const [showNavbar, setShowNavbar] = useState(true);
   useScrollTrigger();
+  useSectionTitle();
 
   return (
     <div className="min-h-screen overflow-x-hidden smooth-edges">
       <MagneticCursor />
       <Navbar show={showNavbar} />
-      <Hero onAnimationComplete={() => {
-        console.log('Hero animation completed, showing navbar');
-        setShowNavbar(true);
-      }} />
-      <About />
-      <Services />
-      <Technology />
-      <Partners />
-      <Contact />
+      <main>
+        <Hero onAnimationComplete={() => {
+          console.log('Hero animation completed, showing navbar');
+          setShowNavbar(true);
+        }} />
+        <About />
+        <Services />
+        <Technology />
+        <Partners />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );

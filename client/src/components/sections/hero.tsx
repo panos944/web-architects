@@ -135,12 +135,12 @@ export function Hero({ onAnimationComplete }: HeroProps) {
           {/* Left side - Experimental typography */}
           <div className="col-span-1 lg:col-span-9 hero-content">
             <div className="space-y-6">
-              {/* Fragmented title */}
+              {/* Main heading with proper SEO structure */}
               <div className="relative hero-title">
-                <div className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
+                <h1 className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
                   <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>{t('hero.web')}</div>
                   <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>{t('hero.web')}</div>
-                </div>
+                </h1>
                 <div className="text-[clamp(2rem,5vw,6rem)] font-medium leading-[0.9] ml-8 -mt-2 tracking-wider">
                   <span className="text-gradient drop-shadow-lg font-semibold">{t('hero.architects')}</span>
                 </div>

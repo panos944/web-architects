@@ -107,9 +107,9 @@ export function Contact() {
               <div className="space-y-6">
                 <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t('contact.number')}</div>
                 <div className="space-y-2">
-                  <div className="text-[clamp(2.5rem,5vw,6rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
+                  <h2 className="text-[clamp(2.5rem,5vw,6rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
                     {t('contact.lets')}
-                  </div>
+                  </h2>
                   <div className="text-[clamp(2.5rem,5vw,6rem)] font-light leading-[0.9] tracking-tight text-gradient ml-12 -mt-4">
                     {t('contact.connect')}
                   </div>

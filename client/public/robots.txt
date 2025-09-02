@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://web-architects.gr/sitemap.xml
+
+# Block access to admin and internal resources
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /server/
+Disallow: /.env
+Disallow: /package.json
+Disallow: /tsconfig.json
+
+# Allow common resources
+Allow: /assets/
+Allow: /images/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+Allow: /*.ico
+Allow: /*.mp4
+Allow: /*.webm
+
+# Crawl delay for politeness
+Crawl-delay: 1

@@ -109,9 +109,9 @@ export function Technology() {
               <div className="space-y-6">
                 <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{t('technology.number')}</div>
                 <div className="space-y-2">
-                  <div className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
+                  <h2 className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight text-foreground">
                     {t('technology.our')}
-                  </div>
+                  </h2>
                   <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight text-gradient ml-8">
                     {t('technology.approach')}
                   </div>
