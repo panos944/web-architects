@@ -16,12 +16,16 @@ export function Hero({ onAnimationComplete }: HeroProps) {
   const [hasImageBackground, setHasImageBackground] = useState(true); // Always true since we have static background
   const [showContent, setShowContent] = useState(true); // Show content immediately
   const [animationComplete, setAnimationComplete] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { t } = useLanguage();
 
-  // Detect mobile for optimized 3D rendering
+  // Detect mobile for optimized 3D rendering and background positioning
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      console.log('Hero: Checking mobile:', mobile, 'Width:', window.innerWidth);
+      setIsMobile(mobile);
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -98,8 +102,13 @@ export function Hero({ onAnimationComplete }: HeroProps) {
       {/* Desert Background Image */}
       <div className="absolute inset-0 z-0">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/desert.png)' }}
+          key={`bg-${isMobile}`}
+          className="absolute inset-0 bg-no-repeat"
+          style={{ 
+            backgroundImage: 'url(/desert.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: isMobile ? '75% 12%' : 'center center'
+          }}
         />
         {/* Subtle overlay to enhance the desert mood */}
         <div className="absolute inset-0 bg-gradient-to-b from-orange-200/10 via-transparent to-orange-900/20" />
