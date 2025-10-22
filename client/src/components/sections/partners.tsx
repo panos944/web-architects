@@ -20,6 +20,8 @@ const getPartners = (t: (key: string) => string) => [
     name: "The Cars",
     url: "https://www.thecars.gr",
     imageUrl: "/thecars logo.png",
+    webp: "/optimized/thecars logo.webp",
+    avif: "/optimized/thecars logo.avif",
     description: t('partners.thecars.description')
   },
   {
@@ -32,12 +34,16 @@ const getPartners = (t: (key: string) => string) => [
     name: "Oloygeia.gr",
     url: "https://oloygeia.gr",
     imageUrl: "/oloygeia.logo.png",
+    webp: "/optimized/oloygeia.logo.webp",
+    avif: "/optimized/oloygeia.logo.avif",
     description: t('partners.wellness.description')
   },
   {
     name: "Enikos.gr",
     url: "https://www.enikos.gr/",
     imageUrl: "/enikos logo.png",
+    webp: "/optimized/enikos logo.webp",
+    avif: "/optimized/enikos logo.avif",
     description: t('partners.news.description')
   }
 ];
@@ -196,39 +202,43 @@ export function Partners() {
                   <div className={`flex items-center justify-center ${
                     partner.name === 'Real Player' ? 'bg-blue-900 rounded-lg p-3' : ''
                   }`}>
-                    <img 
-                      src={partner.imageUrl} 
-                      alt={`${partner.name} logo`}
-                      className={`max-w-full max-h-full object-contain transition-all duration-300 opacity-100 ${
-                        partner.name === 'Oloygeia.gr' ? 'mix-blend-multiply' : ''
-                      }`}
-                      style={{ 
-                        maxWidth: partner.name === 'Real Player' ? '120px' : '140px',
-                        maxHeight: partner.name === 'Real Player' ? '45px' : '60px',
-                        opacity: 1,
-                        ...(partner.name === 'Real.gr' && { 
-                          minWidth: '100px',
-                          minHeight: '40px'
-                        })
-                      }}
-                      loading="eager"
-                      onLoad={() => {
-                        console.log(`${partner.name} logo loaded successfully from:`, partner.imageUrl);
-                      }}
-                      onError={(e) => {
-                        console.error(`${partner.name} logo failed to load from:`, partner.imageUrl);
-                        const img = e.target as HTMLImageElement;
-                        img.style.display = 'none';
-                        // Create fallback
-                        const fallback = document.createElement('div');
-                        fallback.className = 'w-full h-12 bg-orange-100 rounded flex items-center justify-center text-sm font-medium';
-                        fallback.style.color = '#263226';
-                        fallback.textContent = partner.name;
-                        if (img.parentNode) {
-                          img.parentNode.appendChild(fallback);
-                        }
-                      }}
-                    />
+                    <picture className="block max-w-full max-h-full">
+                      {partner.avif && <source srcSet={partner.avif} type="image/avif" />}
+                      {partner.webp && <source srcSet={partner.webp} type="image/webp" />}
+                      <img 
+                        src={partner.imageUrl} 
+                        alt={`${partner.name} logo`}
+                        className={`max-w-full max-h-full object-contain transition-all duration-300 opacity-100 ${
+                          partner.name === 'Oloygeia.gr' ? 'mix-blend-multiply' : ''
+                        }`}
+                        style={{ 
+                          maxWidth: partner.name === 'Real Player' ? '120px' : '140px',
+                          maxHeight: partner.name === 'Real Player' ? '45px' : '60px',
+                          opacity: 1,
+                          ...(partner.name === 'Real.gr' && { 
+                            minWidth: '100px',
+                            minHeight: '40px'
+                          })
+                        }}
+                        loading="lazy"
+                        onLoad={() => {
+                          console.log(`${partner.name} logo loaded successfully from:`, partner.imageUrl);
+                        }}
+                        onError={(e) => {
+                          console.error(`${partner.name} logo failed to load from:`, partner.imageUrl);
+                          const img = e.target as HTMLImageElement;
+                          img.style.display = 'none';
+                          // Create fallback
+                          const fallback = document.createElement('div');
+                          fallback.className = 'w-full h-12 bg-orange-100 rounded flex items-center justify-center text-sm font-medium';
+                          fallback.style.color = '#263226';
+                          fallback.textContent = partner.name;
+                          if (img.parentNode) {
+                            img.parentNode.appendChild(fallback);
+                          }
+                        }}
+                      />
+                    </picture>
                   </div>
                 </div>
               </div>

@@ -182,11 +182,16 @@ export function About() {
           
           <div className="about-visual">
             <div className="aspect-[4/3] bg-background rounded-2xl overflow-hidden group cursor-pointer">
-              <img 
-                src="/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.png" 
-                alt="Modern workspace showcasing design process" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-              />
+              <picture className="block h-full w-full">
+                <source srcSet="/optimized/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.avif" type="image/avif" />
+                <source srcSet="/optimized/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.webp" type="image/webp" />
+                <img 
+                  src="/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.png" 
+                  alt="Modern workspace showcasing design process" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                  loading="lazy"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-dark-forest/20 via-transparent to-vibrant-orange/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
           </div>

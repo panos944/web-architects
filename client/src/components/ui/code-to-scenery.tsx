@@ -14,8 +14,14 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
   const finalImageRef = useRef<HTMLImageElement | null>(null);
 
   // Single beautiful mountain landscape with clouds  
-  const finalVideoUrl = '/desert.png'
-  const isVideo = finalVideoUrl.endsWith('.mp4')
+  const fallbackImage = '/desert.png';
+  const optimizedBase = '/optimized/desert';
+  const optimizedSources = {
+    avif: `${optimizedBase}.avif`,
+    webp: `${optimizedBase}.webp`,
+    fallback: fallbackImage
+  };
+  const isVideo = fallbackImage.endsWith('.mp4');
 
   // Check for mobile and preload final image
   useEffect(() => {
@@ -24,17 +30,37 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
     window.addEventListener('resize', checkMobile);
 
     if (!isVideo) {
-      const img = new Image();
-      img.src = finalVideoUrl;
-      img.crossOrigin = 'anonymous';
-      img.onload = () => {
-        console.log('Image loaded successfully');
+      const avif = new Image();
+      avif.src = optimizedSources.avif;
+      avif.crossOrigin = 'anonymous';
+
+      avif.onload = () => {
+        finalImageRef.current = avif;
         setImageLoaded(true);
       };
-      img.onerror = () => {
-        console.error('Failed to load image:', finalVideoUrl);
+
+      avif.onerror = () => {
+        console.warn('Failed to load AVIF image, attempting WebP fallback');
+        const webp = new Image();
+        webp.src = optimizedSources.webp;
+        webp.crossOrigin = 'anonymous';
+
+        webp.onload = () => {
+          finalImageRef.current = webp;
+          setImageLoaded(true);
+        };
+
+        webp.onerror = () => {
+          console.error('Failed to load optimized images, falling back to PNG');
+          const fallback = new Image();
+          fallback.src = optimizedSources.fallback;
+          fallback.crossOrigin = 'anonymous';
+          fallback.onload = () => {
+            finalImageRef.current = fallback;
+            setImageLoaded(true);
+          };
+        };
       };
-      finalImageRef.current = img;
     } else {
       // For videos, still show terminal animation but skip image loading
       setImageLoaded(true);
@@ -275,8 +301,8 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
         >
           {isVideo ? (
             <video
-              key={finalVideoUrl}
-              src={finalVideoUrl}
+              key={fallbackImage}
+              src={fallbackImage}
               autoPlay
               loop
               muted
@@ -303,14 +329,20 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
               }}
             />
           ) : (
-            <div 
-              className="absolute inset-0 w-full h-full bg-cover bg-no-repeat"
-              style={{ 
-                backgroundImage: `url("${finalVideoUrl}")`,
-                backgroundColor: '#f5f5dc',
-                backgroundPosition: isMobile ? '75% 25%' : 'center center'
-              }}
-            />
+            <picture className="absolute inset-0 block h-full w-full">
+              <source srcSet={optimizedSources.avif} type="image/avif" />
+              <source srcSet={optimizedSources.webp} type="image/webp" />
+              <img
+                src={optimizedSources.fallback}
+                alt="Desert landscape"
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{ 
+                  objectPosition: isMobile ? '75% 25%' : 'center center',
+                  backgroundColor: '#f5f5dc'
+                }}
+                loading="lazy"
+              />
+            </picture>
           )}
           {/* Overlay for text readability */}
           <div className="absolute inset-0 bg-black/25 hover:bg-black/15 transition-colors duration-300"></div>

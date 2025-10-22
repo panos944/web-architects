@@ -100,16 +100,20 @@ export function Hero({ onAnimationComplete }: HeroProps) {
   return (
     <section id="home" className="min-h-screen relative overflow-hidden z-50" ref={containerRef}>
       {/* Desert Background Image */}
-      <div className="absolute inset-0 z-0">
-        <div 
-          key={`bg-${isMobile}`}
-          className="absolute inset-0 bg-no-repeat"
-          style={{ 
-            backgroundImage: 'url(/desert.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: isMobile ? '75% 12%' : 'center center'
-          }}
-        />
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <div className="absolute inset-0">
+          <picture key={`bg-${isMobile}`} className="block h-full w-full">
+            <source srcSet="/optimized/desert.avif" type="image/avif" />
+            <source srcSet="/optimized/desert.webp" type="image/webp" />
+            <img
+              src="/desert.png"
+              alt="Desert landscape"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: isMobile ? '75% 12%' : 'center center' }}
+              loading="lazy"
+            />
+          </picture>
+        </div>
         {/* Subtle overlay to enhance the desert mood */}
         <div className="absolute inset-0 bg-gradient-to-b from-orange-200/10 via-transparent to-orange-900/20" />
       </div>

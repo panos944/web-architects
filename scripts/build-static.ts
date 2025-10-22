@@ -1,7 +1,8 @@
-// Static build script for traditional hosting
+#!/usr/bin/env tsx
+
+// Static build script for traditional hosting (TypeScript)
 import { execSync } from 'child_process';
 import fs from 'fs';
-import path from 'path';
 
 console.log('Building static version for traditional hosting...');
 
@@ -20,7 +21,7 @@ if (fs.existsSync(deployDir)) {
 // Copy public files
 fs.cpSync(publicDir, deployDir, { recursive: true });
 
-// Create a simple contact form replacement
+// Create a simple contact form replacement (informational block only)
 const contactFormReplacement = `
 <div style="padding: 2rem; text-align: center; background: #f5f5f5; border-radius: 1rem; margin: 2rem 0;">
   <h3>Contact Us</h3>
@@ -32,3 +33,5 @@ const contactFormReplacement = `
 console.log('Static build complete!');
 console.log('Files ready in: ' + deployDir);
 console.log('Upload the contents of this folder to your hosting provider');
+
+
