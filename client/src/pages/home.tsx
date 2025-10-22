@@ -7,7 +7,6 @@ import { Technology } from '@/components/sections/technology';
 import { Partners } from '@/components/sections/partners';
 import { Contact } from '@/components/sections/contact';
 import { Footer } from '@/components/navigation/footer';
-import { MagneticCursor } from '@/components/effects/magnetic-cursor';
 import { useScrollTrigger } from '@/hooks/use-gsap';
 import { useSectionTitle } from '@/hooks/use-section-title';
 
@@ -18,7 +17,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-x-hidden smooth-edges">
-      <MagneticCursor />
       <Navbar show={showNavbar} />
       <main>
         <Hero onAnimationComplete={() => {
