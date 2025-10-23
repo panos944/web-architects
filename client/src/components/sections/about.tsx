@@ -167,17 +167,6 @@ export function About() {
                   {t('about.description2')}
               </p>
             </div>
-            
-            {/* <div className="grid grid-cols-2 gap-8 pt-8">
-              <div className="space-y-2">
-                <div ref={projectsRef} className="text-3xl font-light text-foreground">0</div>
-                <div className="text-sm font-light text-muted-foreground uppercase tracking-wide">Projects Completed</div>
-              </div>
-              <div className="space-y-2">
-                <div ref={satisfactionRef} className="text-3xl font-light text-foreground">0</div>
-                <div className="text-sm font-light text-muted-foreground uppercase tracking-wide">Client Satisfaction</div>
-              </div>
-            </div> */}
           </div>
           
           <div className="about-visual">

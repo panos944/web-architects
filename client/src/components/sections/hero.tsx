@@ -106,11 +106,13 @@ export function Hero({ onAnimationComplete }: HeroProps) {
             <source srcSet="/optimized/desert.avif" type="image/avif" />
             <source srcSet="/optimized/desert.webp" type="image/webp" />
             <img
-              src="/desert.png"
+              src="/optimized/desert.png"
               alt="Desert landscape"
               className="h-full w-full object-cover"
               style={{ objectPosition: isMobile ? '75% 12%' : 'center center' }}
-              loading="lazy"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </picture>
         </div>
