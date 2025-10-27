@@ -168,7 +168,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
                   <div className={`text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}></div>
                 </div>
                 <div className="col-span-2 space-y-2">
-                  <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
+                  <div className={`text-2xl font-medium leading-snug ${hasImageBackground ? 'text-white' : 'text-foreground'} max-w-xl drop-shadow-lg tracking-tight`}>
                     {t('hero.tagline')}
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
 
               {/* Mobile tagline */}
               <div className="lg:hidden mt-8 hero-subtitle">
-                <div className={`text-lg font-medium ${hasImageBackground ? 'text-white/95' : 'text-foreground/90'} max-w-md drop-shadow`}>
+                <div className={`text-xl font-medium leading-snug ${hasImageBackground ? 'text-white' : 'text-foreground'} max-w-md drop-shadow-lg tracking-tight`}>
                   {t('hero.tagline')}
                 </div>
               </div>
@@ -190,9 +190,9 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               <div className="space-y-4">
                 <div className={`text-xs uppercase tracking-[0.2em] ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}>{t('hero.services')}</div>
                 <div className={`space-y-1 text-sm font-medium ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}>
-                  <div>{t('hero.web-mobile')}</div>
-                  <div>{t('hero.digital-design')}</div>
-                  <div>{t('hero.creative-dev')}</div>
+                  <div>{t('hero.web-apps')}</div>
+                  <div>{t('hero.eshops')}</div>
+                  <div>{t('hero.web-design')}</div>
                 </div>
               </div>
               

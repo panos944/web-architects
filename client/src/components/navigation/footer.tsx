@@ -1,5 +1,5 @@
 import { ConnectedDots } from '@/components/ui/connected-dots';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { PenSquare } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 
 export function Footer() {
@@ -56,44 +56,23 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Contact section */}
+          {/* Services section */}
           <div className="lg:col-span-4 lg:col-start-8 space-y-8">
             <div className="space-y-6">
               <h3 className="text-sm font-medium text-white/60 tracking-[0.2em] uppercase">
-                {t('footer.lets-create')}
+                {t('footer.services')}
               </h3>
               
-              <div className="space-y-6">
-                <a 
-                  href="mailto:wwwebarchitects@gmail.com" 
-                  className="group flex items-center gap-4 text-white/90 hover:text-white transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand-orange/20 transition-colors duration-300">
-                    <Mail className="h-4 w-4" />
+              <div className="space-y-6 text-white/90">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                    <PenSquare className="h-4 w-4" />
                   </div>
-                  <div>
-                    <div className="text-sm font-light text-white/60">{t('footer.email')}</div>
-                    <div className="font-light">panos.hatzinikolaou@gmail.com</div>
-                  </div>
-                </a>
-                
-                <div className="group flex items-center gap-4 text-white/90">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand-orange/20 transition-colors duration-300">
-                    <Phone className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-light text-white/60">{t('footer.phone')}</div>
-                    <div className="font-light">+30 6986615255</div>
-                  </div>
-                </div>
-                
-                <div className="group flex items-center gap-4 text-white/90">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-brand-orange/20 transition-colors duration-300">
-                    <MapPin className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-light text-white/60">{t('footer.location')}</div>
-                    <div className="font-light">{t('footer.location-city')}</div>
+                  <div className="space-y-3">
+                    <div className="font-light text-lg">{t('footer.service-web-apps')}</div>
+                    <div className="font-light text-lg">{t('footer.service-development')}</div>
+                    <div className="font-light text-lg">{t('footer.service-eshops')}</div>
+                    <div className="font-light text-lg">{t('footer.service-web-design')}</div>
                   </div>
                 </div>
               </div>

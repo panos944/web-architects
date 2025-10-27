@@ -1,58 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useToast } from '@/hooks/use-toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
-import { insertContactSchema, type InsertContact } from '@shared/schema';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ConnectedDots } from '@/components/ui/connected-dots';
 import { useLanguage } from '@/lib/i18n';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 export function Contact() {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
   const { t } = useLanguage();
-
-  const form = useForm<InsertContact>({
-    resolver: zodResolver(insertContactSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      projectType: '',
-      message: '',
-    },
-  });
-
-  const contactMutation = useMutation({
-    mutationFn: async (data: InsertContact) => {
-      return apiRequest('POST', '/api/contact', data);
-    },
-    onSuccess: () => {
-      toast({
-        title: t('contact.success-title'),
-        description: t('contact.success-description'),
-      });
-      form.reset();
-      queryClient.invalidateQueries({ queryKey: ['/api/contact'] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: t('contact.error'),
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const onSubmit = (data: InsertContact) => {
-    contactMutation.mutate(data);
-  };
 
   const containerRef = useGSAP(() => {
     gsap.from('.contact-title', {
@@ -66,13 +19,13 @@ export function Contact() {
       }
     });
 
-    gsap.from('.contact-form', {
+    gsap.from('.contact-info', {
       duration: 1.2,
       y: 40,
       opacity: 0,
       ease: "power4.out",
       scrollTrigger: {
-        trigger: '.contact-form',
+        trigger: '.contact-info',
         start: "top 75%"
       }
     });
@@ -128,106 +81,61 @@ export function Contact() {
           </div>
         </div>
 
-        {/* Contact form */}
-        <div className="contact-form max-w-3xl">
+        {/* Direct contact information */}
+        <div className="contact-info max-w-5xl">
           <div className="bg-white/95 backdrop-blur-sm border border-border/20 shadow-lg rounded-2xl p-8 md:p-12">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.name')}</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder={t('contact.name-placeholder')}
-                            className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:border-primary"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.email')}</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            type="email"
-                            placeholder={t('contact.email-placeholder')}
-                            className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:border-primary"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+            <div className="grid gap-8 md:grid-cols-[1.4fr,1fr,1fr]">
+              <a
+                href="mailto:panos.hatzinikolaou@gmail.com"
+                className="group flex flex-col gap-4 border border-border/30 rounded-xl p-6 hover:border-brand-orange/50 transition-colors duration-300"
+              >
+                <div className="w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                  <Mail className="h-5 w-5" />
                 </div>
-
-                <FormField
-                  control={form.control}
-                  name="projectType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.project-type')}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light focus:ring-0 focus:border-primary">
-                            <SelectValue placeholder={t('contact.select-service')} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="bg-card border-border">
-                          <SelectItem value="strategy">{t('contact.service-strategy')}</SelectItem>
-                          <SelectItem value="design">{t('contact.service-design')}</SelectItem>
-                          <SelectItem value="development">{t('contact.service-development')}</SelectItem>
-                          <SelectItem value="complete">{t('contact.service-complete')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-sm font-light tracking-wide text-foreground/60 uppercase">{t('contact.message')}</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          {...field} 
-                          placeholder={t('contact.message-placeholder')}
-                          rows={4}
-                          className="bg-transparent border-0 border-b border-border/30 rounded-none px-0 py-4 text-lg font-light placeholder:text-muted-foreground/50 resize-none focus-visible:ring-0 focus-visible:border-primary"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="pt-8">
-                  <Button 
-                    type="submit" 
-                    disabled={contactMutation.isPending}
-                    className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 px-12 py-6 text-lg font-medium tracking-wide transition-all duration-300 hover:scale-105 shadow-lg"
-                  >
-                    {contactMutation.isPending ? t('contact.sending') : t('contact.send')}
-                  </Button>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground">
+                    {t('contact.email-label')}
+                  </div>
+                  <div className="text-lg font-medium text-foreground">panos.hatzinikolaou@gmail.com</div>
                 </div>
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  {t('contact.email-description')}
+                </span>
+              </a>
 
-              </form>
-            </Form>
+              <a
+                href="tel:+306986615255"
+                className="group flex flex-col gap-4 border border-border/30 rounded-xl p-6 hover:border-brand-orange/50 transition-colors duration-300"
+              >
+                <div className="w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                  <Phone className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground">
+                    {t('contact.phone-label')}
+                  </div>
+                  <div className="text-lg font-medium text-foreground">+30 6986615255</div>
+                </div>
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  {t('contact.phone-description')}
+                </span>
+              </a>
+
+              <div className="flex flex-col gap-4 border border-border/30 rounded-xl p-6">
+                <div className="w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground">
+                    {t('contact.location-label')}
+                  </div>
+                  <div className="text-lg font-medium text-foreground">{t('contact.location-city')}</div>
+                </div>
+                <span className="text-sm text-muted-foreground">
+                  {t('contact.location-description')}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
