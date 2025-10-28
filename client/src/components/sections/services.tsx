@@ -84,7 +84,7 @@ function ExperienceMedia({ media, title }: { media: ExperienceMediaConfig; title
         setShouldLoad(true);
         observer.disconnect();
       }
-    }, { rootMargin: '200px 0px', threshold: 0.2 });
+    }, { rootMargin: '600px 0px', threshold: 0.2 });
 
     observer.observe(video);
 
