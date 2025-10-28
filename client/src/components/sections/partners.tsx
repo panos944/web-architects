@@ -5,10 +5,10 @@ import { useLanguage } from '@/lib/i18n';
 
 const getPartners = (t: (key: string) => string) => [
   {
-    name: "Real.gr",
-    url: "https://www.real.gr",
-    imageUrl: "https://www.real.gr/wp-content/themes/realnews/images/realgr-logo.svg",
-    description: t('partners.enikos.description')
+    name: "Socialsyn",
+    url: "https://www.socialsyn.gr",
+    imageUrl: "/Screenshot%202025-10-28%20at%2011.46.33.png",
+    description: t('partners.socialsyn.description')
   },
   {
     name: "Instyle",
@@ -214,11 +214,7 @@ export function Partners() {
                         style={{ 
                           maxWidth: partner.name === 'Real Player' ? '120px' : '140px',
                           maxHeight: partner.name === 'Real Player' ? '45px' : '60px',
-                          opacity: 1,
-                          ...(partner.name === 'Real.gr' && { 
-                            minWidth: '100px',
-                            minHeight: '40px'
-                          })
+                          opacity: 1
                         }}
                         loading="lazy"
                         onLoad={() => {

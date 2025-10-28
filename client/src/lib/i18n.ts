@@ -38,7 +38,7 @@ export const translations = {
     'hero.web-apps': 'Web & Mobile Application Development',
     'hero.eshops': 'E-Commerce Solutions',
     'hero.web-design': 'Web Design',
-    'hero.view-work': 'View Work',
+    'hero.view-work': 'View Our Work',
     'hero.explore': 'Explore',
     
     // About Section
@@ -101,7 +101,7 @@ export const translations = {
     'partners.nav-text': 'Partners → Contact',
     
     // Partners Array
-    'partners.enikos.description': 'Prominent Greek news and media platform providing comprehensive coverage.',
+    'partners.socialsyn.description': 'A modern & elegant website for a digital agency.',
     'partners.oloygeia.description': 'Premium lifestyle and fashion news coverage website.',
     'partners.thecars.description': 'Automotive coverage on all issues and areas.',
     'partners.realfm.description': 'Advanced media player for Real FM 97.8.',
@@ -225,7 +225,7 @@ export const translations = {
     'partners.nav-text': 'Συνεργάτες → Επικοινωνία',
     
     // Partners Array
-    'partners.enikos.description': 'Κορυφαία ελληνική πλατφόρμα ειδήσεων και μέσων που παρέχει ολοκληρωμένη κάλυψη.',
+    'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα Next.js για το digital agency Socialsyn.',
     'partners.oloygeia.description': 'Premium ιστότοπος κάλυψης lifestyle και μόδας.',
     'partners.thecars.description': 'Αυτοκινητιστική κάλυψη σε όλα τα θέματα και τομείς.',
     'partners.realfm.description': 'Media player για τον Real FM 97.8.',
