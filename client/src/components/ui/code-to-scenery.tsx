@@ -14,7 +14,7 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
   const finalImageRef = useRef<HTMLImageElement | null>(null);
 
   // Single beautiful mountain landscape with clouds  
-  const fallbackImage = '/desert.png';
+  const fallbackImage = '/optimized/desert.png';
   const optimizedBase = '/optimized/desert';
   const optimizedSources = {
     avif: `${optimizedBase}.avif`,

@@ -5,12 +5,10 @@ import { useLanguage } from '@/lib/i18n';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 const getNavItems = (t: (key: string) => string) => [
-  { href: '#home', label: t('nav.home') },
   { href: '#about', label: t('nav.who-we-are') },
   { href: '#services', label: t('nav.our-work') },
   { href: '#technology', label: t('nav.technology') },
   { href: '#partners', label: t('nav.partners') },
-  { href: '#contact', label: t('nav.contact') },
 ];
 
 interface NavbarProps {

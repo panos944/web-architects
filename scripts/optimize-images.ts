@@ -72,13 +72,19 @@ function shouldSkip(file: string): boolean {
   return false;
 }
 
-function walk(dir: string): string[] {
+function walk(dir: string, exclude: string[] = []): string[] {
   const result: string[] = [];
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const full = path.join(dir, entry.name);
+    const isExcluded = exclude.some((excluded) =>
+      full === excluded || full.startsWith(`${excluded}${path.sep}`)
+    );
+    if (isExcluded) {
+      continue;
+    }
     if (entry.isDirectory()) {
-      result.push(...walk(full));
+      result.push(...walk(full, exclude));
     } else if (entry.isFile()) {
       result.push(full);
     }
@@ -172,7 +178,17 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const files = walk(absInput)
+  if (absInput === absOutput) {
+    console.error('Output directory must be different from input directory.');
+    process.exit(1);
+  }
+
+  const excludeDirs: string[] = [];
+  if (absOutput.startsWith(`${absInput}${path.sep}`)) {
+    excludeDirs.push(absOutput);
+  }
+
+  const files = walk(absInput, excludeDirs)
     .filter((f) => IMAGE_EXTENSIONS.has(path.extname(f).toLowerCase()))
     .filter((f) => !shouldSkip(f));
 

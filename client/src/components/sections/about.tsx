@@ -170,12 +170,12 @@ export function About() {
           </div>
           
           <div className="about-visual">
-            <div className="aspect-[4/3] bg-background rounded-2xl overflow-hidden group cursor-pointer">
+            <div className="aspect-[4/3] bg-background rounded-2xl overflow-hidden group">
               <picture className="block h-full w-full">
                 <source srcSet="/optimized/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.avif" type="image/avif" />
                 <source srcSet="/optimized/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.webp" type="image/webp" />
                 <img 
-                  src="/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.png" 
+                  src="/optimized/1e4d8658-af33-4fa4-a8ca-12ad4c7027d0.png" 
                   alt="Modern workspace showcasing design process" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                   loading="lazy"

@@ -1,32 +1,201 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useGSAP } from '@/hooks/use-gsap';
 import { gsap } from '@/lib/gsap';
 import { ConnectedDots } from '@/components/ui/connected-dots';
 import { useLanguage } from '@/lib/i18n';
 
-const getExperiences = (t: (key: string) => string) => [
+type VideoSources = {
+  mp4: string;
+  webm?: string;
+  fallback?: string;
+};
+
+type ExperienceMediaConfig =
+  | { type: 'video'; sources: VideoSources }
+  | { type: 'image'; src: string; alt?: string };
+
+interface ExperienceItem {
+  number: string;
+  title: string;
+  description: string;
+  media: ExperienceMediaConfig;
+}
+
+const getExperiences = (t: (key: string) => string): ExperienceItem[] => [
   {
     number: '1',
     title: t('services.strategy.title'),
     description: t('services.strategy.description'),
-    image: '/Neon_Strategy_Sign_Flashes_On_Off.mp4'
+    media: {
+      type: 'video',
+      sources: {
+        mp4: '/optimized/videos/Neon_Strategy_Sign_Flashes_On_Off.mp4',
+        webm: '/optimized/videos/Neon_Strategy_Sign_Flashes_On_Off.webm'
+      }
+    }
   },
   {
     number: '2', 
     title: t('services.design.title'),
     description: t('services.design.description'),
-    image: '/pear.mp4'
+    media: {
+      type: 'video',
+      sources: {
+        mp4: '/optimized/videos/pear.mp4',
+        webm: '/optimized/videos/pear.webm'
+      }
+    }
   },
   {
     number: '3',
     title: t('services.development.title'),
     description: t('services.development.description'),
-    image: '/fields.mp4'
+    media: {
+      type: 'video',
+      sources: {
+        mp4: '/optimized/videos/fields.mp4',
+        webm: '/optimized/videos/fields.webm'
+      }
+    }
   }
 ];
 
+function ExperienceMedia({ media, title }: { media: ExperienceMediaConfig; title: string }) {
+  const isVideo = media.type === 'video';
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [shouldLoad, setShouldLoad] = useState(!isVideo);
+
+  useEffect(() => {
+    setShouldLoad(!isVideo);
+  }, [isVideo]);
+
+  useEffect(() => {
+    if (!isVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setShouldLoad(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '200px 0px', threshold: 0.2 });
+
+    observer.observe(video);
+
+    return () => observer.disconnect();
+  }, [isVideo]);
+
+  useEffect(() => {
+    if (!isVideo || !shouldLoad) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const sourceElements = Array.from(
+      video.querySelectorAll<HTMLSourceElement>('source[data-src]')
+    );
+
+    let hasUpdatedSources = false;
+    for (const source of sourceElements) {
+      if (!source.src) {
+        const dataSrc = source.dataset.src;
+        if (dataSrc) {
+          source.src = dataSrc;
+          hasUpdatedSources = true;
+        }
+      }
+    }
+
+    if (hasUpdatedSources) {
+      video.load();
+    }
+
+    let interactionHandler: EventListener | null = null;
+
+    const detachInteractionHandler = () => {
+      if (!interactionHandler) return;
+      document.removeEventListener('touchstart', interactionHandler);
+      document.removeEventListener('click', interactionHandler);
+      interactionHandler = null;
+    };
+
+    const attachInteractionHandler = () => {
+      if (interactionHandler) return;
+      interactionHandler = () => {
+        video.play().catch(() => undefined);
+        detachInteractionHandler();
+      };
+
+      document.addEventListener('touchstart', interactionHandler, { once: true });
+      document.addEventListener('click', interactionHandler, { once: true });
+    };
+
+    const attemptPlay = () => {
+      video.play().catch(() => {
+        attachInteractionHandler();
+      });
+    };
+
+    const handleLoadedData = () => attemptPlay();
+    const handleCanPlay = () => attemptPlay();
+
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('canplay', handleCanPlay);
+
+    if (video.readyState >= 3) {
+      attemptPlay();
+    }
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('canplay', handleCanPlay);
+      detachInteractionHandler();
+    };
+  }, [isVideo, shouldLoad, media]);
+
+  if (isVideo) {
+    const sources = media.sources;
+    return (
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="none"
+        autoPlay={shouldLoad}
+        className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+      >
+        {sources.webm && (
+          <source data-src={sources.webm} type="video/webm" />
+        )}
+        <source data-src={sources.mp4} type="video/mp4" />
+        {sources.fallback && sources.fallback !== sources.mp4 && (
+          <source data-src={sources.fallback} />
+        )}
+      </video>
+    );
+  }
+
+  return (
+    <img
+      src={media.src}
+      alt={media.alt ?? title.replace(/\n/g, ' ')}
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
+      className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+    />
+  );
+}
+
 export function Services() {
   const { t } = useLanguage();
-  const experiences = getExperiences(t);
+  const experiences = useMemo(() => getExperiences(t), [t]);
   const containerRef = useGSAP(() => {
     // Animate hero image elements
     gsap.from('.hero-accent-line', {
@@ -164,38 +333,8 @@ export function Services() {
 
                 {/* Large Image/Video */}
                 <div className={`relative ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                  <div className="aspect-[4/5] lg:aspect-[4/5] bg-card rounded-2xl overflow-hidden group cursor-pointer shadow-lg">
-                    {item.image.endsWith('.mp4') ? (
-                      <video
-                        key={item.image}
-                        src={item.image}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        webkit-playsinline="true"
-                        preload="auto"
-                        className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                        onLoadedData={(e) => {
-                          const video = e.target as HTMLVideoElement;
-                          video.play().catch(() => {
-                            const playOnInteraction = () => {
-                              video.play();
-                              document.removeEventListener('touchstart', playOnInteraction);
-                              document.removeEventListener('click', playOnInteraction);
-                            };
-                            document.addEventListener('touchstart', playOnInteraction, { once: true });
-                            document.addEventListener('click', playOnInteraction, { once: true });
-                          });
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="experience-image w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
-                      />
-                    )}
+                  <div className="aspect-[4/5] lg:aspect-[4/5] bg-card rounded-2xl overflow-hidden group shadow-lg">
+                    <ExperienceMedia media={item.media} title={item.title} />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark-forest/30 via-transparent to-vibrant-orange/10 opacity-0 group-hover:opacity-100 transition-all duration-700"></div>
                   </div>
                   

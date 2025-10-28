@@ -1,5 +1,4 @@
 import { ConnectedDots } from '@/components/ui/connected-dots';
-import { PenSquare } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 
 export function Footer() {
@@ -63,18 +62,11 @@ export function Footer() {
                 {t('footer.services')}
               </h3>
               
-              <div className="space-y-6 text-white/90">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
-                    <PenSquare className="h-4 w-4" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="font-light text-lg">{t('footer.service-web-apps')}</div>
-                    <div className="font-light text-lg">{t('footer.service-development')}</div>
-                    <div className="font-light text-lg">{t('footer.service-eshops')}</div>
-                    <div className="font-light text-lg">{t('footer.service-web-design')}</div>
-                  </div>
-                </div>
+              <div className="space-y-3 text-white/90">
+                <div className="font-light text-lg">{t('footer.service-web-apps')}</div>
+                <div className="font-light text-lg">{t('footer.service-development')}</div>
+                <div className="font-light text-lg">{t('footer.service-eshops')}</div>
+                <div className="font-light text-lg">{t('footer.service-web-design')}</div>
               </div>
             </div>
           </div>

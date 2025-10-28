@@ -19,7 +19,7 @@ const getPartners = (t: (key: string) => string) => [
   {
     name: "The Cars",
     url: "https://www.thecars.gr",
-    imageUrl: "/thecars logo.png",
+    imageUrl: "/optimized/thecars logo.png",
     webp: "/optimized/thecars logo.webp",
     avif: "/optimized/thecars logo.avif",
     description: t('partners.thecars.description')
@@ -33,7 +33,7 @@ const getPartners = (t: (key: string) => string) => [
   {
     name: "Oloygeia.gr",
     url: "https://oloygeia.gr",
-    imageUrl: "/oloygeia.logo.png",
+    imageUrl: "/optimized/oloygeia.logo.png",
     webp: "/optimized/oloygeia.logo.webp",
     avif: "/optimized/oloygeia.logo.avif",
     description: t('partners.wellness.description')
@@ -41,7 +41,7 @@ const getPartners = (t: (key: string) => string) => [
   {
     name: "Enikos.gr",
     url: "https://www.enikos.gr/",
-    imageUrl: "/enikos logo.png",
+    imageUrl: "/optimized/enikos logo.png",
     webp: "/optimized/enikos logo.webp",
     avif: "/optimized/enikos logo.avif",
     description: t('partners.news.description')
