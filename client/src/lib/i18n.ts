@@ -225,7 +225,7 @@ export const translations = {
     'partners.nav-text': 'Συνεργάτες → Επικοινωνία',
     
     // Partners Array
-    'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα Next.js για το digital agency Socialsyn.',
+    'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα για το digital agency Socialsyn.',
     'partners.oloygeia.description': 'Premium ιστότοπος κάλυψης lifestyle και μόδας.',
     'partners.thecars.description': 'Αυτοκινητιστική κάλυψη σε όλα τα θέματα και τομείς.',
     'partners.realfm.description': 'Media player για τον Real FM 97.8.',
@@ -243,9 +243,9 @@ export const translations = {
     'contact.location-label': 'Τοποθεσία',
     'contact.location-city': 'Αθήνα, Ελλάδα',
     'contact.forward': 'Ας μιλήσουμε για το έργο σας',
-    'contact.email-description': 'Στείλτε μας τις λεπτομέρειες και θα απαντήσουμε εντός 24 ωρών.',
+    'contact.email-description': 'Στείλτε μας τις λεπτομέρειες του έργου σας και θα σας απαντήσουμε εντός 24 ωρών.',
     'contact.phone-description': 'Προτιμάτε να μιλήσουμε; Καλέστε μας και ας δημιουργήσουμε μαζί.',
-    'contact.location-description': 'Συνεργαζόμαστε απομακρυσμένα με πελάτες σε όλο τον κόσμο.',
+    'contact.location-description': 'Συνεργαζόμαστε με πελάτες σε όλο τον κόσμο.',
     
     // Footer
     'footer.logo-alt': 'Λογότυπο Web Architects',
