@@ -41,25 +41,6 @@ export function Navbar({ show = true }: NavbarProps) {
     });
   }, [isScrolled]);
 
-  const handleNavClick = (href: string) => {
-    setIsOpen(false);
-    const targetId = href.slice(1); // Remove the # to get the ID
-    const element = document.getElementById(targetId);
-    
-    if (element) {
-      const rect = element.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 80;
-
-      window.scrollTo({
-        top: offset,
-        behavior: 'smooth'
-      });
-    } else if (href.startsWith('#')) {
-      // Fallback to native behaviour if element not found immediately
-      window.location.hash = href;
-    }
-  };
-
   if (!show) return null;
 
   return (
@@ -67,12 +48,13 @@ export function Navbar({ show = true }: NavbarProps) {
       <div className="container-fluid py-6">
         <div className="flex justify-between items-center">
           {/* Left side - WA text */}
-          <button 
-            onClick={() => handleNavClick('#home')}
+          <a 
+            href="#home"
             className="text-xl font-medium tracking-wider text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
+            onClick={() => setIsOpen(false)}
           >
             WA
-          </button>
+          </a>
           
           {/* Center - Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12 ml-auto mr-16">
@@ -80,10 +62,7 @@ export function Navbar({ show = true }: NavbarProps) {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleNavClick(item.href);
-                }}
+                onClick={() => setIsOpen(false)}
                 className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
                 {item.label}
@@ -132,10 +111,7 @@ export function Navbar({ show = true }: NavbarProps) {
                   <div key={item.href} className="overflow-hidden">
                     <a
                       href={item.href}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        handleNavClick(item.href);
-                      }}
+                      onClick={() => setIsOpen(false)}
                       className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
                       style={{
                         animationDelay: `${index * 100}ms`,

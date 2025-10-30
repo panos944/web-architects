@@ -49,6 +49,10 @@
     scroll-behavior: smooth;
   }
 
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
   .section-padding {
     padding: 8rem 0;
   }
