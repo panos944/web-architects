@@ -47,14 +47,16 @@ export function Navbar({ show = true }: NavbarProps) {
     const element = document.getElementById(targetId);
     
     if (element) {
-      // Calculate position with offset for navbar
-      const elementTop = element.offsetTop - 80;
-      
-      // Smooth scroll to the element
+      const rect = element.getBoundingClientRect();
+      const offset = window.scrollY + rect.top - 80;
+
       window.scrollTo({
-        top: elementTop,
+        top: offset,
         behavior: 'smooth'
       });
+    } else if (href.startsWith('#')) {
+      // Fallback to native behaviour if element not found immediately
+      window.location.hash = href;
     }
   };
 
