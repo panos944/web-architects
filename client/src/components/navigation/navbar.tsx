@@ -77,13 +77,17 @@ export function Navbar({ show = true }: NavbarProps) {
           {/* Center - Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12 ml-auto mr-16">
             {navItems.map((item) => (
-              <button
+              <a
                 key={item.href}
-                onClick={() => handleNavClick(item.href)}
+                href={item.href}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleNavClick(item.href);
+                }}
                 className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
                 {item.label}
-              </button>
+              </a>
             ))}
           </div>
 
@@ -126,8 +130,12 @@ export function Navbar({ show = true }: NavbarProps) {
                 <div className="space-y-8 text-center">
                 {navItems.map((item, index) => (
                   <div key={item.href} className="overflow-hidden">
-                    <button
-                      onClick={() => handleNavClick(item.href)}
+                    <a
+                      href={item.href}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleNavClick(item.href);
+                      }}
                       className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
                       style={{
                         animationDelay: `${index * 100}ms`,
@@ -138,7 +146,7 @@ export function Navbar({ show = true }: NavbarProps) {
                         {item.label}
                       </span>
                       <div className="w-0 h-px bg-brand-orange mt-2 mx-auto group-hover:w-full transition-all duration-500"></div>
-                    </button>
+                    </a>
                   </div>
                 ))}
                 </div>
