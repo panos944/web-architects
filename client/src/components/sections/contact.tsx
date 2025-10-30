@@ -86,7 +86,7 @@ export function Contact() {
           <div className="bg-white/95 backdrop-blur-sm border border-border/20 shadow-lg rounded-2xl p-8 md:p-12">
             <div className="grid gap-8 md:grid-cols-[1.4fr,1fr,1fr]">
               <a
-                href="mailto:panos.hatzinikolaou@gmail.com"
+                href="mailto:hello@web-architects.gr"
                 className="group flex flex-col gap-4 border border-border/30 rounded-xl p-6 hover:border-brand-orange/50 transition-colors duration-300"
               >
                 <div className="w-12 h-12 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange">
@@ -96,7 +96,7 @@ export function Contact() {
                   <div className="text-xs font-medium tracking-[0.2em] uppercase text-muted-foreground">
                     {t('contact.email-label')}
                   </div>
-                  <div className="text-lg font-medium text-foreground">panos.hatzinikolaou@gmail.com</div>
+                  <div className="text-lg font-medium text-foreground">hello@web-architects.gr</div>
                 </div>
                 <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
                   {t('contact.email-description')}
