@@ -25,12 +25,31 @@ export function Navbar({ show = true }: NavbarProps) {
   const scrollToHash = useCallback((hash: string) => {
     if (!hash) return;
     const normalized = hash.startsWith('#') ? hash : `#${hash}`;
-    const target = document.querySelector<HTMLElement>(normalized);
-    if (!target) return;
+    
+    const performScroll = () => {
+      const target = document.querySelector<HTMLElement>(normalized);
+      if (!target) {
+        console.warn(`Target element not found: ${normalized}`);
+        return false;
+      }
 
-    const rect = target.getBoundingClientRect();
-    const offset = window.scrollY + rect.top - 96;
-    window.scrollTo({ top: offset, behavior: 'smooth' });
+      const rect = target.getBoundingClientRect();
+      const offset = window.scrollY + rect.top - 96;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+      return true;
+    };
+
+    // Try to scroll immediately
+    if (performScroll()) return;
+
+    // If the element wasn't found, retry after a short delay
+    // This helps with cases where the DOM isn't fully ready
+    setTimeout(() => {
+      if (performScroll()) return;
+      
+      // Final retry after a longer delay
+      setTimeout(performScroll, 200);
+    }, 50);
   }, []);
 
   useEffect(() => {
@@ -61,7 +80,7 @@ export function Navbar({ show = true }: NavbarProps) {
           {/* Left side - WA text */}
           <a 
             href="#home"
-            className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
+            className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
             onClick={(event) => {
               event.preventDefault();
               setIsOpen(false);

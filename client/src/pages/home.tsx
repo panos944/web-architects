@@ -19,12 +19,29 @@ export default function Home() {
     const scrollToHash = () => {
       const { hash } = window.location;
       if (!hash) return;
-      const target = document.querySelector(hash);
-      if (!target) return;
+      
+      const performScroll = () => {
+        const target = document.querySelector<HTMLElement>(hash);
+        if (!target) {
+          console.warn(`Target element not found: ${hash}`);
+          return false;
+        }
 
-      const rect = target.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 96;
-      window.scrollTo({ top: offset, behavior: 'smooth' });
+        const rect = target.getBoundingClientRect();
+        const offset = window.scrollY + rect.top - 96;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+        return true;
+      };
+
+      // Try to scroll immediately
+      if (performScroll()) return;
+
+      // If the element wasn't found, retry after a short delay
+      setTimeout(() => {
+        if (performScroll()) return;
+        // Final retry after a longer delay
+        setTimeout(performScroll, 200);
+      }, 50);
     };
 
     if (window.location.hash) {
