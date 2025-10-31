@@ -157,7 +157,7 @@ export const translations = {
     // Hero Section
     'hero.web': 'WEB',
     'hero.architects': 'ARCHITECTS',
-    'hero.tagline': 'Ψηφιακές εμπειρίες όπου η τεχνογνωσία συναντά την δημιουργικότητα. ',
+    'hero.tagline': 'Κάθε πίξελ μετράει. ',
     'hero.services': 'Υπηρεσίες',
     'hero.web-apps': 'Ανάπτυξη Web & Mobile Εφαρμογών',
     'hero.eshops': 'Ηλεκτρονικά Καταστήματα',
