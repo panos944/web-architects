@@ -215,7 +215,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
         </div>
         
         {/* Bottom navigation hint */}
-        <div className="absolute bottom-8 left-8 hero-nav">
+        {/* <div className="absolute bottom-8 left-8 hero-nav">
           <button 
             onClick={scrollToNext}
             className={`flex items-center space-x-2 ${hasImageBackground ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} transition-colors duration-300 group drop-shadow`}
@@ -223,7 +223,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
             <span className="text-xs font-medium tracking-wide uppercase">{t('hero.explore')}</span>
             <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
           </button>
-        </div>
+        </div> */}
         </div>
       )}
       

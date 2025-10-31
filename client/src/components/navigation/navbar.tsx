@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useLanguage } from '@/lib/i18n';
@@ -21,6 +21,17 @@ export function Navbar({ show = true }: NavbarProps) {
   const { t } = useLanguage();
   
   const navItems = getNavItems(t);
+
+  const scrollToHash = useCallback((hash: string) => {
+    if (!hash) return;
+    const normalized = hash.startsWith('#') ? hash : `#${hash}`;
+    const target = document.querySelector<HTMLElement>(normalized);
+    if (!target) return;
+
+    const rect = target.getBoundingClientRect();
+    const offset = window.scrollY + rect.top - 96;
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,14 +61,28 @@ export function Navbar({ show = true }: NavbarProps) {
           {/* Left side - WA text */}
           <a 
             href="#home"
-            className="text-xl font-medium tracking-wider text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
+            className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
             onClick={(event) => {
               event.preventDefault();
               setIsOpen(false);
-              window.location.hash = '#home';
+              window.history.replaceState(null, '', '#home');
+              scrollToHash('#home');
             }}
           >
-            WA
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 256 256"
+              className="w-full h-full"
+              role="img"
+              aria-label={t('footer.logo-alt')}
+            >
+              <circle cx="128" cy="128" r="120" fill="#263226"/>
+              <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M36 70 L64 186 L92 70 L120 186 L148 70"/>
+                <path d="M172 186 L200 70 L228 186"/>
+              </g>
+              <path d="M176 138 L220 138" fill="none" stroke="#F68238" strokeWidth="20" strokeLinecap="round"/>
+            </svg>
           </a>
           
           {/* Center - Desktop Navigation */}
@@ -69,7 +94,8 @@ export function Navbar({ show = true }: NavbarProps) {
                 onClick={(event) => {
                   event.preventDefault();
                   setIsOpen(false);
-                  window.location.hash = item.href;
+                  window.history.replaceState(null, '', item.href);
+                  scrollToHash(item.href);
                 }}
                 className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
@@ -122,7 +148,8 @@ export function Navbar({ show = true }: NavbarProps) {
                       onClick={(event) => {
                         event.preventDefault();
                         setIsOpen(false);
-                        window.location.hash = item.href;
+                        window.history.replaceState(null, '', item.href);
+                        scrollToHash(item.href);
                       }}
                       className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
                       style={{
