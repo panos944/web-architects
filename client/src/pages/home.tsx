@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar } from '@/components/navigation/navbar';
 import { Hero } from '@/components/sections/hero';
 import { Services } from '@/components/sections/services';
@@ -14,6 +14,27 @@ export default function Home() {
   const [showNavbar, setShowNavbar] = useState(true);
   useScrollTrigger();
   useSectionTitle();
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const { hash } = window.location;
+      if (!hash) return;
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      const rect = target.getBoundingClientRect();
+      const offset = window.scrollY + rect.top - 96;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    };
+
+    if (window.location.hash) {
+      // Delay to ensure hydration complete
+      setTimeout(scrollToHash, 100);
+    }
+
+    window.addEventListener('hashchange', scrollToHash);
+    return () => window.removeEventListener('hashchange', scrollToHash);
+  }, []);
 
   return (
     <div className="min-h-screen overflow-x-hidden smooth-edges">

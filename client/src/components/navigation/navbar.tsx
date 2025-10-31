@@ -51,7 +51,11 @@ export function Navbar({ show = true }: NavbarProps) {
           <a 
             href="#home"
             className="text-xl font-medium tracking-wider text-white hover:text-accent transition-colors duration-300 drop-shadow-lg"
-            onClick={() => setIsOpen(false)}
+            onClick={(event) => {
+              event.preventDefault();
+              setIsOpen(false);
+              window.location.hash = '#home';
+            }}
           >
             WA
           </a>
@@ -62,7 +66,11 @@ export function Navbar({ show = true }: NavbarProps) {
               <a
                 key={item.href}
                 href={item.href}
-                onClick={() => setIsOpen(false)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  setIsOpen(false);
+                  window.location.hash = item.href;
+                }}
                 className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
                 {item.label}
@@ -111,7 +119,11 @@ export function Navbar({ show = true }: NavbarProps) {
                   <div key={item.href} className="overflow-hidden">
                     <a
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setIsOpen(false);
+                        window.location.hash = item.href;
+                      }}
                       className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
                       style={{
                         animationDelay: `${index * 100}ms`,
