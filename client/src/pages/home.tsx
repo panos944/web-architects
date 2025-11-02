@@ -23,30 +23,38 @@ export default function Home() {
       const performScroll = () => {
         const target = document.querySelector<HTMLElement>(hash);
         if (!target) {
-          console.warn(`Target element not found: ${hash}`);
           return false;
         }
 
+        // Calculate scroll position accounting for fixed navbar
         const rect = target.getBoundingClientRect();
         const offset = window.scrollY + rect.top - 96;
-        window.scrollTo({ top: offset, behavior: 'smooth' });
+        window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
         return true;
       };
 
       // Try to scroll immediately
       if (performScroll()) return;
 
-      // If the element wasn't found, retry after a short delay
-      setTimeout(() => {
-        if (performScroll()) return;
-        // Final retry after a longer delay
-        setTimeout(performScroll, 200);
-      }, 50);
+      // Retry with increasing delays for production environments
+      // This handles cases where DOM hydration takes longer
+      const retries = [100, 300, 500, 1000, 1500];
+      
+      retries.forEach((delay, index) => {
+        setTimeout(() => {
+          if (performScroll()) return;
+          
+          // Last retry - log warning if still failed
+          if (index === retries.length - 1) {
+            console.warn(`Target element not found after retries: ${hash}`);
+          }
+        }, delay);
+      });
     };
 
     if (window.location.hash) {
-      // Delay to ensure hydration complete
-      setTimeout(scrollToHash, 100);
+      // Delay to ensure hydration complete, especially in production
+      setTimeout(scrollToHash, 200);
     }
 
     window.addEventListener('hashchange', scrollToHash);

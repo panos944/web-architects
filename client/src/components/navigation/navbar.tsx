@@ -29,27 +29,33 @@ export function Navbar({ show = true }: NavbarProps) {
     const performScroll = () => {
       const target = document.querySelector<HTMLElement>(normalized);
       if (!target) {
-        console.warn(`Target element not found: ${normalized}`);
         return false;
       }
 
+      // Calculate scroll position accounting for fixed navbar
       const rect = target.getBoundingClientRect();
       const offset = window.scrollY + rect.top - 96;
-      window.scrollTo({ top: offset, behavior: 'smooth' });
+      window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
       return true;
     };
 
     // Try to scroll immediately
     if (performScroll()) return;
 
-    // If the element wasn't found, retry after a short delay
-    // This helps with cases where the DOM isn't fully ready
-    setTimeout(() => {
-      if (performScroll()) return;
-      
-      // Final retry after a longer delay
-      setTimeout(performScroll, 200);
-    }, 50);
+    // Retry with increasing delays for production environments
+    // This handles cases where DOM hydration takes longer
+    const retries = [100, 300, 500, 1000];
+    
+    retries.forEach((delay, index) => {
+      setTimeout(() => {
+        if (performScroll()) return;
+        
+        // Last retry - log warning if still failed
+        if (index === retries.length - 1) {
+          console.warn(`Target element not found after retries: ${normalized}`);
+        }
+      }, delay);
+    });
   }, []);
 
   useEffect(() => {
@@ -85,7 +91,9 @@ export function Navbar({ show = true }: NavbarProps) {
               event.preventDefault();
               setIsOpen(false);
               window.history.replaceState(null, '', '#home');
-              scrollToHash('#home');
+              requestAnimationFrame(() => {
+                scrollToHash('#home');
+              });
             }}
           >
             <svg
@@ -114,7 +122,10 @@ export function Navbar({ show = true }: NavbarProps) {
                   event.preventDefault();
                   setIsOpen(false);
                   window.history.replaceState(null, '', item.href);
-                  scrollToHash(item.href);
+                  // Small delay to ensure state updates are processed
+                  requestAnimationFrame(() => {
+                    scrollToHash(item.href);
+                  });
                 }}
                 className="text-sm font-medium tracking-wide text-white/90 hover:text-white transition-colors duration-300 uppercase drop-shadow-md"
               >
@@ -168,7 +179,10 @@ export function Navbar({ show = true }: NavbarProps) {
                         event.preventDefault();
                         setIsOpen(false);
                         window.history.replaceState(null, '', item.href);
-                        scrollToHash(item.href);
+                        // Wait for mobile menu to close before scrolling
+                        setTimeout(() => {
+                          scrollToHash(item.href);
+                        }, 100);
                       }}
                       className="group block text-4xl font-extralight tracking-[0.1em] text-white/90 hover:text-white transition-all duration-500 uppercase"
                       style={{
