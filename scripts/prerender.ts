@@ -19,12 +19,12 @@ const seoContent = `
     <h1>Web Architects - Digital Experience Design</h1>
     <p>Creating exceptional digital experiences where precision meets creativity. Web & Mobile Applications, Digital Design, Creative Development.</p>
     
-    <section id="about">
+    <section>
       <h2>About Web Architects</h2>
       <p>We are a digital agency based in Athens, Greece, specializing in creating exceptional digital experiences.</p>
     </section>
     
-    <section id="services">
+    <section>
       <h2>Our Services</h2>
       <ul>
         <li>Web Development</li>
@@ -35,7 +35,7 @@ const seoContent = `
       </ul>
     </section>
     
-    <section id="contact">
+    <section>
       <h2>Contact Us</h2>
       <p>Email: panos.hatzinikolaou@gmail.com</p>
       <p>Phone: +30 6986615255</p>
