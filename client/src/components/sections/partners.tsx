@@ -11,6 +11,12 @@ const getPartners = (t: (key: string) => string) => [
     description: t('partners.socialsyn.description')
   },
   {
+    name: "Rolco",
+    url: "https://www.essexactivation.gr",
+    imageUrl: "/LOGO_ROLCO_RED.png",
+    description: t('partners.rolco.description')
+  },
+  {
     name: "Instyle",
     url: "https://www.instyle.gr",
     imageUrl: "https://www.instyle.gr/wp-content/uploads/2022/05/Logo_InStyle-1.png",
@@ -37,14 +43,6 @@ const getPartners = (t: (key: string) => string) => [
     webp: "/optimized/oloygeia.logo.webp",
     avif: "/optimized/oloygeia.logo.avif",
     description: t('partners.wellness.description')
-  },
-  {
-    name: "Enikos.gr",
-    url: "https://www.enikos.gr/",
-    imageUrl: "/optimized/enikos logo.png",
-    webp: "/optimized/enikos logo.webp",
-    avif: "/optimized/enikos logo.avif",
-    description: t('partners.news.description')
   }
 ];
 

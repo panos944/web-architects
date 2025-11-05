@@ -26,7 +26,7 @@ export const translations = {
     'nav.who-we-are': 'Who We Are',
     'nav.our-work': 'Our Work',
     'nav.technology': 'Technology',
-    'nav.partners': 'Partners',
+    'nav.partners': 'Projects',
     'nav.contact': 'Contact',
     'nav.web-architects': 'Web Architects',
     
@@ -98,10 +98,11 @@ export const translations = {
     'partners.projects': 'Projects',
     'partners.description': 'We collaborate with industry leaders and innovative companies to deliver exceptional results. Our partnerships drive mutual growth and technological excellence.',
     'partners.nav-next': '04 → 05',
-    'partners.nav-text': 'Partners → Contact',
+    'partners.nav-text': 'Projects → Contact',
     
     // Partners Array
     'partners.socialsyn.description': 'A modern & elegant website for a digital agency.',
+    'partners.rolco.description': 'A contest website for one of the largest cleaning brands in Greece.',
     'partners.oloygeia.description': 'Premium lifestyle and fashion news coverage website.',
     'partners.thecars.description': 'Automotive coverage on all issues and areas.',
     'partners.realfm.description': 'Advanced media player for Real FM 97.8.',
@@ -150,7 +151,7 @@ export const translations = {
     'nav.who-we-are': 'Ποιοι Είμαστε',
     'nav.our-work': 'Η Δουλειά Μας',
     'nav.technology': 'Τεχνολογία',
-    'nav.partners': 'Συνεργάτες',
+    'nav.partners': 'Έργα',
     'nav.contact': 'Επικοινωνία',
     'nav.web-architects': 'Web Architects',
     
@@ -222,10 +223,11 @@ export const translations = {
     'partners.projects': 'Μας ',
     'partners.description': 'Συνεργαζόμαστε με πρωτοπόρες εταιρείες και μετατρέπουμε τις ιδέες σε επιτυχία.',
     'partners.nav-next': '04 → 05',
-    'partners.nav-text': 'Συνεργάτες → Επικοινωνία',
+    'partners.nav-text': 'Έργα → Επικοινωνία',
     
     // Partners Array
     'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα για το digital agency Socialsyn.',
+    'partners.rolco.description': 'Ιστότοπος διαγωνισμού για μία από τις μεγαλύτερες μάρκες καθαριστικών στην Ελλάδα.',
     'partners.oloygeia.description': 'Premium ιστότοπος κάλυψης lifestyle και μόδας.',
     'partners.thecars.description': 'Αυτοκινητιστική κάλυψη σε όλα τα θέματα και τομείς.',
     'partners.realfm.description': 'Media player για τον Real FM 97.8.',
