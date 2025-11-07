@@ -114,50 +114,6 @@ export function Partners() {
 
   return (
     <>
-      {/* Prominent section separator between 03 and 04 */}
-      <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
-        {/* Gradient overlay for smooth transition */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--background))] via-[hsl(210_10%_12%)] to-[hsl(0_0%_98%)]"></div>
-        
-        {/* Central divider element */}
-        <div className="relative z-10 container-fluid">
-          <div className="text-center space-y-8">
-            {/* Section transition indicator */}
-            <div className="flex items-center justify-center space-x-6">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
-              <div className="flex space-x-3">
-                <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
-                <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
-                <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
-              </div>
-              <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
-            </div>
-            
-            {/* Section number transition */}
-            <div className="space-y-4">
-              <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-                {t('partners.nav-prev')}
-              </div>
-              <div className="text-sm text-white/60 font-light tracking-wide">
-                {t('partners.nav-text-prev')}
-              </div>
-            </div>
-            
-            {/* Decorative elements */}
-            <div className="flex justify-center">
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Animated particles effect */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
-      </div>
-      
       <section id="partners" className="partners-section py-24 relative z-10" ref={containerRef} style={{backgroundColor: 'hsl(0 0% 98%)'}}>
         {/* Connected dots background */}
         <ConnectedDots className="opacity-30" dotCount={20} connectionDistance={140} />
@@ -255,50 +211,6 @@ export function Partners() {
 
       </div>
       </section>
-      
-      {/* Prominent section separator between 04 and 05 */}
-      <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
-        {/* Gradient overlay for smooth transition */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_98%)] via-[hsl(210_10%_12%)] to-[hsl(var(--card))]"></div>
-        
-        {/* Central divider element */}
-        <div className="relative z-10 container-fluid">
-          <div className="text-center space-y-8">
-            {/* Section transition indicator */}
-            <div className="flex items-center justify-center space-x-6">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
-              <div className="flex space-x-3">
-                <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
-                <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
-                <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
-              </div>
-              <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
-            </div>
-            
-            {/* Section number transition */}
-            <div className="space-y-4">
-              <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
-                {t('partners.nav-next')}
-              </div>
-              <div className="text-sm text-white/60 font-light tracking-wide">
-                {t('partners.nav-text')}
-              </div>
-            </div>
-            
-            {/* Decorative elements */}
-            <div className="flex justify-center">
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Animated particles effect */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
-      </div>
     </>
   );
 }

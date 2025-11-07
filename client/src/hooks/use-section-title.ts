@@ -6,7 +6,7 @@ export function useSectionTitle() {
   const { t } = useLanguage();
 
   useEffect(() => {
-    const sections = ['home', 'about', 'services', 'technology', 'partners', 'contact'];
+    const sections = ['home', 'about', 'partners', 'services', 'technology', 'contact'];
     
     const observer = new IntersectionObserver(
       (entries) => {

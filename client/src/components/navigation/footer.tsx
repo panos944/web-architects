@@ -56,7 +56,7 @@ export function Footer() {
           </div>
 
           {/* Services section */}
-          <div className="lg:col-span-4 lg:col-start-8 space-y-8">
+          <div className="lg:col-span-4 lg:col-start-11 space-y-8">
             <div className="space-y-6">
               <h3 className="text-sm font-medium text-white/60 tracking-[0.2em] uppercase">
                 {t('footer.services')}

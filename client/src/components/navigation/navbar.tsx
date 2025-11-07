@@ -6,9 +6,9 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 const getNavItems = (t: (key: string) => string) => [
   { href: '#about', label: t('nav.who-we-are') },
+  { href: '#partners', label: t('nav.partners') },
   { href: '#services', label: t('nav.our-work') },
   { href: '#technology', label: t('nav.technology') },
-  { href: '#partners', label: t('nav.partners') },
 ];
 
 interface NavbarProps {

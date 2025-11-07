@@ -50,7 +50,7 @@ export const translations = {
     'about.description1': 'Rooted in the principle that form and function are inseparable, we treat each project as a unique opportunity to solve complex challenges with clarity and innovation.',
     'about.description2': 'By merging strategic insight with advanced engineering, we ensure every application we create is visually distinctive, technically robust, and optimized to perform flawlessly across devices and platforms.',
     'about.nav-next': '01 → 02',
-    'about.nav-text': 'About → Services',
+    'about.nav-text': 'About → Projects',
     'about.alt-workspace': 'Modern workspace showcasing design process',
     
     // About Values
@@ -62,11 +62,11 @@ export const translations = {
     'about.value3.description': 'From responsive frontends to scalable backends, we apply the latest technologies to deliver secure, high-performance digital platforms tailored to your needs.',
     
     // Services Section
-    'services.number': '02',
+    'services.number': '03',
     'services.our': 'OUR',
     'services.work': 'WORK',
     'services.description': 'We believe in creating digital products that are both functionally excellent and emotionally resonant. Our process combines strategic thinking with creative exploration.',
-    'services.nav-next': '02 → 03',
+    'services.nav-next': '03 → 04',
     'services.nav-text': 'Services → Technology',
     
     // Services Array
@@ -78,7 +78,7 @@ export const translations = {
     'services.development.description': 'We engineer platforms with the future in mind, solutions that are not only fast and reliable today but also flexible enough to evolve with your business.\n\nBy combining modern frameworks with time-tested development practices, we create architectures that can handle growth without compromising performance.\n\nEvery build is fortified with robust security measures, optimized for efficiency, and designed to adapt to new technologies, ensuring your product remains relevant and resilient for years to come.',
     
     // Technology Section
-    'technology.number': '03',
+    'technology.number': '04',
     'technology.our': 'OUR',
     'technology.approach': 'APPROACH',
     'technology.description': 'Exceptional results are born from the intersection of strategic thinking, creative vision, and technical precision.',
@@ -89,16 +89,18 @@ export const translations = {
     'technology.research': 'Research & Discovery',
     'technology.design': 'Design & Prototype',
     'technology.develop': 'Develop & Deploy',
+    'technology.nav-prev': '03 → 04',
+    'technology.nav-text-prev': 'Services → Technology',
     
     // Partners Section
-    'partners.nav-prev': '03 → 04',
-    'partners.nav-text-prev': 'Technology → Projects',
-    'partners.number': '04',
+    'partners.nav-prev': '01 → 02',
+    'partners.nav-text-prev': 'About → Projects',
+    'partners.number': '02',
     'partners.our': 'Our',
     'partners.projects': 'Projects',
     'partners.description': 'We collaborate with industry leaders and innovative companies to deliver exceptional results. Our partnerships drive mutual growth and technological excellence.',
-    'partners.nav-next': '04 → 05',
-    'partners.nav-text': 'Projects → Contact',
+    'partners.nav-next': '02 → 03',
+    'partners.nav-text': 'Projects → Services',
     
     // Partners Array
     'partners.socialsyn.description': 'A modern & elegant website for a digital agency.',
@@ -111,7 +113,7 @@ export const translations = {
     'partners.alt-logo': 'logo',
     
     // Contact Section
-    'contact.number': '06',
+    'contact.number': '05',
     'contact.lets': 'LET\'S',
     'contact.connect': 'CONNECT',
     'contact.description': 'Ready to explore new possibilities? We\'d love to hear about your project and discuss how we can bring your vision to life.',
@@ -175,7 +177,7 @@ export const translations = {
     'about.description1': 'Βασισμένοι στην αρχή ότι η ομορφιά και η λειτουργικότητα συμβαδίζουν, αντιμετωπίζουμε κάθε έργο ως μια μοναδική ευκαιρία να αντιμετωπίσουμε πολύπλοκες προκλήσεις με σαφήνεια και καινοτομία.',
     'about.description2': 'Συνδυάζοντας διορατικότητα με προηγμένες τεχνολογίες, διασφαλίζουμε ότι κάθε εφαρμογή που δημιουργούμε είναι μοναδική, τεχνικά άρτια και βελτιστοποιημένη για άψογη απόδοση σε όλες τις συσκευές και πλατφόρμες.',
     'about.nav-next': '01 → 02',
-    'about.nav-text': 'Για Εμάς → Υπηρεσίες',
+    'about.nav-text': 'Για Εμάς → Έργα',
     'about.alt-workspace': 'Σύγχρονος χώρος εργασίας που παρουσιάζει τη διαδικασία σχεδιασμού',
     
     // About Values
@@ -187,11 +189,11 @@ export const translations = {
     'about.value3.description': 'Από responsive frontends έως επεκτάσιμα backends, εφαρμόζουμε τις πιο σύγχρονες τεχνολογίες για να παραδώσουμε ασφαλείς, υψηλής απόδοσης ψηφιακές πλατφόρμες προσαρμοσμένες στις ανάγκες σας.',
     
     // Services Section
-    'services.number': '02',
+    'services.number': '03',
     'services.our': 'TI',
     'services.work': 'ΚΑΝΟΥΜΕ',
     'services.description': 'Δημιουργούμε ψηφιακά προϊόντα που συνδυάζουν άρτια λειτουργικότητα με συναισθηματική σύνδεση με τους χρήστες. Η δουλειά μας συνδυάζει στρατηγική σκέψη και δημιουργικότητα.',
-    'services.nav-next': '02 → 03',
+    'services.nav-next': '03 → 04',
     'services.nav-text': 'Υπηρεσίες → Τεχνολογία',
     
     // Services Array
@@ -203,7 +205,7 @@ export const translations = {
     'services.development.description': 'Δημιουργούμε εφαρμογές έτοιμες για το μέλλον, λύσεις που δεν είναι μόνο γρήγορες και αξιόπιστες σήμερα αλλά αρκετά ευέλικτες για να εξελιχθούν με την επιχείρησή σας.\n\nΣυνδυάζοντας σύγχρονα frameworks με δοκιμασμένες πρακτικές ανάπτυξης, δημιουργούμε αρχιτεκτονικές που μπορούν να χειριστούν την ανάπτυξη χωρίς να συμβιβάζουν την απόδοση.\n\nΚάθε build ενισχύεται με ισχυρά μέτρα ασφαλείας, βελτιστοποιείται για αποδοτικότητα και σχεδιάζεται να προσαρμόζεται σε νέες τεχνολογίες, διασφαλίζοντας ότι το προϊόν σας παραμένει ανθεκτικό για χρόνια.',
     
     // Technology Section
-    'technology.number': '03',
+    'technology.number': '04',
     'technology.our': 'Η ΣΤΡΑΤΗΓΙΚΗ',
     'technology.approach': ' ΜΑΣ',
     'technology.description': 'Τα πιο ουσιαστικά αποτελέσματα γεννιούνται όταν η στρατηγική σκέψη συναντά το δημιουργικό όραμα και την τεχνική ακρίβεια.',
@@ -214,16 +216,18 @@ export const translations = {
     'technology.research': 'Έρευνα & Δημιουργία',
     'technology.design': 'Σχεδιασμός & Πρωτότυπο',
     'technology.develop': 'Ανάπτυξη & Παράδοση',
+    'technology.nav-prev': '03 → 04',
+    'technology.nav-text-prev': 'Υπηρεσίες → Τεχνολογία',
     
     // Partners Section
-    'partners.nav-prev': '03 → 04',
-    'partners.nav-text-prev': 'Τεχνολογία → Έργα',
-    'partners.number': '04',
+    'partners.nav-prev': '01 → 02',
+    'partners.nav-text-prev': 'Για Εμάς → Έργα',
+    'partners.number': '02',
     'partners.our': 'Η Δουλειά',
     'partners.projects': 'Μας ',
     'partners.description': 'Συνεργαζόμαστε με πρωτοπόρες εταιρείες και μετατρέπουμε τις ιδέες σε επιτυχία.',
-    'partners.nav-next': '04 → 05',
-    'partners.nav-text': 'Έργα → Επικοινωνία',
+    'partners.nav-next': '02 → 03',
+    'partners.nav-text': 'Έργα → Υπηρεσίες',
     
     // Partners Array
     'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα για το digital agency Socialsyn.',
@@ -236,7 +240,7 @@ export const translations = {
     'partners.alt-logo': 'λογότυπο',
     
     // Contact Section
-    'contact.number': '06',
+    'contact.number': '05',
     'contact.lets': 'ΕΠΙΚΟΙΝΩΝΗΣΤΕ',
     'contact.connect': 'ΜΑΖΙ ΜΑΣ',
     'contact.description': 'Έτοιμοι να εξερευνήσετε νέες δυνατότητες; Θα θέλαμε να ακούσουμε για το έργο σας και να συζητήσουμε πώς μπορούμε να δώσουμε ζωή στο όραμά σας.',

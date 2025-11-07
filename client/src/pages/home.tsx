@@ -70,9 +70,9 @@ export default function Home() {
           setShowNavbar(true);
         }} />
         <About />
+        <Partners />
         <Services />
         <Technology />
-        <Partners />
         <Contact />
       </main>
       <Footer />
