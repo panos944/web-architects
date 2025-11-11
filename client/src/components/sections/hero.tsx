@@ -7,6 +7,7 @@ import { DustParticles } from '@/components/ui/dust-particles';
 import { useLanguage } from '@/lib/i18n';
 import { Canvas } from '@react-three/fiber';
 import { DesertScene3D } from '@/components/three/DesertScene3D';
+import { DecryptedText } from '@/components/ui/decrypted-text';
 
 interface HeroProps {
   onAnimationComplete?: () => void;
@@ -154,10 +155,24 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               <div className="relative hero-title">
                 <h1 className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
                   <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>{t('hero.web')}</div>
-                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>{t('hero.web')}</div>
+                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>
+                    <DecryptedText 
+                      text={t('hero.web')} 
+                      duration={1}
+                      delay={0.2}
+                      className="inline-block"
+                    />
+                  </div>
                 </h1>
                 <div className="text-[clamp(2rem,5vw,6rem)] font-medium leading-[0.9] ml-8 -mt-2 tracking-wider">
-                  <span className="text-gradient drop-shadow-lg font-semibold">{t('hero.architects')}</span>
+                  <span className="text-gradient drop-shadow-lg font-semibold">
+                    <DecryptedText 
+                      text={t('hero.architects')} 
+                      duration={1.5}
+                      delay={0.8}
+                      className="inline-block"
+                    />
+                  </span>
                 </div>
               </div>
               
@@ -213,18 +228,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
           <div className={`text-xs uppercase tracking-[0.2em] text-right ${hasImageBackground ? 'text-white/60' : 'text-muted-foreground'}`}></div>
           <div className={`text-sm font-medium text-right ${hasImageBackground ? 'text-white/90' : 'text-foreground/80'} drop-shadow`}></div>
         </div>
-        
-        {/* Bottom navigation hint */}
-        {/* <div className="absolute bottom-8 left-8 hero-nav">
-          <button 
-            onClick={scrollToNext}
-            className={`flex items-center space-x-2 ${hasImageBackground ? 'text-white/70 hover:text-white' : 'text-muted-foreground hover:text-foreground'} transition-colors duration-300 group drop-shadow`}
-          >
-            <span className="text-xs font-medium tracking-wide uppercase">{t('hero.explore')}</span>
-            <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform duration-300" />
-          </button>
-        </div> */}
-        </div>
+      </div>
       )}
       
       {/* Subtle section separator */}
