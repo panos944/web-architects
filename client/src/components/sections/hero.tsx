@@ -7,7 +7,6 @@ import { DustParticles } from '@/components/ui/dust-particles';
 import { useLanguage } from '@/lib/i18n';
 import { Canvas } from '@react-three/fiber';
 import { DesertScene3D } from '@/components/three/DesertScene3D';
-import { DecryptedText } from '@/components/ui/decrypted-text';
 
 interface HeroProps {
   onAnimationComplete?: () => void;
@@ -155,24 +154,10 @@ export function Hero({ onAnimationComplete }: HeroProps) {
               <div className="relative hero-title">
                 <h1 className="text-[clamp(2.5rem,6vw,8rem)] font-medium leading-[0.85] tracking-wide">
                   <div className={`${hasImageBackground ? 'text-white/20' : 'text-foreground/20'} select-none absolute -top-2 left-6 font-normal`}>{t('hero.web')}</div>
-                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>
-                    <DecryptedText 
-                      text={t('hero.web')} 
-                      duration={1}
-                      delay={0.2}
-                      className="inline-block"
-                    />
-                  </div>
+                  <div className={`${hasImageBackground ? 'text-white' : 'text-foreground'} font-semibold drop-shadow-lg`}>{t('hero.web')}</div>
                 </h1>
                 <div className="text-[clamp(2rem,5vw,6rem)] font-medium leading-[0.9] ml-8 -mt-2 tracking-wider">
-                  <span className="text-gradient drop-shadow-lg font-semibold">
-                    <DecryptedText 
-                      text={t('hero.architects')} 
-                      duration={1.5}
-                      delay={0.8}
-                      className="inline-block"
-                    />
-                  </span>
+                  <span className="text-gradient drop-shadow-lg font-semibold">{t('hero.architects')}</span>
                 </div>
               </div>
               
