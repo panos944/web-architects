@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
 
 interface DecryptedTextProps {
   text: string;
@@ -25,7 +24,13 @@ export function DecryptedText({
     return text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
   };
 
-  const [displayText, setDisplayText] = useState<string>(getInitialScrambled());
+  const [displayText, setDisplayText] = useState<string>(() => {
+    // Initialize immediately with scrambled text if available
+    if (text) {
+      return text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
+    }
+    return '';
+  });
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number | null>(null);
@@ -33,11 +38,15 @@ export function DecryptedText({
   // Ensure displayText is initialized when text is available or changes
   useEffect(() => {
     if (text) {
-      // If displayText is empty or has different length, initialize with scrambled text
-      if (!displayText || displayText.length !== text.length) {
-        const initial = text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
-        setDisplayText(initial);
-      }
+      // Always ensure we have scrambled text matching the text length
+      const expectedLength = text.length;
+      setDisplayText(prev => {
+        // Only update if length doesn't match or is empty
+        if (!prev || prev.length !== expectedLength) {
+          return text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
+        }
+        return prev;
+      });
     } else {
       setDisplayText('');
     }
@@ -148,14 +157,18 @@ export function DecryptedText({
     }
   }, [text, duration, delay, characters, sequential]);
 
+  // Ensure we always have something to display - prioritize displayText, fallback to text
+  const textToDisplay = displayText || (text ? text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('') : '');
+
+  // Use regular span instead of motion.span to avoid gradient text rendering issues on mobile
   return (
-    <motion.span
+    <span
+      key={`decrypt-${text}`} // Force re-render when text changes
       className={className}
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
+      style={{ display: 'inline-block' }}
     >
-      {displayText || text}
-    </motion.span>
+      {textToDisplay}
+    </span>
   );
 }
 
