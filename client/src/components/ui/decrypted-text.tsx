@@ -20,13 +20,34 @@ export function DecryptedText({
   characters = DEFAULT_CHARACTERS,
   sequential = true,
 }: DecryptedTextProps) {
-  const [displayText, setDisplayText] = useState<string>('');
+  const getInitialScrambled = () => {
+    if (!text) return '';
+    return text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
+  };
+
+  const [displayText, setDisplayText] = useState<string>(getInitialScrambled());
   const [revealedIndices, setRevealedIndices] = useState<Set<number>>(new Set());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number | null>(null);
 
+  // Ensure displayText is initialized when text is available or changes
   useEffect(() => {
-    if (!text) return;
+    if (text) {
+      // If displayText is empty or has different length, initialize with scrambled text
+      if (!displayText || displayText.length !== text.length) {
+        const initial = text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('');
+        setDisplayText(initial);
+      }
+    } else {
+      setDisplayText('');
+    }
+  }, [text, characters]);
+
+  useEffect(() => {
+    if (!text) {
+      setDisplayText('');
+      return;
+    }
 
     const textLength = text.length;
     const updateInterval = 20; // Update every 50ms
@@ -130,11 +151,10 @@ export function DecryptedText({
   return (
     <motion.span
       className={className}
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
     >
-      {displayText || text.split('').map(() => characters[Math.floor(Math.random() * characters.length)]).join('')}
+      {displayText || text}
     </motion.span>
   );
 }
