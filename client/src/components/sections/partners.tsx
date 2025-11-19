@@ -12,7 +12,7 @@ const getPartners = (t: (key: string) => string) => [
   },
   {
     name: "Rolco",
-    url: "https://www.essexactivation.gr",
+    url: "https://essex-contest-gr.vercel.app/",
     imageUrl: "/LOGO_ROLCO_RED.png",
     description: t('partners.rolco.description')
   },
