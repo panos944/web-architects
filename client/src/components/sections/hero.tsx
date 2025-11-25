@@ -22,9 +22,7 @@ export function Hero({ onAnimationComplete }: HeroProps) {
   // Detect mobile for optimized 3D rendering and background positioning
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      console.log('Hero: Checking mobile:', mobile, 'Width:', window.innerWidth);
-      setIsMobile(mobile);
+      setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);

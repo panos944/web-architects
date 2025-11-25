@@ -257,7 +257,7 @@ export function ServiceCards3D({ services }: ServiceCards3DProps) {
           position={positions[index] || [0, 0, 0]}
           isHovered={hoveredIndex === index}
           onHover={(hovered) => setHoveredIndex(hovered ? index : null)}
-          onClick={() => console.log(`Clicked on ${service.title}`)}
+          onClick={() => {}}
         />
       ))}
     </group>

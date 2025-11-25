@@ -9,66 +9,36 @@ import { Contact } from '@/components/sections/contact';
 import { Footer } from '@/components/navigation/footer';
 import { useScrollTrigger } from '@/hooks/use-gsap';
 import { useSectionTitle } from '@/hooks/use-section-title';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 export default function Home() {
   const [showNavbar, setShowNavbar] = useState(true);
+  const { scrollToHash } = useSmoothScroll();
   useScrollTrigger();
   useSectionTitle();
 
   useEffect(() => {
-    const scrollToHash = () => {
+    const handleHashScroll = () => {
       const { hash } = window.location;
-      if (!hash) return;
-      
-      const performScroll = () => {
-        const target = document.querySelector<HTMLElement>(hash);
-        if (!target) {
-          return false;
-        }
-
-        // Calculate scroll position accounting for fixed navbar
-        const rect = target.getBoundingClientRect();
-        const offset = window.scrollY + rect.top - 96;
-        window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
-        return true;
-      };
-
-      // Try to scroll immediately
-      if (performScroll()) return;
-
-      // Retry with increasing delays for production environments
-      // This handles cases where DOM hydration takes longer
-      const retries = [100, 300, 500, 1000, 1500];
-      
-      retries.forEach((delay, index) => {
-        setTimeout(() => {
-          if (performScroll()) return;
-          
-          // Last retry - log warning if still failed
-          if (index === retries.length - 1) {
-            console.warn(`Target element not found after retries: ${hash}`);
-          }
-        }, delay);
-      });
+      if (hash) {
+        scrollToHash(hash);
+      }
     };
 
     if (window.location.hash) {
       // Delay to ensure hydration complete, especially in production
-      setTimeout(scrollToHash, 200);
+      setTimeout(handleHashScroll, 200);
     }
 
-    window.addEventListener('hashchange', scrollToHash);
-    return () => window.removeEventListener('hashchange', scrollToHash);
-  }, []);
+    window.addEventListener('hashchange', handleHashScroll);
+    return () => window.removeEventListener('hashchange', handleHashScroll);
+  }, [scrollToHash]);
 
   return (
     <div className="min-h-screen overflow-x-hidden smooth-edges">
       <Navbar show={showNavbar} />
       <main>
-        <Hero onAnimationComplete={() => {
-          console.log('Hero animation completed, showing navbar');
-          setShowNavbar(true);
-        }} />
+        <Hero onAnimationComplete={() => setShowNavbar(true)} />
         <About />
         <Partners />
         <Services />

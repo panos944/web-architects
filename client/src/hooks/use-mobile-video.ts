@@ -20,8 +20,8 @@ export function useMobileVideoAutoplay() {
               hasInteracted.current = true;
               document.removeEventListener('touchstart', handleInteraction);
               document.removeEventListener('click', handleInteraction);
-            } catch (err) {
-              console.log('Video play failed:', err);
+            } catch {
+              // Video play failed - autoplay may be blocked
             }
           };
 

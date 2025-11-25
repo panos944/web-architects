@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useLanguage } from '@/lib/i18n';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
+import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 const getNavItems = (t: (key: string) => string) => [
   { href: '#about', label: t('nav.who-we-are') },
@@ -19,44 +20,9 @@ export function Navbar({ show = true }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { t } = useLanguage();
+  const { scrollToHash } = useSmoothScroll();
   
   const navItems = getNavItems(t);
-
-  const scrollToHash = useCallback((hash: string) => {
-    if (!hash) return;
-    const normalized = hash.startsWith('#') ? hash : `#${hash}`;
-    
-    const performScroll = () => {
-      const target = document.querySelector<HTMLElement>(normalized);
-      if (!target) {
-        return false;
-      }
-
-      // Calculate scroll position accounting for fixed navbar
-      const rect = target.getBoundingClientRect();
-      const offset = window.scrollY + rect.top - 96;
-      window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
-      return true;
-    };
-
-    // Try to scroll immediately
-    if (performScroll()) return;
-
-    // Retry with increasing delays for production environments
-    // This handles cases where DOM hydration takes longer
-    const retries = [100, 300, 500, 1000];
-    
-    retries.forEach((delay, index) => {
-      setTimeout(() => {
-        if (performScroll()) return;
-        
-        // Last retry - log warning if still failed
-        if (index === retries.length - 1) {
-          console.warn(`Target element not found after retries: ${normalized}`);
-        }
-      }, delay);
-    });
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -140,18 +106,24 @@ export function Navbar({ show = true }: NavbarProps) {
             
             {/* Mobile Menu */}
             <button
-              className="md:hidden p-2 text-white/90 hover:text-white transition-colors duration-300 drop-shadow-md relative"
+              className="md:hidden p-2 text-white/90 hover:text-white focus:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-transparent transition-colors duration-300 drop-shadow-md relative rounded-md"
               style={{ zIndex: 100000 }}
               onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
+              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div 
+          <nav 
+            id="mobile-navigation"
+            role="navigation"
+            aria-label="Mobile navigation"
             className="md:hidden fixed inset-0 bg-black/90 backdrop-blur-xl"
             style={{ 
               zIndex: 99999,
@@ -208,7 +180,7 @@ export function Navbar({ show = true }: NavbarProps) {
                 <div className="w-8 h-px bg-white/30 mx-auto mt-2"></div>
               </div>
             </div>
-          </div>
+          </nav>
         )}
       </div>
     </nav>

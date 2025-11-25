@@ -157,7 +157,6 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
       if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex]?.length) {
         if (terminalFadeStart === 0) {
           terminalFadeStart = now;
-          console.log('Terminal typing complete - triggering image state change');
           onImageStateChange?.(true);
         }
 
@@ -170,7 +169,6 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
 
         // Animation complete - show final mountain image
         if (fadeProgress >= 1) {
-          console.log('Terminal animation completed');
           setAnimationComplete(true);
           onAnimationComplete?.();
           cancelAnimationFrame(animationFrame);
@@ -230,7 +228,6 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
               nextTick = now + linePause;
             } else {
               // Typing is complete, trigger callbacks
-              console.log('Typing complete - calling onImageStateChange');
               onImageStateChange?.(true);
             }
           }
@@ -253,10 +250,8 @@ export function CodeToScenery({ className = "", onImageStateChange, onAnimationC
           }
         }
 
-        // This condition should not be needed anymore since we handle it above
         // Check if typing is complete but haven't started fade yet
         if (lineIndex >= lines.length - 1 && charIndex >= lines[lineIndex]?.length && terminalFadeStart === 0) {
-          console.log('Secondary typing complete check triggered');
           terminalFadeStart = now + 800; // Wait 800ms after typing completes
           onImageStateChange?.(true);
         }

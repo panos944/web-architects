@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
-import { Text3D, Center } from '@react-three/drei';
+import { useRef, useState, useEffect, ReactNode } from 'react';
+import { useFrame, useThree, MeshProps } from '@react-three/fiber';
+import { Text3D, Center, Text as DreiText } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from '@/lib/gsap';
 
@@ -77,16 +77,24 @@ export function HeroText3D({ text, subtext, onComplete }: HeroText3DProps) {
   });
 
   // Fallback to regular text if 3D fonts aren't available
-  const TextComponent = ({ children, ...props }: any) => {
+  interface TextComponentProps {
+    children: ReactNode;
+    fontSize?: number;
+    color?: string;
+    outlineWidth?: number;
+    outlineColor?: string;
+  }
+  
+  const TextComponent = ({ children, ...props }: TextComponentProps) => {
     return (
-      <Text
+      <DreiText
         {...props}
         font="/fonts/Inter-Bold.woff"
         anchorX="center"
         anchorY="middle"
       >
         {children}
-      </Text>
+      </DreiText>
     );
   };
 
@@ -139,12 +147,16 @@ export function HeroText3D({ text, subtext, onComplete }: HeroText3DProps) {
   );
 }
 
-// Fallback Text component using drei's Text
-function Text(props: any) {
+// Fallback Text component using a simple mesh
+interface FallbackTextProps extends MeshProps {
+  color?: string;
+}
+
+function FallbackText({ color = "#ffffff", ...props }: FallbackTextProps) {
   return (
     <mesh {...props}>
       <planeGeometry args={[4, 1]} />
-      <meshStandardMaterial color={props.color || "#ffffff"} transparent opacity={0.9} />
+      <meshStandardMaterial color={color} transparent opacity={0.9} />
     </mesh>
   );
 }

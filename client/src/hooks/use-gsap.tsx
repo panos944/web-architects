@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
-export function useGSAP(callback: (context: { selector: (sel: string) => Element | null }) => void, deps: any[] = []) {
+export function useGSAP(callback: (context: { selector: (sel: string) => Element | null }) => void, deps: React.DependencyList = []) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

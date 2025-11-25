@@ -11,15 +11,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = validateData(insertContactSchema, req.body);
       const contact = await storage.createContact(validatedData);
       
-      // Log the contact message for email forwarding
-      console.log("NEW CONTACT MESSAGE FOR wwwebarchitects@gmail.com");
-      console.log("==========================================");
-      console.log(`Name: ${validatedData.name}`);
-      console.log(`Email: ${validatedData.email}`);
-      console.log(`Project Type: ${validatedData.projectType}`);
-      console.log(`Message: ${validatedData.message}`);
-      console.log(`Date: ${new Date().toISOString()}`);
-      console.log("==========================================");
+      // Log notification only (no sensitive data)
+      console.log(`[Contact] New submission received at ${new Date().toISOString()}`);
       
       res.json({ success: true, contact });
     } catch (error: any) {

@@ -97,17 +97,17 @@ export function Partners() {
     );
 
     // Hover effects for partner cards
-    gsap.utils.toArray('.partner-card').forEach((card: any) => {
-      const logo = card.querySelector('.partner-logo');
+    gsap.utils.toArray<HTMLElement>('.partner-card').forEach((card) => {
+      const logo = card.querySelector<HTMLElement>('.partner-logo');
       
       card.addEventListener('mouseenter', () => {
         gsap.to(card, { y: -8, scale: 1.02, duration: 0.4, ease: "power2.out" });
-        gsap.to(logo, { scale: 1.1, duration: 0.4, ease: "power2.out" });
+        if (logo) gsap.to(logo, { scale: 1.1, duration: 0.4, ease: "power2.out" });
       });
       
       card.addEventListener('mouseleave', () => {
         gsap.to(card, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
-        gsap.to(logo, { scale: 1, duration: 0.4, ease: "power2.out" });
+        if (logo) gsap.to(logo, { scale: 1, duration: 0.4, ease: "power2.out" });
       });
     });
   });
@@ -171,11 +171,7 @@ export function Partners() {
                           opacity: 1
                         }}
                         loading="lazy"
-                        onLoad={() => {
-                          console.log(`${partner.name} logo loaded successfully from:`, partner.imageUrl);
-                        }}
                         onError={(e) => {
-                          console.error(`${partner.name} logo failed to load from:`, partner.imageUrl);
                           const img = e.target as HTMLImageElement;
                           img.style.display = 'none';
                           // Create fallback

@@ -247,7 +247,7 @@ export function Services() {
     });
 
     // Hover effects only (removed parallax to prevent images moving out of containers)
-    gsap.utils.toArray('.experience-image').forEach((image: any) => {
+    gsap.utils.toArray<HTMLElement>('.experience-image').forEach((image) => {
       // Hover zoom effect
       const imageContainer = image.closest('.image-container') || image.parentElement;
       if (imageContainer) {
