@@ -11,6 +11,12 @@ const getPartners = (t: (key: string) => string) => [
     description: t('partners.socialsyn.description')
   },
   {
+    name: "My Planet",
+    url: "https://myplanet-landing.vercel.app/",
+    imageUrl: "/planet_logo.png",
+    description: t('partners.myplanet.description')
+  },
+  {
     name: "Rolco",
     url: "https://essex-contest-gr.vercel.app/",
     imageUrl: "/LOGO_ROLCO_RED.png",
@@ -29,12 +35,6 @@ const getPartners = (t: (key: string) => string) => [
     webp: "/optimized/thecars logo.webp",
     avif: "/optimized/thecars logo.avif",
     description: t('partners.thecars.description')
-  },
-  {
-    name: 'Real Player',
-    url: 'https://player.real.gr',
-    imageUrl: 'https://player.real.gr/wp-content/uploads/2024/06/Logo-e1718700920635.png',
-    description: t('partners.realfm.description')
   },
   {
     name: "Oloygeia.gr",
@@ -153,9 +153,7 @@ export function Partners() {
               {/* Partner Logo */}
               <div className="flex items-center justify-center h-20 mb-6">
                 <div className="partner-logo w-full h-full flex items-center justify-center">
-                  <div className={`flex items-center justify-center ${
-                    partner.name === 'Real Player' ? 'bg-blue-900 rounded-lg p-3' : ''
-                  }`}>
+                  <div className="flex items-center justify-center">
                     <picture className="block max-w-full max-h-full">
                       {partner.avif && <source srcSet={partner.avif} type="image/avif" />}
                       {partner.webp && <source srcSet={partner.webp} type="image/webp" />}
@@ -166,8 +164,8 @@ export function Partners() {
                           partner.name === 'Oloygeia.gr' ? 'mix-blend-multiply' : ''
                         }`}
                         style={{ 
-                          maxWidth: partner.name === 'Real Player' ? '120px' : '140px',
-                          maxHeight: partner.name === 'Real Player' ? '45px' : '60px',
+                          maxWidth: '140px',
+                          maxHeight: '60px',
                           opacity: 1
                         }}
                         loading="lazy"
