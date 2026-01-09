@@ -49,7 +49,7 @@ export function Footer() {
                 </div>
               </div>
               <div className="w-16 h-px bg-brand-orange"></div>
-              <p className="text-lg font-light text-white/70 max-w-lg leading-relaxed">
+              <p className="text-md font-light text-white/70 max-w-lg leading-relaxed">
                 {t('footer.description')}
               </p>
             </div>
@@ -63,10 +63,10 @@ export function Footer() {
               </h3>
               
               <div className="space-y-3 text-white/90">
-                <div className="font-light text-lg">{t('footer.service-web-apps')}</div>
-                <div className="font-light text-lg">{t('footer.service-development')}</div>
-                <div className="font-light text-lg">{t('footer.service-eshops')}</div>
-                <div className="font-light text-lg">{t('footer.service-web-design')}</div>
+                <div className="font-light text-md">{t('footer.service-web-apps')}</div>
+                <div className="font-light text-md">{t('footer.service-development')}</div>
+                <div className="font-light text-md">{t('footer.service-eshops')}</div>
+                <div className="font-light text-md">{t('footer.service-web-design')}</div>
               </div>
             </div>
           </div>

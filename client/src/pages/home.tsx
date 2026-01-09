@@ -39,8 +39,8 @@ export default function Home() {
       <Navbar show={showNavbar} />
       <main>
         <Hero onAnimationComplete={() => setShowNavbar(true)} />
-        <About />
         <Partners />
+        <About />
         <Services />
         <Technology />
         <Contact />

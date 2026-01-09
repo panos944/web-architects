@@ -42,15 +42,15 @@ export const translations = {
     'hero.explore': 'Explore',
     
     // About Section
-    'about.number': '01',
+    'about.number': '02',
     'about.who': 'WHO',
     'about.we-are': 'WE ARE',
     'about.intro': 'At <strong>Web Architects</strong>, we craft digital products where design precision meets technical excellence.',
     'about.building-purpose': 'Building With Purpose',
     'about.description1': 'Rooted in the principle that form and function are inseparable, we treat each project as a unique opportunity to solve complex challenges with clarity and innovation.',
     'about.description2': 'By merging strategic insight with advanced engineering, we ensure every application we create is visually distinctive, technically robust, and optimized to perform flawlessly across devices and platforms.',
-    'about.nav-next': '01 → 02',
-    'about.nav-text': 'About → Projects',
+    'about.nav-next': '02 → 03',
+    'about.nav-text': 'About → Services',
     'about.alt-workspace': 'Modern workspace showcasing design process',
     
     // About Values
@@ -94,13 +94,13 @@ export const translations = {
     
     // Partners Section
     'partners.nav-prev': '01 → 02',
-    'partners.nav-text-prev': 'About → Projects',
-    'partners.number': '02',
+    'partners.nav-text-prev': 'Projects → About',
+    'partners.number': '01',
     'partners.our': 'Our',
     'partners.projects': 'Projects',
     'partners.description': 'We collaborate with industry leaders and innovative companies to deliver exceptional results. Our partnerships drive mutual growth and technological excellence.',
-    'partners.nav-next': '02 → 03',
-    'partners.nav-text': 'Projects → Services',
+    'partners.nav-next': '01 → 02',
+    'partners.nav-text': 'Projects → About',
     
     // Partners Array
     'partners.socialsyn.description': 'A modern & elegant website for a digital agency.',
@@ -169,15 +169,15 @@ export const translations = {
     'hero.explore': 'Εξερεύνησε',
     
     // About Section
-    'about.number': '01',
+    'about.number': '02',
     'about.who': 'ΠΟΙΟΙ',
     'about.we-are': 'ΕΙΜΑΣΤΕ',
     'about.intro': 'Στη <strong>Web Architects</strong>, δημιουργούμε καινοτόμες, εύχρηστες και μοναδικές εφαρμογές.',
     'about.building-purpose': 'Δημιουργούμε με Σκοπό',
     'about.description1': 'Βασισμένοι στην αρχή ότι η ομορφιά και η λειτουργικότητα συμβαδίζουν, αντιμετωπίζουμε κάθε έργο ως μια μοναδική ευκαιρία να αντιμετωπίσουμε πολύπλοκες προκλήσεις με σαφήνεια και καινοτομία.',
     'about.description2': 'Συνδυάζοντας διορατικότητα με προηγμένες τεχνολογίες, διασφαλίζουμε ότι κάθε εφαρμογή που δημιουργούμε είναι μοναδική, τεχνικά άρτια και βελτιστοποιημένη για άψογη απόδοση σε όλες τις συσκευές και πλατφόρμες.',
-    'about.nav-next': '01 → 02',
-    'about.nav-text': 'Για Εμάς → Έργα',
+    'about.nav-next': '02 → 03',
+    'about.nav-text': 'Για Εμάς → Υπηρεσίες',
     'about.alt-workspace': 'Σύγχρονος χώρος εργασίας που παρουσιάζει τη διαδικασία σχεδιασμού',
     
     // About Values
@@ -221,13 +221,13 @@ export const translations = {
     
     // Partners Section
     'partners.nav-prev': '01 → 02',
-    'partners.nav-text-prev': 'Για Εμάς → Έργα',
-    'partners.number': '02',
+    'partners.nav-text-prev': 'Έργα → Για Εμάς',
+    'partners.number': '01',
     'partners.our': 'Η Δουλειά',
     'partners.projects': 'Μας ',
     'partners.description': 'Συνεργαζόμαστε με πρωτοπόρες εταιρείες και μετατρέπουμε τις ιδέες σε επιτυχία.',
-    'partners.nav-next': '02 → 03',
-    'partners.nav-text': 'Έργα → Υπηρεσίες',
+    'partners.nav-next': '01 → 02',
+    'partners.nav-text': 'Έργα → Για Εμάς',
     
     // Partners Array
     'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα για το digital agency Socialsyn.',

@@ -224,7 +224,7 @@ export function About() {
       
     </section>
     
-    {/* Prominent section separator between 01 and 02 */}
+    {/* Prominent section separator between 02 and 03 */}
     <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
       {/* Gradient overlay for smooth transition */}
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--card))] via-[hsl(210_10%_12%)] to-[hsl(var(--card))]"></div>

@@ -6,8 +6,8 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { useSmoothScroll } from '@/hooks/use-smooth-scroll';
 
 const getNavItems = (t: (key: string) => string) => [
-  { href: '#about', label: t('nav.who-we-are') },
   { href: '#partners', label: t('nav.partners') },
+  { href: '#about', label: t('nav.who-we-are') },
   { href: '#services', label: t('nav.our-work') },
   { href: '#technology', label: t('nav.technology') },
 ];

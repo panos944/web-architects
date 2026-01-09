@@ -120,20 +120,53 @@ export function Partners() {
       
       <div className="container-fluid">
         {/* Section Header */}
-        <div className="partners-header mb-20">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="text-xs uppercase tracking-[0.2em] font-medium" style={{color: '#F68238'}}>
-              {t('partners.number')}
+        <div className="partners-header mb-24">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="space-y-6">
+                <div className="text-xs uppercase tracking-[0.2em] font-medium" style={{color: '#F68238'}}>
+                  {t('partners.number')}
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-[clamp(2rem,4vw,4rem)] font-extralight leading-[0.9] tracking-tight" style={{color: '#263226'}}>
+                    {t('partners.our')}
+                  </h2>
+                  <div className="text-[clamp(2rem,4vw,4rem)] font-light leading-[0.9] tracking-tight ml-8" style={{color: '#F68238'}}>
+                    {t('partners.projects')}
+                  </div>
+                </div>
+              </div>
             </div>
-            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-light leading-[0.9] tracking-tight" style={{color: '#263226'}}>
-              {t('partners.our')}
-              <br/>
-              <span className="ml-8">{t('partners.projects')}</span>
-            </h2>
-            <div className="w-24 h-px mx-auto" style={{backgroundColor: '#F68238'}}></div>
-            <p className="partners-subtitle text-lg font-light leading-relaxed max-w-2xl mx-auto" style={{color: '#263226'}}>
-              {t('partners.description')}
-            </p>
+            
+            <div className="lg:col-span-8">
+              <div className="max-w-2xl space-y-6">
+                <div className="space-y-6">
+                  <p className="partners-subtitle text-lg font-light leading-relaxed" style={{color: 'rgba(38, 50, 38, 0.7)'}}>
+                    {t('partners.description')}
+                  </p>
+                  <div className="flex items-center justify-center gap-2 sm:gap-4 w-full">
+                    <div className="flex-1 max-w-[60px] h-px" style={{backgroundColor: '#F68238'}}></div>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 opacity-80">
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 256 256" 
+                        className="w-full h-full"
+                        role="img" 
+                        aria-label={t('partners.alt-logo')}
+                      >
+                        <circle cx="128" cy="128" r="120" fill="#263226"/>
+                        <g fill="none" stroke="#FFFFFF" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M36 70 L64 186 L92 70 L120 186 L148 70"/>
+                          <path d="M172 186 L200 70 L228 186"/>
+                        </g>
+                        <path d="M176 138 L220 138" fill="none" stroke="#F68238" strokeWidth="20" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1 max-w-[60px] h-px" style={{backgroundColor: '#F68238'}}></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -202,9 +235,52 @@ export function Partners() {
             </a>
           ))}
         </div>
-
-      </div>
+        </div>
       </section>
+      
+      {/* Prominent section separator between 01 and 02 */}
+      <div className="relative py-24" style={{backgroundColor: 'hsl(210 10% 12%)'}}>
+        {/* Gradient overlay for smooth transition */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(0_0%_98%)] via-[hsl(210_10%_12%)] to-[hsl(var(--card))]"></div>
+        
+        {/* Central divider element */}
+        <div className="relative z-10 container-fluid">
+          <div className="text-center space-y-8">
+            {/* Section transition indicator */}
+            <div className="flex items-center justify-center space-x-6">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent to-orange-500/60"></div>
+              <div className="flex space-x-3">
+                <div className="w-2 h-2 rounded-full bg-orange-500/60"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/40"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500/20"></div>
+              </div>
+              <div className="w-16 h-px bg-gradient-to-l from-transparent to-orange-500/60"></div>
+            </div>
+            
+            {/* Section number transition */}
+            <div className="space-y-4">
+              <div className="text-xs uppercase tracking-[0.3em] text-orange-500/80 font-light">
+                {t('partners.nav-next')}
+              </div>
+              <div className="text-sm text-white/60 font-light tracking-wide">
+                {t('partners.nav-text')}
+              </div>
+            </div>
+            
+            {/* Decorative elements */}
+            <div className="flex justify-center">
+              <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Animated particles effect */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-orange-500/30 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-orange-500/20 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-orange-500/40 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
+      </div>
     </>
   );
 }
