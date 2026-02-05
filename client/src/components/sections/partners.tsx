@@ -41,14 +41,6 @@ const getPartners = (t: (key: string) => string) => [
     webp: "/optimized/thecars logo.webp",
     avif: "/optimized/thecars logo.avif",
     description: t('partners.thecars.description')
-  },
-  {
-    name: "Oloygeia.gr",
-    url: "https://oloygeia.gr",
-    imageUrl: "/optimized/oloygeia.logo.png",
-    webp: "/optimized/oloygeia.logo.webp",
-    avif: "/optimized/oloygeia.logo.avif",
-    description: t('partners.wellness.description')
   }
 ];
 
@@ -199,9 +191,7 @@ export function Partners() {
                       <img 
                         src={partner.imageUrl} 
                         alt={`${partner.name} logo`}
-                        className={`max-w-full max-h-full object-contain transition-all duration-300 opacity-100 ${
-                          partner.name === 'Oloygeia.gr' ? 'mix-blend-multiply' : ''
-                        }`}
+                        className="max-w-full max-h-full object-contain transition-all duration-300 opacity-100"
                         style={{ 
                           maxWidth: '140px',
                           maxHeight: '60px',
