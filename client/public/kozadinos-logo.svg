@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="60" viewBox="0 0 60 80">
+  <g fill="none" stroke="#1a5490" stroke-width="2.5" stroke-linecap="round">
+    <!-- Central staff -->
+    <line x1="30" y1="12" x2="30" y2="72"/>
+
+    <!-- Wings -->
+    <path d="M30 14 Q22 10 14 14 Q18 16 22 14 Q26 12 30 14"/>
+    <path d="M30 14 Q38 10 46 14 Q42 16 38 14 Q34 12 30 14"/>
+    <path d="M30 12 Q20 6 12 12"/>
+    <path d="M30 12 Q40 6 48 12"/>
+
+    <!-- Top orb -->
+    <circle cx="30" cy="10" r="4" fill="#1a5490"/>
+
+    <!-- Left snake -->
+    <path d="M30 18
+             Q22 22 22 28
+             Q22 34 30 38
+             Q38 42 38 48
+             Q38 54 30 58
+             Q22 62 22 68"/>
+
+    <!-- Right snake -->
+    <path d="M30 18
+             Q38 22 38 28
+             Q38 34 30 38
+             Q22 42 22 48
+             Q22 54 30 58
+             Q38 62 38 68"/>
+
+    <!-- Snake heads -->
+    <circle cx="20" cy="70" r="3" fill="#1a5490"/>
+    <circle cx="40" cy="70" r="3" fill="#1a5490"/>
+
+    <!-- Snake eyes -->
+    <circle cx="19" cy="69" r="1" fill="white"/>
+    <circle cx="41" cy="69" r="1" fill="white"/>
+  </g>
+</svg>

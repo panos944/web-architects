@@ -104,6 +104,7 @@ export const translations = {
     
     // Partners Array
     'partners.socialsyn.description': 'A modern & elegant website for a digital agency.',
+    'partners.kozadinos.description': 'A complex medical website for the Director of Robotic Surgery at Metropolitan Hospital.',
     'partners.rolco.description': 'A contest website for one of the largest cleaning brands in Greece.',
     'partners.oloygeia.description': 'Premium lifestyle and fashion news coverage website.',
     'partners.thecars.description': 'Automotive coverage on all issues and areas.',
@@ -231,6 +232,7 @@ export const translations = {
     
     // Partners Array
     'partners.socialsyn.description': 'Μια σύγχρονη και κομψή ιστοσελίδα για το digital agency Socialsyn.',
+    'partners.kozadinos.description': 'Ένας σύνθετος ιατρικός ιστότοπος για τον Διευθυντή της Κλινικής Ρομποτικής Χειρουργικής στο Metropolitan Hospital.',
     'partners.rolco.description': 'Ιστότοπος διαγωνισμού για μία από τις μεγαλύτερες μάρκες καθαριστικών στην Ελλάδα.',
     'partners.oloygeia.description': 'Premium ιστότοπος κάλυψης lifestyle και μόδας.',
     'partners.thecars.description': 'Αυτοκινητιστική κάλυψη σε όλα τα θέματα και τομείς.',

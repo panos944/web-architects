@@ -11,6 +11,12 @@ const getPartners = (t: (key: string) => string) => [
     description: t('partners.socialsyn.description')
   },
   {
+    name: "kozadinos.gr",
+    url: "https://kozadinos.gr",
+    imageUrl: "/kozadinos-logo.svg",
+    description: t('partners.kozadinos.description')
+  },
+  {
     name: "My Planet",
     url: "https://myplanet-landing.vercel.app/",
     imageUrl: "/planet_logo.png",
