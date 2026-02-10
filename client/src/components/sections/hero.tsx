@@ -146,10 +146,12 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
   }, [scrollProgress, gatherStart, gatherEnd]);
 
   // Calculate transition overlay opacity (fade to white at the end)
+  // On mobile, start fade earlier since we stop video seeking at 92%
   const transitionOpacity = useMemo(() => {
-    const fadeProgress = getPhaseProgress(scrollProgress, 0.85, 1);
+    const fadeStart = isMobile ? 0.78 : 0.85;
+    const fadeProgress = getPhaseProgress(scrollProgress, fadeStart, 1);
     return fadeProgress;
-  }, [scrollProgress]);
+  }, [scrollProgress, isMobile]);
 
   // Map scroll progress to video progress with offset (start at ~15% into the video)
   const videoProgress = useMemo(() => {
@@ -374,53 +376,51 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       })}
 
       {/* Gathered Services - all together at the end */}
-      {/* On mobile, show earlier since we skip individual discovery */}
+      {/* On mobile, simplified version with fewer calculations */}
       {(() => {
-        const mobileGatherStart = 0.25;
-        const mobileGatherEnd = 0.40;
-        const mobileFadeOutStart = 0.75;
-        const mobileFadeOutEnd = 0.88;
+        // Mobile: simpler timing, desktop: original timing
+        const gatherStartVal = isMobile ? 0.25 : gatherStart;
+        const gatherEndVal = isMobile ? 0.40 : gatherEnd;
+        const fadeOutStartVal = isMobile ? 0.70 : fadeOutStart;
+        const fadeOutEndVal = isMobile ? 0.80 : fadeOutEnd;
 
-        const effectiveGatherProgress = isMobile
-          ? getPhaseProgress(scrollProgress, mobileGatherStart, mobileGatherEnd)
-          : gatherAnimationProgress;
+        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStartVal, gatherEndVal);
+        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStartVal, fadeOutEndVal);
 
-        const effectiveFadeOut = isMobile
-          ? getPhaseProgress(scrollProgress, mobileFadeOutStart, mobileFadeOutEnd)
-          : getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
-
+        // Early exit - don't render if not visible
         if (effectiveGatherProgress <= 0) return null;
+
+        const containerOpacity = Math.min(effectiveGatherProgress, 1 - effectiveFadeOut);
+
+        // On mobile, skip rendering entirely once faded out
+        if (isMobile && containerOpacity <= 0) return null;
 
         return (
           <div
             className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
-            style={{
-              opacity: Math.min(effectiveGatherProgress, 1 - effectiveFadeOut),
-              willChange: isMobile ? 'opacity' : 'auto',
-            }}
+            style={{ opacity: containerOpacity }}
           >
             <div className="text-center space-y-4">
               {/* Header */}
               <div
                 className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
-                style={{
-                  opacity: effectiveGatherProgress,
-                  transform: isMobile ? 'none' : `translateY(${(1 - effectiveGatherProgress) * 20}px)`,
+                style={isMobile ? undefined : {
+                  transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)`,
                 }}
               >
                 What We Do
               </div>
 
-              {/* All services stacked */}
+              {/* All services stacked - on mobile, no per-item styles */}
               {serviceLabels.map((label, index) => (
                 <div
                   key={index}
                   className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
-                  style={{
+                  style={isMobile ? {
                     textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
-                    opacity: effectiveGatherProgress,
-                    // Simpler animation on mobile - just fade, no movement
-                    transform: isMobile ? 'none' : `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
+                  } : {
+                    textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
+                    transform: `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
                   }}
                 >
                   {label}
@@ -428,10 +428,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
               ))}
 
               {/* Accent line */}
-              <div
-                className="pt-4"
-                style={{ opacity: effectiveGatherProgress }}
-              >
+              <div className="pt-4">
                 <div className="w-20 h-px bg-gradient-to-r from-transparent via-[#F68238]/60 to-transparent mx-auto"></div>
               </div>
             </div>

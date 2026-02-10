@@ -35,11 +35,10 @@ export function ScrollVideo({
   const ambientRef = useRef<HTMLDivElement>(null);
   const [isReady, setIsReady] = useState(false);
   const durationRef = useRef<number>(0);
-  const animationRef = useRef<number | null>(null);
-  const startTimeRef = useRef<number>(Date.now());
   const lastSeekTimeRef = useRef<number>(0);
   const lastProgressRef = useRef<number>(0);
-  const pendingSeekRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  const ambientAnimationRef = useRef<number | null>(null);
 
   // Handle video metadata loaded
   const handleLoadedMetadata = useCallback(() => {
@@ -62,51 +61,37 @@ export function ScrollVideo({
   }, [onLoadProgress]);
 
   // Update video time based on scroll progress
-  // On mobile, use requestAnimationFrame batching to reduce load
   useEffect(() => {
     if (!isReady || !videoRef.current || durationRef.current === 0) return;
 
     const duration = durationRef.current;
-    const targetTime = scrollProgress * (duration - 0.1);
+
+    // On mobile, stop seeking after 92% - the fade-to-white covers it
+    // This eliminates expensive seeks at the end of the journey
+    if (isMobile && scrollProgress > 0.92) {
+      return;
+    }
+
+    const now = Date.now();
+    const timeSinceLastSeek = now - lastSeekTimeRef.current;
+    const progressDelta = Math.abs(scrollProgress - lastProgressRef.current);
 
     if (isMobile) {
-      // On mobile, batch seeks using requestAnimationFrame
-      // Store the pending target and only seek on the next frame
-      pendingSeekRef.current = targetTime;
-
-      if (!animationRef.current) {
-        const performSeek = () => {
-          const now = Date.now();
-          const timeSinceLastSeek = now - lastSeekTimeRef.current;
-
-          // Throttle to ~12 seeks per second on mobile (every 83ms)
-          if (timeSinceLastSeek >= 83 && pendingSeekRef.current !== null && videoRef.current) {
-            videoRef.current.currentTime = pendingSeekRef.current;
-            lastSeekTimeRef.current = now;
-            lastProgressRef.current = scrollProgress;
-            pendingSeekRef.current = null;
-          }
-
-          animationRef.current = requestAnimationFrame(performSeek);
-        };
-
-        animationRef.current = requestAnimationFrame(performSeek);
+      // On mobile: throttle to ~8 seeks per second (every 125ms)
+      // AND only seek if progress changed meaningfully (> 0.8%)
+      if (timeSinceLastSeek < 125 || progressDelta < 0.008) {
+        return;
       }
-    } else {
-      // Desktop: direct seeking for responsiveness
-      videoRef.current.currentTime = targetTime;
-      lastProgressRef.current = scrollProgress;
     }
-  }, [scrollProgress, isReady, isMobile]);
 
-  // Cleanup animation frame on unmount
-  useEffect(() => {
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, []);
+    // Calculate target time
+    const targetTime = scrollProgress * (duration - 0.1);
+
+    // Perform the seek
+    videoRef.current.currentTime = targetTime;
+    lastSeekTimeRef.current = now;
+    lastProgressRef.current = scrollProgress;
+  }, [scrollProgress, isReady, isMobile]);
 
   // Preload the video
   useEffect(() => {
@@ -116,11 +101,8 @@ export function ScrollVideo({
   }, [src]);
 
   // Subtle ambient motion animation - DESKTOP ONLY
-  // Disabled on mobile to save CPU/GPU resources
   useEffect(() => {
     if (!isReady || isMobile || !ambientRef.current) return;
-
-    let localAnimationRef: number | null = null;
 
     const animate = () => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
@@ -133,14 +115,14 @@ export function ScrollVideo({
         ambientRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
       }
 
-      localAnimationRef = requestAnimationFrame(animate);
+      ambientAnimationRef.current = requestAnimationFrame(animate);
     };
 
-    localAnimationRef = requestAnimationFrame(animate);
+    ambientAnimationRef.current = requestAnimationFrame(animate);
 
     return () => {
-      if (localAnimationRef) {
-        cancelAnimationFrame(localAnimationRef);
+      if (ambientAnimationRef.current) {
+        cancelAnimationFrame(ambientAnimationRef.current);
       }
     };
   }, [isReady, isMobile]);
@@ -151,7 +133,6 @@ export function ScrollVideo({
         ref={ambientRef}
         className="absolute inset-0"
         style={{
-          // GPU acceleration hints
           transform: 'translate3d(0, 0, 0)',
           willChange: isMobile ? 'auto' : 'transform',
           backfaceVisibility: 'hidden',
@@ -172,7 +153,6 @@ export function ScrollVideo({
             top: '0',
             left: '0',
             objectPosition: 'center top',
-            // GPU layer for video
             transform: 'translateZ(0)',
           }}
         />
