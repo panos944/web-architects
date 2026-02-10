@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 
 interface LoadingScreenProps {
-  /** External progress value (0-1) - if provided, uses this instead of simulated progress */
+  /** External progress value (0-1) - used to know when video is buffered */
   progress?: number;
   /** Whether loading is complete (video is ready) */
   isReady?: boolean;
@@ -25,8 +25,7 @@ export function LoadingScreen({ progress: externalProgress, isReady = false, onC
   const progressBarRef = useRef<HTMLDivElement>(null);
   const startTimeRef = useRef<number>(Date.now());
   const hasInitializedRef = useRef(false);
-  const progressObjRef = useRef({ value: 0 });
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   // Initialize animations on mount
   useEffect(() => {
@@ -40,7 +39,7 @@ export function LoadingScreen({ progress: externalProgress, isReady = false, onC
     tl.set([welcomeRef.current, toRef.current, webArchitectsRef.current], { opacity: 0, y: 20 })
       .set(textRef.current, { opacity: 1 })
       .to(welcomeRef.current, {
-        opacity: 0.15, // Start dim
+        opacity: 0.15,
         y: 0,
         duration: 0.8,
         ease: "power2.out",
@@ -60,100 +59,97 @@ export function LoadingScreen({ progress: externalProgress, isReady = false, onC
       }, "-=0.4");
   }, []);
 
-  // Smoothly animate progress with GSAP
+  // Simple time-based progress animation
+  // Always advances, doesn't depend on external progress
   useEffect(() => {
-    const elapsedTime = (Date.now() - startTimeRef.current) / 1000;
-    const timeProgress = Math.min(elapsedTime / MIN_LOADING_DURATION, 1);
+    const animate = () => {
+      const elapsed = (Date.now() - startTimeRef.current) / 1000;
+      const timeProgress = elapsed / MIN_LOADING_DURATION;
 
-    // Calculate target: blend of time-based progress and actual load progress
-    // This ensures minimum duration while responding to actual load
-    const actualProgress = externalProgress ?? 0;
-    const minProgress = timeProgress * 100;
+      // Use easeOutQuad for natural feeling progress
+      // Progress faster at start, slower near end
+      const eased = 1 - Math.pow(1 - Math.min(timeProgress, 1), 2);
 
-    // Don't exceed actual progress too much, but always advance based on time
-    let targetProgress = Math.min(
-      Math.max(minProgress, actualProgress * 100 * 0.7), // Advance with time, but cap at 70% of actual
-      actualProgress * 100 // Never exceed actual progress
-    );
+      // Calculate target progress
+      let target: number;
 
-    // If ready and time elapsed, go to 100
-    if (isReady && elapsedTime >= MIN_LOADING_DURATION * 0.9) {
-      targetProgress = 100;
-    } else if (!isReady) {
-      // Cap at 92% until ready
-      targetProgress = Math.min(targetProgress, 92);
-    }
-
-    // Kill existing tween if any
-    if (tweenRef.current) {
-      tweenRef.current.kill();
-    }
-
-    // Smoothly animate to target
-    tweenRef.current = gsap.to(progressObjRef.current, {
-      value: targetProgress,
-      duration: 0.5,
-      ease: "power2.out",
-      onUpdate: () => {
-        setDisplayProgress(Math.round(progressObjRef.current.value));
+      if (isReady && elapsed >= MIN_LOADING_DURATION * 0.8) {
+        // Video is ready and we've shown the animation long enough
+        target = 100;
+      } else if (isReady) {
+        // Video is ready but we need to show more of the animation
+        // Accelerate slightly but cap at 95
+        target = Math.min(eased * 100 * 1.1, 95);
+      } else {
+        // Video not ready - progress up to 90% based on time
+        target = Math.min(eased * 92, 90);
       }
-    });
 
-    // Continue checking progress
-    if (targetProgress < 100) {
-      const timer = setTimeout(() => {
-        // Force a re-render to check progress again
-        setDisplayProgress(prev => prev);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [externalProgress, isReady, displayProgress]);
+      // Ensure we always advance (never go backwards)
+      setDisplayProgress(prev => Math.max(prev, Math.round(target)));
+
+      // Continue animation until we hit 100
+      if (target < 100) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [isReady]);
 
   // Handle exit animation when complete
   useEffect(() => {
-    const elapsedTime = (Date.now() - startTimeRef.current) / 1000;
+    if (displayProgress >= 100 && !isExiting) {
+      // Small delay to let user see 100%
+      const timeout = setTimeout(() => {
+        setIsExiting(true);
 
-    if (displayProgress >= 100 && isReady && elapsedTime >= MIN_LOADING_DURATION && !isExiting) {
-      setIsExiting(true);
+        const exitTl = gsap.timeline();
+        exitTl
+          .to({}, { duration: 0.3 })
+          .to([welcomeRef.current, toRef.current, webArchitectsRef.current], {
+            opacity: 0,
+            y: -20,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.in"
+          })
+          .to(counterRef.current, {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.4,
+            ease: "power2.in"
+          }, "-=0.3")
+          .to(progressBarRef.current?.parentElement, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.in"
+          }, "-=0.3")
+          .to(containerRef.current, {
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.inOut",
+            onComplete: () => {
+              onComplete?.();
+            }
+          }, "-=0.2");
+      }, 200);
 
-      // Elegant exit animation
-      const exitTl = gsap.timeline();
-      exitTl
-        .to({}, { duration: 0.4 }) // Brief hold at 100%
-        .to([welcomeRef.current, toRef.current, webArchitectsRef.current], {
-          opacity: 0,
-          y: -20,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.in"
-        })
-        .to(counterRef.current, {
-          opacity: 0,
-          scale: 0.9,
-          duration: 0.4,
-          ease: "power2.in"
-        }, "-=0.3")
-        .to(progressBarRef.current?.parentElement, {
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in"
-        }, "-=0.3")
-        .to(containerRef.current, {
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.inOut",
-          onComplete: () => {
-            onComplete?.();
-          }
-        }, "-=0.2");
+      return () => clearTimeout(timeout);
     }
-  }, [displayProgress, isReady, isExiting, onComplete]);
+  }, [displayProgress, isExiting, onComplete]);
 
-  // Update text glow based on progress - smooth lighting effect
+  // Update text glow based on progress
   useEffect(() => {
     const progress = displayProgress / 100;
 
-    // Move counter smoothly based on progress
+    // Move counter smoothly
     if (counterRef.current) {
       const maxTranslateX = window.innerWidth * 0.25;
       gsap.to(counterRef.current, {
@@ -163,7 +159,7 @@ export function LoadingScreen({ progress: externalProgress, isReady = false, onC
       });
     }
 
-    // "Welcome" lights up 0-35% with smooth glow
+    // "Welcome" lights up 0-35%
     if (welcomeRef.current) {
       const welcomeProgress = Math.min(progress / 0.35, 1);
       const welcomeOpacity = 0.15 + welcomeProgress * 0.85;
@@ -262,7 +258,7 @@ export function LoadingScreen({ progress: externalProgress, isReady = false, onC
           <div className="h-[2px] bg-white/10 relative rounded-full overflow-hidden">
             <div
               ref={progressBarRef}
-              className="h-full bg-gradient-to-r from-[#F68238] to-[#FFA366] absolute left-0 top-0 rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-gradient-to-r from-[#F68238] to-[#FFA366] absolute left-0 top-0 rounded-full transition-all duration-300 ease-out"
               style={{
                 width: `${displayProgress}%`,
                 boxShadow: '0 0 10px rgba(246, 130, 56, 0.5)'

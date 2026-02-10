@@ -222,10 +222,10 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
       </div>
 
-      {/* Floating dust particles */}
+      {/* Floating dust particles - significantly reduced on mobile for performance */}
       <DustParticles
         className="opacity-60"
-        particleCount={isMobile ? 80 : 150}
+        particleCount={isMobile ? 25 : 150}
         intensity="light"
       />
 
@@ -234,8 +234,9 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         className="container-fluid relative z-30 pt-24 pb-16"
         style={{
           opacity: overlayOpacity,
-          transform: `translateY(${scrollProgress * -50}px)`,
-          transition: 'opacity 0.15s ease-out',
+          // On mobile, skip the parallax movement for better performance
+          transform: isMobile ? 'translateZ(0)' : `translate3d(0, ${scrollProgress * -50}px, 0)`,
+          willChange: isMobile ? 'opacity' : 'transform, opacity',
           pointerEvents: overlayOpacity < 0.1 ? 'none' : 'auto',
         }}
       >
@@ -312,7 +313,8 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       </div>
 
       {/* Discovered Services - each appears at different positions as you journey */}
-      {serviceDiscoveries.map((config, index) => {
+      {/* On mobile, skip the individual discovery animations for performance */}
+      {!isMobile && serviceDiscoveries.map((config, index) => {
         const state = serviceStates[index];
         const isVisible = state.opacity > 0 && !state.gathered;
 
@@ -325,8 +327,8 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
             style={{
               ...config.position,
               opacity: state.opacity,
-              transform: `translate(${state.x}px, ${state.y}px)`,
-              transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
+              transform: `translate3d(${state.x}px, ${state.y}px, 0)`,
+              willChange: 'transform, opacity',
             }}
           >
             <div
@@ -339,7 +341,6 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
               {/* Small label */}
               <div
                 className="text-xs uppercase tracking-[0.3em] text-white/40 font-light mb-2"
-                style={{ opacity: state.opacity }}
               >
                 {index === 0 && 'Discover'}
                 {index === 1 && 'Explore'}
@@ -365,7 +366,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
                   ${config.align === 'right' ? 'from-transparent to-[#F68238]/60 w-24 ml-auto' : ''}
                   ${config.align === 'center' ? 'from-transparent via-[#F68238]/60 to-transparent w-32 mx-auto' : ''}
                 `}
-                style={{ opacity: state.opacity * 0.8 }}
+                style={{ opacity: 0.8 }}
               />
             </div>
           </div>
@@ -373,52 +374,70 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       })}
 
       {/* Gathered Services - all together at the end */}
-      {gatherAnimationProgress > 0 && (
-        <div
-          className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
-          style={{
-            opacity: Math.min(gatherAnimationProgress, 1 - getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd)),
-            transition: 'opacity 0.15s ease-out',
-          }}
-        >
-          <div className="text-center space-y-4">
-            {/* Header */}
-            <div
-              className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
-              style={{
-                opacity: gatherAnimationProgress,
-                transform: `translateY(${(1 - gatherAnimationProgress) * 20}px)`,
-              }}
-            >
-              What We Do
-            </div>
+      {/* On mobile, show earlier since we skip individual discovery */}
+      {(() => {
+        const mobileGatherStart = 0.25;
+        const mobileGatherEnd = 0.40;
+        const mobileFadeOutStart = 0.75;
+        const mobileFadeOutEnd = 0.88;
 
-            {/* All services stacked */}
-            {serviceLabels.map((label, index) => (
+        const effectiveGatherProgress = isMobile
+          ? getPhaseProgress(scrollProgress, mobileGatherStart, mobileGatherEnd)
+          : gatherAnimationProgress;
+
+        const effectiveFadeOut = isMobile
+          ? getPhaseProgress(scrollProgress, mobileFadeOutStart, mobileFadeOutEnd)
+          : getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
+
+        if (effectiveGatherProgress <= 0) return null;
+
+        return (
+          <div
+            className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
+            style={{
+              opacity: Math.min(effectiveGatherProgress, 1 - effectiveFadeOut),
+              willChange: isMobile ? 'opacity' : 'auto',
+            }}
+          >
+            <div className="text-center space-y-4">
+              {/* Header */}
               <div
-                key={index}
-                className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
+                className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
                 style={{
-                  textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
-                  opacity: gatherAnimationProgress,
-                  transform: `translateY(${(1 - gatherAnimationProgress) * (30 + index * 15)}px)`,
-                  transition: 'transform 0.2s ease-out',
+                  opacity: effectiveGatherProgress,
+                  transform: isMobile ? 'none' : `translateY(${(1 - effectiveGatherProgress) * 20}px)`,
                 }}
               >
-                {label}
+                What We Do
               </div>
-            ))}
 
-            {/* Accent line */}
-            <div
-              className="pt-4"
-              style={{ opacity: gatherAnimationProgress }}
-            >
-              <div className="w-20 h-px bg-gradient-to-r from-transparent via-[#F68238]/60 to-transparent mx-auto"></div>
+              {/* All services stacked */}
+              {serviceLabels.map((label, index) => (
+                <div
+                  key={index}
+                  className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
+                  style={{
+                    textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
+                    opacity: effectiveGatherProgress,
+                    // Simpler animation on mobile - just fade, no movement
+                    transform: isMobile ? 'none' : `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
+                  }}
+                >
+                  {label}
+                </div>
+              ))}
+
+              {/* Accent line */}
+              <div
+                className="pt-4"
+                style={{ opacity: effectiveGatherProgress }}
+              >
+                <div className="w-20 h-px bg-gradient-to-r from-transparent via-[#F68238]/60 to-transparent mx-auto"></div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* Scroll indicator (only visible when content is visible) */}
       {overlayOpacity > 0.5 && (
