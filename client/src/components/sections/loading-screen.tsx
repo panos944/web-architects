@@ -2,128 +2,184 @@ import { useEffect, useState, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 
 interface LoadingScreenProps {
+  /** External progress value (0-1) - if provided, uses this instead of simulated progress */
+  progress?: number;
+  /** Whether loading is complete (video is ready) */
+  isReady?: boolean;
+  /** Callback when loading animation completes */
   onComplete?: () => void;
 }
 
-export function LoadingScreen({ onComplete }: LoadingScreenProps) {
-  const [counter, setCounter] = useState(0);
+export function LoadingScreen({ progress: externalProgress, isReady = false, onComplete }: LoadingScreenProps) {
+  const [displayProgress, setDisplayProgress] = useState(0);
   const [showText, setShowText] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const counterRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const welcomeRef = useRef<HTMLSpanElement>(null);
   const toRef = useRef<HTMLSpanElement>(null);
   const webArchitectsRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasStartedRef = useRef(false);
 
+  // Animate progress based on external progress or simulate it
   useEffect(() => {
-    const tl = gsap.timeline();
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
 
-    // Start the text animation first
-    tl.to({}, { duration: 0.5 }) // Small delay
+    // Start text animation
+    const textTl = gsap.timeline();
+    textTl.to({}, { duration: 0.3 })
       .call(() => setShowText(true))
       .fromTo(textRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }
-      )
-      // Start counter animation
-      .to({}, { duration: 0.3 }) // Brief pause
-      .to({ value: 0 }, {
-        value: 100,
-        duration: 3,
-        ease: "power2.out",
-        onUpdate: function() {
-          const value = Math.round(this.targets()[0].value);
-          setCounter(value);
-          
-          // Move counter from left to right based on progress
-          if (counterRef.current) {
-            const progress = value / 100;
-            const maxTranslateX = window.innerWidth * 0.3; // 30% of screen width
-            gsap.set(counterRef.current, {
-              x: progress * maxTranslateX - maxTranslateX / 2
-            });
-          }
+        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+      );
+  }, []);
 
-          // Gradually light up the text based on counter progress
-          const progress = value / 100;
-          
-          // "Welcome" lights up 0-33%
-          if (welcomeRef.current) {
-            const welcomeOpacity = Math.min(progress * 3, 1);
-            gsap.set(welcomeRef.current, { 
-              opacity: welcomeOpacity,
-              textShadow: `0 0 ${welcomeOpacity * 20}px rgba(255, 163, 102, ${welcomeOpacity * 0.5})`
-            });
-          }
-          
-          // "to" lights up 33-66%
-          if (toRef.current) {
-            const toOpacity = Math.max(0, Math.min((progress - 0.33) * 3, 1));
-            gsap.set(toRef.current, { 
-              opacity: toOpacity,
-              textShadow: `0 0 ${toOpacity * 15}px rgba(255, 163, 102, ${toOpacity * 0.4})`
-            });
-          }
-          
-          // "Web Architects" lights up 66-100%
-          if (webArchitectsRef.current) {
-            const waOpacity = Math.max(0, Math.min((progress - 0.66) * 3, 1));
-            gsap.set(webArchitectsRef.current, { 
-              opacity: waOpacity,
-              textShadow: `0 0 ${waOpacity * 30}px rgba(255, 163, 102, ${waOpacity * 0.6})`
-            });
-          }
+  // Update display progress smoothly
+  useEffect(() => {
+    // Use external progress if available, otherwise simulate
+    const targetProgress = externalProgress !== undefined
+      ? Math.round(externalProgress * 100)
+      : displayProgress;
+
+    if (externalProgress !== undefined && targetProgress > displayProgress) {
+      // Smoothly animate to target progress
+      const diff = targetProgress - displayProgress;
+      const increment = Math.max(1, Math.ceil(diff / 10));
+      const timer = setTimeout(() => {
+        setDisplayProgress(prev => Math.min(prev + increment, targetProgress));
+      }, 30);
+      return () => clearTimeout(timer);
+    }
+  }, [externalProgress, displayProgress]);
+
+  // Simulate progress if no external progress provided
+  useEffect(() => {
+    if (externalProgress !== undefined) return;
+
+    const interval = setInterval(() => {
+      setDisplayProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
         }
-      })
-      // Hold for a moment when complete
-      .to({}, { duration: 0.8 })
-      // Fade out the entire screen
-      .to(containerRef.current, {
-        opacity: 0,
-        duration: 1,
-        ease: "power2.inOut",
-        onComplete: () => {
-          if (onComplete) onComplete();
-        }
+        // Slower as we approach 100 to wait for video
+        const increment = prev < 70 ? 3 : prev < 90 ? 1 : 0.5;
+        return Math.min(prev + increment, isReady ? 100 : 95);
       });
+    }, 50);
 
-    return () => {
-      tl.kill();
-    };
-  }, [onComplete]);
+    return () => clearInterval(interval);
+  }, [externalProgress, isReady]);
+
+  // Jump to 100% when ready
+  useEffect(() => {
+    if (isReady && displayProgress >= 95) {
+      setDisplayProgress(100);
+    }
+  }, [isReady, displayProgress]);
+
+  // Handle exit animation when complete
+  useEffect(() => {
+    if (displayProgress >= 100 && isReady && !isExiting) {
+      setIsExiting(true);
+
+      // Hold for a moment, then fade out
+      const exitTl = gsap.timeline();
+      exitTl.to({}, { duration: 0.6 })
+        .to(containerRef.current, {
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.inOut",
+          onComplete: () => {
+            onComplete?.();
+          }
+        });
+    }
+  }, [displayProgress, isReady, isExiting, onComplete]);
+
+  // Update text glow based on progress
+  useEffect(() => {
+    const progress = displayProgress / 100;
+
+    // Move counter based on progress
+    if (counterRef.current) {
+      const maxTranslateX = window.innerWidth * 0.3;
+      gsap.set(counterRef.current, {
+        x: progress * maxTranslateX - maxTranslateX / 2
+      });
+    }
+
+    // "Welcome" lights up 0-33%
+    if (welcomeRef.current) {
+      const welcomeOpacity = Math.min(progress * 3, 1);
+      gsap.set(welcomeRef.current, {
+        opacity: welcomeOpacity,
+        textShadow: `0 0 ${welcomeOpacity * 20}px rgba(246, 130, 56, ${welcomeOpacity * 0.5})`
+      });
+    }
+
+    // "to" lights up 33-66%
+    if (toRef.current) {
+      const toOpacity = Math.max(0, Math.min((progress - 0.33) * 3, 1));
+      gsap.set(toRef.current, {
+        opacity: toOpacity,
+        textShadow: `0 0 ${toOpacity * 15}px rgba(246, 130, 56, ${toOpacity * 0.4})`
+      });
+    }
+
+    // "Web Architects" lights up 66-100%
+    if (webArchitectsRef.current) {
+      const waOpacity = Math.max(0, Math.min((progress - 0.66) * 3, 1));
+      gsap.set(webArchitectsRef.current, {
+        opacity: waOpacity,
+        textShadow: `0 0 ${waOpacity * 30}px rgba(246, 130, 56, ${waOpacity * 0.6})`
+      });
+    }
+  }, [displayProgress]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#263226] text-white overflow-hidden"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#263226] text-white overflow-hidden"
     >
       {/* Background gradient for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#263226] via-[#1a241a] to-[#0f150f]" />
-      
+
+      {/* Subtle desert-colored ambient glow */}
+      <div
+        className="absolute inset-0 opacity-20"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 80%, rgba(246, 130, 56, 0.3) 0%, transparent 60%)'
+        }}
+      />
+
       {/* Content container */}
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 text-center px-4">
         {/* Welcome text */}
         {showText && (
-          <div 
+          <div
             ref={textRef}
-            className="mb-12"
+            className="mb-8 md:mb-12"
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-wider">
-              <span 
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-light tracking-wider">
+              <span
                 ref={welcomeRef}
-                className="opacity-0"
+                className="opacity-0 transition-all duration-300"
               >
                 Welcome
               </span>{' '}
-              <span 
+              <span
                 ref={toRef}
-                className="opacity-0"
+                className="opacity-0 transition-all duration-300"
               >
                 to
               </span>
-              <span 
+              <span
                 ref={webArchitectsRef}
-                className="block mt-4 text-[#FFA366] font-medium opacity-0"
+                className="block mt-2 md:mt-4 text-[#F68238] font-medium opacity-0 transition-all duration-300"
               >
                 Web Architects
               </span>
@@ -132,54 +188,75 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
         )}
 
         {/* Counter container */}
-        <div className="relative h-32 flex items-center justify-center">
-          <div 
+        <div className="relative h-24 md:h-32 flex items-center justify-center">
+          <div
             ref={counterRef}
             className="relative"
           >
-            <div className="text-8xl md:text-9xl lg:text-[12rem] font-thin tabular-nums">
-              {counter}
+            <div className="text-6xl md:text-8xl lg:text-9xl font-thin tabular-nums text-white/90">
+              {displayProgress}
             </div>
           </div>
         </div>
 
-        {/* Progress indicator */}
-        <div className="mt-12 w-64 mx-auto">
-          <div className="h-px bg-white/20 relative">
-            <div 
-              className="h-px bg-[#FFA366] absolute left-0 top-0 transition-all duration-300 ease-out"
-              style={{ width: `${counter}%` }}
+        {/* Progress bar */}
+        <div className="mt-8 md:mt-12 w-48 md:w-64 mx-auto">
+          <div className="h-[2px] bg-white/10 relative rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-[#F68238] to-[#FFA366] absolute left-0 top-0 rounded-full"
+              style={{
+                width: `${displayProgress}%`,
+                transition: 'width 0.1s ease-out',
+                boxShadow: '0 0 10px rgba(246, 130, 56, 0.5)'
+              }}
             />
           </div>
-          <div className="mt-4 text-sm font-light tracking-widest opacity-60">
-            LOADING
+          <div className="mt-4 text-xs md:text-sm font-light tracking-[0.3em] text-white/40">
+            {displayProgress < 100 ? 'LOADING' : 'READY'}
           </div>
         </div>
       </div>
 
-      {/* Ambient particles for visual interest */}
+      {/* Ambient particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white/10 rounded-full"
+            className="absolute rounded-full animate-float-particle"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${10 + Math.random() * 80}%`,
+              top: `${10 + Math.random() * 80}%`,
+              width: `${2 + Math.random() * 3}px`,
+              height: `${2 + Math.random() * 3}px`,
+              backgroundColor: i % 3 === 0 ? 'rgba(246, 130, 56, 0.3)' : 'rgba(255, 255, 255, 0.1)',
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
+              animationDuration: `${4 + Math.random() * 4}s`,
             }}
           />
         ))}
       </div>
 
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
-          50% { transform: translateY(-20px) rotate(180deg); opacity: 0.3; }
+        @keyframes float-particle {
+          0%, 100% {
+            transform: translateY(0px) translateX(0px);
+            opacity: 0.1;
+          }
+          25% {
+            transform: translateY(-15px) translateX(10px);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(-25px) translateX(-5px);
+            opacity: 0.2;
+          }
+          75% {
+            transform: translateY(-10px) translateX(-10px);
+            opacity: 0.3;
+          }
         }
-        .absolute.w-1.h-1 {
-          animation: float infinite linear;
+        .animate-float-particle {
+          animation: float-particle infinite ease-in-out;
         }
       `}</style>
     </div>

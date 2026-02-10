@@ -8,6 +8,8 @@ import { ScrollVideo } from '@/components/ui/scroll-video';
 
 interface HeroProps {
   onAnimationComplete?: () => void;
+  onVideoReady?: () => void;
+  onVideoProgress?: (progress: number) => void;
 }
 
 // Service discovery configuration - each service appears from a different position
@@ -42,10 +44,16 @@ const serviceDiscoveries = [
   },
 ];
 
-export function Hero({ onAnimationComplete }: HeroProps) {
+export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: HeroProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const { t } = useLanguage();
+
+  // Notify parent when video is ready
+  const handleVideoReady = () => {
+    setVideoReady(true);
+    onVideoReady?.();
+  };
 
   // Initialize the desert scroll hook (enabled on all devices)
   const { containerRef, scrollProgress } = useDesertScroll({
@@ -204,7 +212,8 @@ export function Hero({ onAnimationComplete }: HeroProps) {
         <ScrollVideo
           src="/desert.mp4"
           scrollProgress={videoProgress}
-          onReady={() => setVideoReady(true)}
+          onReady={handleVideoReady}
+          onLoadProgress={onVideoProgress}
         />
         {/* Subtle overlay gradient for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
