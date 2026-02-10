@@ -13,6 +13,8 @@ interface ScrollVideoProps {
   onReady?: () => void;
   /** Callback for load progress (0 to 1) */
   onLoadProgress?: (progress: number) => void;
+  /** Whether device is mobile (reduces animations for performance) */
+  isMobile?: boolean;
 }
 
 /**
@@ -27,6 +29,7 @@ export function ScrollVideo({
   className = '',
   onReady,
   onLoadProgress,
+  isMobile = false,
 }: ScrollVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +38,8 @@ export function ScrollVideo({
   const [ambientOffset, setAmbientOffset] = useState({ x: 0, y: 0, scale: 1 });
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(Date.now());
+  const lastSeekTimeRef = useRef<number>(0);
+  const lastProgressRef = useRef<number>(0);
 
   // Handle video metadata loaded
   const handleLoadedMetadata = useCallback(() => {
@@ -57,8 +62,24 @@ export function ScrollVideo({
   }, [onLoadProgress]);
 
   // Update video time based on scroll progress
+  // Throttled on mobile to reduce seeking frequency
   useEffect(() => {
     if (!isReady || !videoRef.current || duration === 0) return;
+
+    const now = Date.now();
+    const progressDelta = Math.abs(scrollProgress - lastProgressRef.current);
+
+    // On mobile, throttle seeks to reduce load
+    // Only update if enough time passed OR if there's significant scroll change
+    if (isMobile) {
+      const timeSinceLastSeek = now - lastSeekTimeRef.current;
+      const minSeekInterval = 50; // ~20 seeks per second max on mobile
+      const minProgressDelta = 0.005; // Only seek if progress changed by 0.5%
+
+      if (timeSinceLastSeek < minSeekInterval && progressDelta < minProgressDelta) {
+        return;
+      }
+    }
 
     // Calculate target time based on scroll progress
     // Leave a small buffer at the end to prevent flickering
@@ -66,7 +87,9 @@ export function ScrollVideo({
 
     // Directly set video time for responsive feel
     videoRef.current.currentTime = targetTime;
-  }, [scrollProgress, isReady, duration]);
+    lastSeekTimeRef.current = now;
+    lastProgressRef.current = scrollProgress;
+  }, [scrollProgress, isReady, duration, isMobile]);
 
   // Preload the video
   useEffect(() => {
@@ -77,16 +100,29 @@ export function ScrollVideo({
   }, [src]);
 
   // Subtle ambient motion animation - keeps the scene feeling alive
+  // Reduced intensity on mobile for better performance
   useEffect(() => {
     if (!isReady) return;
 
-    const animate = () => {
-      const elapsed = (Date.now() - startTimeRef.current) / 1000;
+    // Mobile: slower update rate and smaller movements
+    const updateInterval = isMobile ? 50 : 16; // ~20fps on mobile, 60fps on desktop
+    let lastUpdate = 0;
 
-      // Very subtle breathing/drifting motion
-      const x = Math.sin(elapsed * 0.3) * 3; // Gentle horizontal drift
-      const y = Math.cos(elapsed * 0.2) * 2; // Gentle vertical drift
-      const scale = 1 + Math.sin(elapsed * 0.15) * 0.008; // Subtle zoom pulse (0.8% variation)
+    const animate = () => {
+      const now = Date.now();
+      if (now - lastUpdate < updateInterval) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastUpdate = now;
+
+      const elapsed = (now - startTimeRef.current) / 1000;
+
+      // Reduced motion on mobile
+      const intensity = isMobile ? 0.4 : 1;
+      const x = Math.sin(elapsed * 0.3) * 3 * intensity;
+      const y = Math.cos(elapsed * 0.2) * 2 * intensity;
+      const scale = 1 + Math.sin(elapsed * 0.15) * 0.008 * intensity;
 
       setAmbientOffset({ x, y, scale });
       animationRef.current = requestAnimationFrame(animate);
@@ -99,7 +135,7 @@ export function ScrollVideo({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isReady]);
+  }, [isReady, isMobile]);
 
   return (
     <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className}`}>

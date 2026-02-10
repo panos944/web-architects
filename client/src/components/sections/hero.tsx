@@ -56,9 +56,11 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
   };
 
   // Initialize the desert scroll hook (enabled on all devices)
+  // Mobile uses longer scroll distance for smoother video scrubbing
   const { containerRef, scrollProgress } = useDesertScroll({
-    scrollDistance: isMobile ? 3 : 4, // Shorter scroll on mobile
+    scrollDistance: isMobile ? 6 : 4, // Longer scroll on mobile = slower video progression
     enabled: true,
+    isMobile,
   });
 
   // Calculate overlay opacity based on scroll progress
@@ -214,6 +216,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
           scrollProgress={videoProgress}
           onReady={handleVideoReady}
           onLoadProgress={onVideoProgress}
+          isMobile={isMobile}
         />
         {/* Subtle overlay gradient for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />

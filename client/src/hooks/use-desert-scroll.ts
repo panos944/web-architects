@@ -8,6 +8,8 @@ interface UseDesertScrollOptions {
   enabled?: boolean;
   /** Callback when scroll progress changes */
   onProgress?: (progress: number) => void;
+  /** Whether device is mobile (affects smoothing) */
+  isMobile?: boolean;
 }
 
 interface UseDesertScrollReturn {
@@ -29,6 +31,7 @@ export function useDesertScroll({
   scrollDistance = 4,
   enabled = true,
   onProgress,
+  isMobile = false,
 }: UseDesertScrollOptions = {}): UseDesertScrollReturn {
   const containerRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -61,13 +64,16 @@ export function useDesertScroll({
     const scrollEnd = `+=${window.innerHeight * scrollDistance}`;
 
     // Create the ScrollTrigger for pinning and progress tracking
+    // Mobile uses higher scrub value for smoother interpolation (less jarring)
+    const scrubValue = isMobile ? 1.2 : 0.3;
+
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
       end: scrollEnd,
       pin: true,
       pinSpacing: true,
-      scrub: 0.3, // Slight smoothing for natural feel
+      scrub: scrubValue, // Higher on mobile for smoother feel
       anticipatePin: 1, // Helps prevent flicker on pin
       onUpdate: (self) => {
         handleProgress(self.progress);
@@ -88,7 +94,7 @@ export function useDesertScroll({
         scrollTriggerRef.current = null;
       }
     };
-  }, [enabled, scrollDistance, handleProgress]);
+  }, [enabled, scrollDistance, handleProgress, isMobile]);
 
   // Handle window resize
   useEffect(() => {
