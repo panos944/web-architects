@@ -46,12 +46,10 @@ const serviceDiscoveries = [
 
 export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: HeroProps) {
   const [isMobile, setIsMobile] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
   const { t } = useLanguage();
 
   // Notify parent when video is ready
   const handleVideoReady = () => {
-    setVideoReady(true);
     onVideoReady?.();
   };
 
@@ -77,73 +75,52 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
   const fadeOutStart = 0.78;
   const fadeOutEnd = 0.88;
 
+  // Service states - SKIP on mobile since we don't render individual discoveries
   const serviceStates = useMemo(() => {
+    // On mobile, return empty array - we don't use this
+    if (isMobile) return [];
 
-    // Each service has its own discovery window
     const timings = [
-      { start: 0.12, peak: 0.22 },  // Service 1: Early discovery
-      { start: 0.25, peak: 0.35 },  // Service 2: Mid-early
-      { start: 0.38, peak: 0.48 },  // Service 3: Mid-late
-      { start: 0.50, peak: 0.60 },  // Service 4: Late discovery (at horizon)
+      { start: 0.12, peak: 0.22 },
+      { start: 0.25, peak: 0.35 },
+      { start: 0.38, peak: 0.48 },
+      { start: 0.50, peak: 0.60 },
     ];
 
-    // Calculate gather progress (0 = at discovery position, 1 = gathered at center)
-    const gatherProgress = getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
     const isGathering = scrollProgress >= gatherStart;
-    const isGathered = scrollProgress >= gatherEnd;
-
-    // Calculate fade out
     const fadeProgress = getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
 
     return serviceDiscoveries.map((config, index) => {
       const timing = timings[index];
       const { enterFrom } = config;
 
-      // Calculate base opacity (discovery phase)
       let opacity = 0;
       if (scrollProgress < timing.start) {
         opacity = 0;
       } else if (scrollProgress < timing.peak) {
-        // Fade in during discovery
         opacity = getPhaseProgress(scrollProgress, timing.start, timing.peak);
       } else if (scrollProgress < fadeOutStart) {
-        // Fully visible
         opacity = 1;
       } else if (scrollProgress < fadeOutEnd) {
-        // Fade out together
         opacity = 1 - fadeProgress;
-      } else {
-        opacity = 0;
       }
 
-      // Calculate position based on phase
-      let x = 0;
-      let y = 0;
-
+      let x = 0, y = 0;
       if (scrollProgress < timing.start) {
-        // Before appearing - at enter position
         x = enterFrom.x;
         y = enterFrom.y;
       } else if (scrollProgress < timing.peak) {
-        // Entering - animate from enterFrom to discovery position
         const progress = getPhaseProgress(scrollProgress, timing.start, timing.peak);
         x = enterFrom.x * (1 - progress);
         y = enterFrom.y * (1 - progress);
-      } else if (!isGathering) {
-        // At discovery position
-        x = 0;
-        y = 0;
       }
-      // During gathering, position is handled by the gathered layout
 
       return { opacity, x, y, gathered: isGathering && opacity > 0 };
     });
-  }, [scrollProgress, gatherStart, gatherEnd, fadeOutStart, fadeOutEnd]);
+  }, [scrollProgress, gatherStart, fadeOutStart, fadeOutEnd, isMobile]);
 
-  // Calculate the gather animation progress for smooth transition
-  const gatherAnimationProgress = useMemo(() => {
-    return getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
-  }, [scrollProgress, gatherStart, gatherEnd]);
+  // Calculate the gather animation progress - desktop only (used in gathered services)
+  const gatherAnimationProgress = isMobile ? 0 : getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
 
   // Calculate transition overlay opacity (fade to white at the end)
   // On mobile, start fade earlier since we stop video seeking at 92%

@@ -40,23 +40,39 @@ export function useDesertScroll({
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const maxProgressRef = useRef<number>(0);
   const lastWidthRef = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const lastUpdateTimeRef = useRef<number>(0);
+  const lastProgressValueRef = useRef<number>(0);
 
   // Memoized progress handler to avoid unnecessary re-renders
-  // On mobile, prevent snap-back by tracking max progress reached
+  // On mobile, throttle updates AND prevent snap-back
   const handleProgress = useCallback(
     (progress: number) => {
       // On mobile, once we've scrolled past 90%, don't allow going back more than 5%
-      // This prevents snap-back caused by browser address bar changes
       if (isMobile && maxProgressRef.current > 0.9) {
         const minAllowed = Math.max(0, maxProgressRef.current - 0.05);
         if (progress < minAllowed) {
-          return; // Ignore this update, it's likely a snap-back
+          return;
         }
       }
 
       // Track the maximum progress reached
       if (progress > maxProgressRef.current) {
         maxProgressRef.current = progress;
+      }
+
+      // On mobile, throttle state updates to reduce re-renders
+      if (isMobile) {
+        const now = Date.now();
+        const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
+        const progressDelta = Math.abs(progress - lastProgressValueRef.current);
+
+        // Only update every 80ms OR if progress changed significantly (2%)
+        if (timeSinceLastUpdate < 80 && progressDelta < 0.02) {
+          return;
+        }
+
+        lastUpdateTimeRef.current = now;
+        lastProgressValueRef.current = progress;
       }
 
       setScrollProgress(progress);
