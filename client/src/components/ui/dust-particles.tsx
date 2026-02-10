@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap';
 
 interface DustParticlesProps {
@@ -13,19 +13,9 @@ export function DustParticles({
   intensity = 'heavy'
 }: DustParticlesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Desktop: Use GSAP animations
-  useEffect(() => {
-    if (isMobile || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     const container = containerRef.current;
     const particles: HTMLDivElement[] = [];
@@ -35,6 +25,7 @@ export function DustParticles({
       const particle = document.createElement('div');
       particle.className = 'dust-particle absolute opacity-0';
 
+      // Random sizes for variety
       const size = Math.random() * 8 + 2;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
@@ -42,6 +33,8 @@ export function DustParticles({
       particle.style.borderRadius = '50%';
       particle.style.filter = 'blur(0.8px)';
       particle.style.boxShadow = '0 0 4px rgba(250, 223, 202, 0.5)';
+
+      // Random starting positions
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
 
@@ -57,6 +50,7 @@ export function DustParticles({
       const endX = window.innerWidth + 100;
       const verticalDrift = (Math.random() - 0.5) * 200;
 
+      // Set initial position off-screen
       gsap.set(particle, {
         x: startX,
         y: Math.random() * window.innerHeight,
@@ -64,6 +58,7 @@ export function DustParticles({
         scale: Math.random() * 0.8 + 0.2
       });
 
+      // Create floating animation timeline
       const tl = gsap.timeline({ repeat: -1, delay });
 
       tl.to(particle, {
@@ -83,6 +78,7 @@ export function DustParticles({
         ease: "power2.in"
       }, duration - 1);
 
+      // Add subtle floating motion
       gsap.to(particle, {
         duration: 2 + Math.random() * 2,
         y: `+=${(Math.random() - 0.5) * 40}`,
@@ -92,6 +88,7 @@ export function DustParticles({
         delay: delay + Math.random() * 2
       });
 
+      // Add gentle rotation
       gsap.to(particle, {
         duration: 4 + Math.random() * 4,
         rotation: Math.random() * 360,
@@ -101,6 +98,7 @@ export function DustParticles({
       });
     });
 
+    // Cleanup function
     return () => {
       particles.forEach(particle => {
         if (particle.parentNode) {
@@ -109,56 +107,7 @@ export function DustParticles({
       });
       gsap.killTweensOf(particles);
     };
-  }, [particleCount, intensity, isMobile]);
-
-  // Mobile: Use lightweight CSS animations instead of GSAP
-  if (isMobile) {
-    return (
-      <div
-        className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}
-        style={{ zIndex: 1 }}
-      >
-        {/* Lightweight CSS-only particles for mobile */}
-        {[...Array(particleCount)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full animate-dust-float"
-            style={{
-              width: `${Math.random() * 5 + 2}px`,
-              height: `${Math.random() * 5 + 2}px`,
-              backgroundColor: `rgba(250, 223, 202, ${Math.random() * 0.5 + 0.2})`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 8}s`,
-              animationDuration: `${12 + Math.random() * 8}s`,
-            }}
-          />
-        ))}
-        <style>{`
-          @keyframes dust-float {
-            0% {
-              transform: translate3d(0, 0, 0);
-              opacity: 0;
-            }
-            10% {
-              opacity: 0.4;
-            }
-            90% {
-              opacity: 0.4;
-            }
-            100% {
-              transform: translate3d(100vw, ${Math.random() > 0.5 ? '-' : ''}50px, 0);
-              opacity: 0;
-            }
-          }
-          .animate-dust-float {
-            animation: dust-float linear infinite;
-            will-change: transform, opacity;
-          }
-        `}</style>
-      </div>
-    );
-  }
+  }, [particleCount, intensity]);
 
   return (
     <div

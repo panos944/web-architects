@@ -53,10 +53,18 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
     onVideoReady?.();
   };
 
-  // Initialize the desert scroll hook (enabled on all devices)
-  // Mobile uses longer scroll distance for smoother video scrubbing
+  // On mobile with static image, trigger ready immediately
+  useEffect(() => {
+    if (isMobile) {
+      onVideoReady?.();
+    }
+  }, [isMobile, onVideoReady]);
+
+  // Initialize the desert scroll hook
+  // Desktop: full scroll journey with video
+  // Mobile: shorter scroll, just for text animations
   const { containerRef, scrollProgress } = useDesertScroll({
-    scrollDistance: isMobile ? 6 : 4, // Longer scroll on mobile = slower video progression
+    scrollDistance: isMobile ? 2 : 4, // Shorter on mobile (no video to scrub)
     enabled: true,
     isMobile,
   });
@@ -121,12 +129,9 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
 
 
   // Calculate transition overlay opacity (fade to white at the end)
-  // On mobile, start fade earlier since we stop video seeking at 92%
   const transitionOpacity = useMemo(() => {
-    const fadeStart = isMobile ? 0.78 : 0.85;
-    const fadeProgress = getPhaseProgress(scrollProgress, fadeStart, 1);
-    return fadeProgress;
-  }, [scrollProgress, isMobile]);
+    return getPhaseProgress(scrollProgress, 0.85, 1);
+  }, [scrollProgress]);
 
   // Map scroll progress to video progress with offset (start at ~15% into the video)
   const videoProgress = useMemo(() => {
@@ -186,27 +191,34 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       ref={containerRef as React.RefObject<HTMLElement>}
       style={{ zIndex: 50 }}
     >
-      {/* Scroll-driven Video Background */}
+      {/* Background - Video on desktop, static image on mobile */}
       <div className="absolute inset-0 z-0">
-        <ScrollVideo
-          src="/desert.mp4"
-          scrollProgress={videoProgress}
-          onReady={handleVideoReady}
-          onLoadProgress={onVideoProgress}
-          isMobile={isMobile}
-        />
+        {isMobile ? (
+          /* Mobile: Static image */
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url(/desert.png)' }}
+          />
+        ) : (
+          /* Desktop: Scroll-driven video */
+          <ScrollVideo
+            src="/desert.mp4"
+            scrollProgress={videoProgress}
+            onReady={handleVideoReady}
+            onLoadProgress={onVideoProgress}
+            isMobile={false}
+          />
+        )}
         {/* Subtle overlay gradient for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
       </div>
 
-      {/* Floating dust particles - DISABLED on mobile for performance */}
-      {!isMobile && (
-        <DustParticles
-          className="opacity-60"
-          particleCount={150}
-          intensity="light"
-        />
-      )}
+      {/* Floating dust particles - original GSAP animation */}
+      <DustParticles
+        className="opacity-60"
+        particleCount={isMobile ? 80 : 150}
+        intensity="light"
+      />
 
       {/* Main content with asymmetric layout */}
       <div
@@ -352,14 +364,21 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         );
       })}
 
-      {/* Gathered Services - DESKTOP ONLY for performance */}
-      {!isMobile && (() => {
-        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
-        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
+      {/* Gathered Services */}
+      {(() => {
+        // Mobile: simpler timing, just fade in/out
+        const gatherStartVal = isMobile ? 0.20 : gatherStart;
+        const gatherEndVal = isMobile ? 0.35 : gatherEnd;
+        const fadeOutStartVal = isMobile ? 0.65 : fadeOutStart;
+        const fadeOutEndVal = isMobile ? 0.75 : fadeOutEnd;
+
+        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStartVal, gatherEndVal);
+        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStartVal, fadeOutEndVal);
 
         if (effectiveGatherProgress <= 0) return null;
 
         const containerOpacity = Math.min(effectiveGatherProgress, 1 - effectiveFadeOut);
+        if (containerOpacity <= 0) return null;
 
         return (
           <div
@@ -369,7 +388,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
             <div className="text-center space-y-4">
               <div
                 className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
-                style={{ transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)` }}
+                style={isMobile ? undefined : { transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)` }}
               >
                 What We Do
               </div>
@@ -378,7 +397,9 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
                 <div
                   key={index}
                   className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
-                  style={{
+                  style={isMobile ? {
+                    textShadow: '0 4px 30px rgba(0,0,0,0.4)',
+                  } : {
                     textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
                     transform: `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
                   }}

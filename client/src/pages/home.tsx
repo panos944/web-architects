@@ -17,9 +17,24 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const [videoProgress, setVideoProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollToHash } = useSmoothScroll();
   useScrollTrigger();
   useSectionTitle();
+
+  // Detect mobile and skip loading screen
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // On mobile, skip loading screen entirely
+      if (mobile) {
+        setIsLoading(false);
+        setShowNavbar(true);
+      }
+    };
+    checkMobile();
+  }, []);
 
   useEffect(() => {
     const handleHashScroll = () => {
@@ -53,8 +68,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-x-hidden smooth-edges">
-      {/* Loading Screen */}
-      {isLoading && (
+      {/* Loading Screen - Desktop only */}
+      {isLoading && !isMobile && (
         <LoadingScreen
           progress={videoProgress}
           isReady={videoReady}

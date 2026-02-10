@@ -40,39 +40,13 @@ export function useDesertScroll({
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
   const maxProgressRef = useRef<number>(0);
   const lastWidthRef = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
-  const lastUpdateTimeRef = useRef<number>(0);
-  const lastProgressValueRef = useRef<number>(0);
 
   // Memoized progress handler to avoid unnecessary re-renders
-  // On mobile, throttle updates AND prevent snap-back
   const handleProgress = useCallback(
     (progress: number) => {
-      // On mobile, once we've scrolled past 90%, don't allow going back more than 5%
-      if (isMobile && maxProgressRef.current > 0.9) {
-        const minAllowed = Math.max(0, maxProgressRef.current - 0.05);
-        if (progress < minAllowed) {
-          return;
-        }
-      }
-
       // Track the maximum progress reached
       if (progress > maxProgressRef.current) {
         maxProgressRef.current = progress;
-      }
-
-      // On mobile, throttle state updates to reduce re-renders
-      if (isMobile) {
-        const now = Date.now();
-        const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
-        const progressDelta = Math.abs(progress - lastProgressValueRef.current);
-
-        // Only update every 80ms OR if progress changed significantly (2%)
-        if (timeSinceLastUpdate < 80 && progressDelta < 0.02) {
-          return;
-        }
-
-        lastUpdateTimeRef.current = now;
-        lastProgressValueRef.current = progress;
       }
 
       setScrollProgress(progress);
@@ -85,7 +59,7 @@ export function useDesertScroll({
         setIsComplete(false);
       }
     },
-    [onProgress, isComplete, isMobile]
+    [onProgress, isComplete]
   );
 
   useEffect(() => {
@@ -97,17 +71,13 @@ export function useDesertScroll({
     const scrollEnd = `+=${window.innerHeight * scrollDistance}`;
 
     // Create the ScrollTrigger for pinning and progress tracking
-    // Mobile uses slightly higher scrub value for smoother interpolation
-    // (0.8 balances smoothness with responsiveness, 1.2 was too laggy)
-    const scrubValue = isMobile ? 0.8 : 0.3;
-
     scrollTriggerRef.current = ScrollTrigger.create({
       trigger: container,
       start: 'top top',
       end: scrollEnd,
       pin: true,
       pinSpacing: true,
-      scrub: scrubValue, // Higher on mobile for smoother feel
+      scrub: 0.3,
       anticipatePin: 1, // Helps prevent flicker on pin
       onUpdate: (self) => {
         handleProgress(self.progress);
@@ -131,22 +101,12 @@ export function useDesertScroll({
   }, [enabled, scrollDistance, handleProgress, isMobile]);
 
   // Handle window resize
-  // On mobile, only refresh on actual width changes (not address bar height changes)
   useEffect(() => {
     if (!enabled) return;
 
     let resizeTimeout: ReturnType<typeof setTimeout>;
 
     const handleResize = () => {
-      const currentWidth = window.innerWidth;
-
-      // On mobile, ignore height-only changes (address bar showing/hiding)
-      if (isMobile && currentWidth === lastWidthRef.current) {
-        return;
-      }
-
-      lastWidthRef.current = currentWidth;
-
       // Debounce the refresh
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
@@ -159,7 +119,7 @@ export function useDesertScroll({
       window.removeEventListener('resize', handleResize);
       clearTimeout(resizeTimeout);
     };
-  }, [enabled, isMobile]);
+  }, [enabled]);
 
   return {
     containerRef,
