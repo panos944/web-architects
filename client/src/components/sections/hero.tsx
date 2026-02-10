@@ -119,8 +119,6 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
     });
   }, [scrollProgress, gatherStart, fadeOutStart, fadeOutEnd, isMobile]);
 
-  // Calculate the gather animation progress - desktop only (used in gathered services)
-  const gatherAnimationProgress = isMobile ? 0 : getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
 
   // Calculate transition overlay opacity (fade to white at the end)
   // On mobile, start fade earlier since we stop video seeking at 92%
@@ -201,12 +199,14 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 pointer-events-none" />
       </div>
 
-      {/* Floating dust particles - significantly reduced on mobile for performance */}
-      <DustParticles
-        className="opacity-60"
-        particleCount={isMobile ? 25 : 150}
-        intensity="light"
-      />
+      {/* Floating dust particles - DISABLED on mobile for performance */}
+      {!isMobile && (
+        <DustParticles
+          className="opacity-60"
+          particleCount={150}
+          intensity="light"
+        />
+      )}
 
       {/* Main content with asymmetric layout */}
       <div
@@ -352,25 +352,14 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         );
       })}
 
-      {/* Gathered Services - all together at the end */}
-      {/* On mobile, simplified version with fewer calculations */}
-      {(() => {
-        // Mobile: simpler timing, desktop: original timing
-        const gatherStartVal = isMobile ? 0.25 : gatherStart;
-        const gatherEndVal = isMobile ? 0.40 : gatherEnd;
-        const fadeOutStartVal = isMobile ? 0.70 : fadeOutStart;
-        const fadeOutEndVal = isMobile ? 0.80 : fadeOutEnd;
+      {/* Gathered Services - DESKTOP ONLY for performance */}
+      {!isMobile && (() => {
+        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
+        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
 
-        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStartVal, gatherEndVal);
-        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStartVal, fadeOutEndVal);
-
-        // Early exit - don't render if not visible
         if (effectiveGatherProgress <= 0) return null;
 
         const containerOpacity = Math.min(effectiveGatherProgress, 1 - effectiveFadeOut);
-
-        // On mobile, skip rendering entirely once faded out
-        if (isMobile && containerOpacity <= 0) return null;
 
         return (
           <div
@@ -378,24 +367,18 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
             style={{ opacity: containerOpacity }}
           >
             <div className="text-center space-y-4">
-              {/* Header */}
               <div
                 className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
-                style={isMobile ? undefined : {
-                  transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)`,
-                }}
+                style={{ transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)` }}
               >
                 What We Do
               </div>
 
-              {/* All services stacked - on mobile, no per-item styles */}
               {serviceLabels.map((label, index) => (
                 <div
                   key={index}
                   className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
-                  style={isMobile ? {
-                    textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
-                  } : {
+                  style={{
                     textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
                     transform: `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
                   }}
@@ -404,7 +387,6 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
                 </div>
               ))}
 
-              {/* Accent line */}
               <div className="pt-4">
                 <div className="w-20 h-px bg-gradient-to-r from-transparent via-[#F68238]/60 to-transparent mx-auto"></div>
               </div>
