@@ -62,19 +62,21 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
 
   // Initialize the desert scroll hook
   // Desktop: full scroll journey with video
-  // Mobile: shorter scroll, just for text animations
+  // Mobile: disabled - just static hero section
   const { containerRef, scrollProgress } = useDesertScroll({
-    scrollDistance: isMobile ? 2 : 4, // Shorter on mobile (no video to scrub)
-    enabled: true,
+    scrollDistance: 4,
+    enabled: !isMobile, // Disable on mobile - no scroll animation
     isMobile,
   });
 
   // Calculate overlay opacity based on scroll progress
   // Text fades out in the first 20% of the scroll journey
+  // Mobile: always visible (no fade)
   const overlayOpacity = useMemo(() => {
+    if (isMobile) return 1; // Always visible on mobile
     const fadeProgress = getPhaseProgress(scrollProgress, 0, 0.2);
     return 1 - fadeProgress;
-  }, [scrollProgress]);
+  }, [scrollProgress, isMobile]);
 
   // Calculate each service's appearance with staggered discovery timing
   // Services gather together at the end before fading out
@@ -129,9 +131,11 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
 
 
   // Calculate transition overlay opacity (fade to white at the end)
+  // Mobile: no transition overlay
   const transitionOpacity = useMemo(() => {
+    if (isMobile) return 0; // No transition on mobile
     return getPhaseProgress(scrollProgress, 0.85, 1);
-  }, [scrollProgress]);
+  }, [scrollProgress, isMobile]);
 
   // Map scroll progress to video progress with offset (start at ~15% into the video)
   const videoProgress = useMemo(() => {
@@ -225,9 +229,10 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         className="container-fluid relative z-30 pt-24 pb-16"
         style={{
           opacity: overlayOpacity,
-          // On mobile, skip the parallax movement for better performance
-          transform: isMobile ? 'translateZ(0)' : `translate3d(0, ${scrollProgress * -50}px, 0)`,
-          willChange: isMobile ? 'opacity' : 'transform, opacity',
+          // Mobile: no transforms (static)
+          // Desktop: parallax movement based on scroll
+          transform: isMobile ? 'none' : `translate3d(0, ${scrollProgress * -50}px, 0)`,
+          willChange: isMobile ? 'auto' : 'transform, opacity',
           pointerEvents: overlayOpacity < 0.1 ? 'none' : 'auto',
         }}
       >
@@ -364,16 +369,10 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         );
       })}
 
-      {/* Gathered Services */}
-      {(() => {
-        // Mobile: simpler timing, just fade in/out
-        const gatherStartVal = isMobile ? 0.20 : gatherStart;
-        const gatherEndVal = isMobile ? 0.35 : gatherEnd;
-        const fadeOutStartVal = isMobile ? 0.65 : fadeOutStart;
-        const fadeOutEndVal = isMobile ? 0.75 : fadeOutEnd;
-
-        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStartVal, gatherEndVal);
-        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStartVal, fadeOutEndVal);
+      {/* Gathered Services - Desktop only */}
+      {!isMobile && (() => {
+        const effectiveGatherProgress = getPhaseProgress(scrollProgress, gatherStart, gatherEnd);
+        const effectiveFadeOut = getPhaseProgress(scrollProgress, fadeOutStart, fadeOutEnd);
 
         if (effectiveGatherProgress <= 0) return null;
 
@@ -388,7 +387,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
             <div className="text-center space-y-4">
               <div
                 className="text-xs uppercase tracking-[0.3em] text-white/50 font-light mb-6"
-                style={isMobile ? undefined : { transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)` }}
+                style={{ transform: `translateY(${(1 - effectiveGatherProgress) * 20}px)` }}
               >
                 What We Do
               </div>
@@ -397,9 +396,7 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
                 <div
                   key={index}
                   className="text-2xl md:text-3xl lg:text-4xl font-light text-white tracking-wide"
-                  style={isMobile ? {
-                    textShadow: '0 4px 30px rgba(0,0,0,0.4)',
-                  } : {
+                  style={{
                     textShadow: '0 4px 30px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.3)',
                     transform: `translateY(${(1 - effectiveGatherProgress) * (30 + index * 15)}px)`,
                   }}
@@ -416,8 +413,8 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         );
       })()}
 
-      {/* Scroll indicator (only visible when content is visible) */}
-      {overlayOpacity > 0.5 && (
+      {/* Scroll indicator (only visible when content is visible) - Desktop only */}
+      {!isMobile && overlayOpacity > 0.5 && (
         <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2"
           style={{ opacity: overlayOpacity }}
@@ -429,8 +426,8 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
         </div>
       )}
 
-      {/* Transition overlay (fade to white at end of journey) */}
-      {(
+      {/* Transition overlay (fade to white at end of journey) - Desktop only */}
+      {!isMobile && transitionOpacity > 0 && (
         <div
           className="absolute inset-0 z-40 pointer-events-none"
           style={{
