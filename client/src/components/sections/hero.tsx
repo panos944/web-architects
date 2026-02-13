@@ -198,10 +198,13 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       {/* Background - Video on desktop, static image on mobile */}
       <div className="absolute inset-0 z-0">
         {isMobile ? (
-          /* Mobile: Static image */
+          /* Mobile: Static image - positioned to show sun on right */
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: 'url(/desert.png)' }}
+            className="absolute inset-0 bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/desert.png)',
+              backgroundPosition: '75% center'
+            }}
           />
         ) : (
           /* Desktop: Scroll-driven video */
