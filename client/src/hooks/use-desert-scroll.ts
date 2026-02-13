@@ -77,12 +77,8 @@ export function useDesertScroll({
       end: scrollEnd,
       pin: true,
       pinSpacing: true,
-      // Mobile: instant response to avoid conflict with CSS smooth scroll
-      // Desktop: smooth scrubbing for cinematic effect
-      scrub: isMobile ? true : 0.3,
+      scrub: 0.3,
       anticipatePin: 1, // Helps prevent flicker on pin
-      // Mobile: faster unpinning when scrolling quickly past the end
-      fastScrollEnd: isMobile ? true : false,
       onUpdate: (self) => {
         handleProgress(self.progress);
       },
