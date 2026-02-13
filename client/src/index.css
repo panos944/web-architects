@@ -49,6 +49,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Disable smooth scroll on mobile to prevent conflicts with ScrollTrigger */
+  @media (max-width: 768px) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   section[id] {
     scroll-margin-top: 6rem;
   }

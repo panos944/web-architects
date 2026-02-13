@@ -194,15 +194,15 @@ export function Hero({ onAnimationComplete, onVideoReady, onVideoProgress }: Her
       {/* Background - Video on desktop, static image on mobile */}
       <div className="absolute inset-0 z-0">
         {isMobile ? (
-          /* Mobile: Static image */
+          /* Mobile: Static image - using optimized WebP */
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: 'url(/desert.png)' }}
+            style={{ backgroundImage: 'url(/optimized/desert.webp)' }}
           />
         ) : (
-          /* Desktop: Scroll-driven video */
+          /* Desktop: Scroll-driven video - using optimized version */
           <ScrollVideo
-            src="/desert.mp4"
+            src="/optimized/videos/desert.mp4"
             scrollProgress={videoProgress}
             onReady={handleVideoReady}
             onLoadProgress={onVideoProgress}
