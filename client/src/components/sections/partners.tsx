@@ -74,25 +74,45 @@ export function Partners() {
     });
 
     // Partner cards stagger animation
-    gsap.fromTo('.partner-card', 
-      {
-        y: 60,
-        opacity: 0
-      },
-      {
-        duration: 1.2,
-        y: 0,
-        opacity: 1,
-        stagger: 0.15,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: '.partners-grid',
-          start: "top 80%",
-          end: "bottom center",
-          toggleActions: "play none none reverse"
+    // Check if mobile - if so, skip scroll trigger and show immediately
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // Mobile: immediate appearance with subtle fade-in
+      gsap.fromTo('.partner-card',
+        {
+          opacity: 0
+        },
+        {
+          duration: 0.6,
+          opacity: 1,
+          stagger: 0.1,
+          ease: "power2.out",
+          delay: 0.3 // Small delay after page load
         }
-      }
-    );
+      );
+    } else {
+      // Desktop: scroll-triggered animation
+      gsap.fromTo('.partner-card',
+        {
+          y: 60,
+          opacity: 0
+        },
+        {
+          duration: 1.2,
+          y: 0,
+          opacity: 1,
+          stagger: 0.15,
+          ease: "power4.out",
+          scrollTrigger: {
+            trigger: '.partners-grid',
+            start: "top 80%",
+            end: "bottom center",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
 
     // Hover effects for partner cards
     gsap.utils.toArray<HTMLElement>('.partner-card').forEach((card) => {
