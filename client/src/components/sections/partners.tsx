@@ -29,10 +29,11 @@ const getPartners = (t: (key: string) => string) => [
     description: t('partners.rolco.description')
   },
   {
-    name: "Instyle",
-    url: "https://www.instyle.gr",
-    imageUrl: "https://www.instyle.gr/wp-content/uploads/2022/05/Logo_InStyle-1.png",
-    description: t('partners.oloygeia.description')
+    name: "Villa Eira Naxos",
+    url: "https://www.villaeiranaxos.com/en",
+    imageUrl: "",
+    logoText: "Villa Eira",
+    description: t('partners.villaeira.description')
   },
   {
     name: "The Cars",
@@ -204,35 +205,43 @@ export function Partners() {
               {/* Partner Logo */}
               <div className="flex items-center justify-center h-20 mb-6">
                 <div className="partner-logo w-full h-full flex items-center justify-center">
-                  <div className="flex items-center justify-center">
-                    <picture className="block max-w-full max-h-full">
-                      {partner.avif && <source srcSet={partner.avif} type="image/avif" />}
-                      {partner.webp && <source srcSet={partner.webp} type="image/webp" />}
-                      <img 
-                        src={partner.imageUrl} 
-                        alt={`${partner.name} logo`}
-                        className="max-w-full max-h-full object-contain transition-all duration-300 opacity-100"
-                        style={{ 
-                          maxWidth: '140px',
-                          maxHeight: '60px',
-                          opacity: 1
-                        }}
-                        loading="lazy"
-                        onError={(e) => {
-                          const img = e.target as HTMLImageElement;
-                          img.style.display = 'none';
-                          // Create fallback
-                          const fallback = document.createElement('div');
-                          fallback.className = 'w-full h-12 bg-orange-100 rounded flex items-center justify-center text-sm font-medium';
-                          fallback.style.color = '#263226';
-                          fallback.textContent = partner.name;
-                          if (img.parentNode) {
-                            img.parentNode.appendChild(fallback);
-                          }
-                        }}
-                      />
-                    </picture>
-                  </div>
+                  {partner.imageUrl ? (
+                    <div className="flex items-center justify-center">
+                      <picture className="block max-w-full max-h-full">
+                        {partner.avif && <source srcSet={partner.avif} type="image/avif" />}
+                        {partner.webp && <source srcSet={partner.webp} type="image/webp" />}
+                        <img
+                          src={partner.imageUrl}
+                          alt={`${partner.name} logo`}
+                          className="max-w-full max-h-full object-contain transition-all duration-300 opacity-100"
+                          style={{
+                            maxWidth: '140px',
+                            maxHeight: '60px',
+                            opacity: 1
+                          }}
+                          loading="lazy"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.style.display = 'none';
+                            const fallback = document.createElement('div');
+                            fallback.className = 'w-full h-12 bg-orange-100 rounded flex items-center justify-center text-sm font-medium';
+                            fallback.style.color = '#263226';
+                            fallback.textContent = partner.name;
+                            if (img.parentNode) {
+                              img.parentNode.appendChild(fallback);
+                            }
+                          }}
+                        />
+                      </picture>
+                    </div>
+                  ) : (
+                    <span
+                      className="text-2xl tracking-wider"
+                      style={{ fontFamily: "'Playfair Display', serif", color: '#263226' }}
+                    >
+                      {partner.logoText || partner.name}
+                    </span>
+                  )}
                 </div>
               </div>
               
